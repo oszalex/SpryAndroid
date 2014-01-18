@@ -7,17 +7,18 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 
 
 class User(EndpointsModel):
-
-    # Basic info.
     name = ndb.StringProperty()
-#    birth_day = ndb.DateProperty()
+    password = ndb.StringProperty()
 #    friends = ndb.KeyProperty(kind='User', repeated=True)
 
 class Event(EndpointsModel):
-    when = ndb.DateTimeProperty()
-    where = ndb.GeoPtProperty()
+	name = ndb.StringProperty()
+    datetime = ndb.DateTimeProperty(auto_now_add=True)
+    place = ndb.GeoPtProperty()
     # TODO: own model for categories
-    what = ndb.StringProperty(choices=('all', 'drinking'))
+    category = ndb.StringProperty(choices=('all', 'drinking'))
+
+class 
 
 
 @endpoints.api(name='broapi', version='v3', description='Bro Api')
@@ -29,13 +30,35 @@ class BroApi(remote.Service):
 		user.put()
 		return user
 
+	##
+	# Get users
+	##
+
 	@User.query_method(path='users', name='user.list')
 	def UserlList(self, query):
 		return query
 
-#	@User.method(path='user/{id}',http_method='DELETE', name='user.delete')
+	##
+	# Get user
+	##
+
+	@User.query_method(path='user/{id}', name='user.get')
+	def UserGet(self, query):
+		return query
+
+	##
+	# delete user
+	##
+#	@User.query_method(path='user/{id}',http_method='DELETE', name='user.delete')
 #	def UserDelete(self, query):
-#		return query
+#		query.delete()
+#		return "OK"
+
+
+
+#    @User.method(path='user/me', name='user.getauth')
+#    def GetAuthe(self, query):
+#        return query
 
 
 application = endpoints.api_server([BroApi], restricted=False)
