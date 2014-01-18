@@ -7,18 +7,19 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 
 
 class User(EndpointsModel):
-    name = ndb.StringProperty()
-    password = ndb.StringProperty()
+	name = ndb.StringProperty()
+	password = ndb.StringProperty()
 #    friends = ndb.KeyProperty(kind='User', repeated=True)
 
 class Event(EndpointsModel):
 	name = ndb.StringProperty()
-    datetime = ndb.DateTimeProperty(auto_now_add=True)
-    place = ndb.GeoPtProperty()
+	datetime = ndb.DateTimeProperty(auto_now_add=True)
+	place = ndb.GeoPtProperty()
     # TODO: own model for categories
-    category = ndb.StringProperty(choices=('all', 'drinking'))
+	category = ndb.StringProperty(choices=('all', 'drinking'))
 
-class 
+class Category(EndpointsModel):
+	name = ndb.StringProperty()
 
 
 @endpoints.api(name='broapi', version='v3', description='Bro Api')
@@ -49,10 +50,11 @@ class BroApi(remote.Service):
 	##
 	# delete user
 	##
-#	@User.query_method(path='user/{id}',http_method='DELETE', name='user.delete')
-#	def UserDelete(self, query):
-#		query.delete()
-#		return "OK"
+
+	@User.query_method(path='user/{id}',http_method='DELETE', name='user.delete')
+	def UserDelete(self, query):
+		query.delete()
+		return "OK"
 
 
 

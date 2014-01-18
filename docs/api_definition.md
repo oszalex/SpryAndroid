@@ -38,26 +38,26 @@ Following entities are available: user, event and category.
 
 ###list all users
 
-> URL : http://localhost:8080/_ah/api/broapi/v3/users  
+> PATH : users  
 > TYPE: HTTP-GET  
 > RESPONSE: JSON Array containing all users
 
 ###get specific user
-> URL : http://localhost:8080/_ah/api/broapi/v3/user/{id}  
+> PATH : user/{id}  
 > TYPE: HTTP-GET  
 > RESPONSE: JSON Object containing specific user  
 
 If user not found a 501 ErrorCode will be returned.
 
 ###get authenticated user
-> URL : http://localhost:8080/_ah/api/broapi/v3/user/me  
+> PATH : user/me  
 > TYPE: HTTP-GET  
 > RESPONSE: JSON Object containing the authenticated user  
 
 
 ###create user
 
-> URL : http://127.0.0.1:8080/_ah/api/broapi/v3/user  
+> PATH : user  
 > TYPE: HTTP-POST  
 > HEADER: Content-Type  
 > RESPONSE: Copy of the Request
@@ -73,7 +73,6 @@ To create a user you have to create a HTTP-POST Request. This Rq hast to be a JS
 
 ###delete user
 
-> URL : http://127.0.0.1:8080/_ah/api/broapi/v3/user/{id}  
+> PATH : user/{id}  
 > TYPE: HTTP-DELETE  
 > RESPONSE: TODO
-
