@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<title>Bro - COMING SOON</title>
+<!--Adobe Edge Runtime-->
+    <script type="text/javascript" charset="utf-8" src="Bro%20Splash%20neu_edgePreload.js"></script>
+    <style>
+        .edgeLoad-EDGE-45210950 { visibility:hidden; }
+
+        #Stage {
+    		  height: 655px;
+    		  margin: auto;
+    		  position: absolute;
+    		  top: 0; left: -45px; bottom: 0; right: 0;
+    		}
+
+        body {
+          background:url(images/bg.jpg);
+          background-size: 125%;
+          background-position: center center;
+          background-repeat:no-repeat;
+          background-attachment:fixed;
+        }
+    </style>
+
+<!--Adobe Edge Runtime End-->
+
+</head>
+<body>
+	<div id="Stage" class="EDGE-45210950">
+	</div>
+  <script type="text/javascript">
+      $('body').mousemove(function(e){
+        var mousePosX = 50 + (e.pageX/$(window).width())*25;
+        var mousePosY = 50 + (e.pageY/$(window).height())*25;
+        $('body').css('backgroundPosition', mousePosX + '% ' +  mousePosY + '%');
+      });
+    </script>
+</body>
+</html>
