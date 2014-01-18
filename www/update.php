@@ -1,1 +1,2 @@
-<?php echo system('git pull');  
+<?php
+echo shell_exec("/usr/local/bin/git pull 2>&1"); 
