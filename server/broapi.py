@@ -99,9 +99,16 @@ class BroApi(remote.Service):
 	# delete user
 	##
 
-	@User.method(path='user/{id}',http_method='DELETE', name='user.delete', response_fields=(),)
+	@User.method(path='user/{id}',http_method='DELETE', name='user.delete', request_fields=("id",), response_fields=(),)
 	def UserDelete(self, user_object):
-		user_object.delete()
+
+		print user_object
+		
+#		if not user_object.from_datastore
+#			raise endpoints.NotFoundException("User not found.")
+#
+		user_object.key.delete()
+
 		return user_object
 
 	##
@@ -112,9 +119,9 @@ class BroApi(remote.Service):
 	def UserUpdate(self, user):
 		#if not card.from_datastore or card.user != endpoints.get_current_user():
 			#    raise endpoints.NotFoundException("Card not found.")
-		
+
 		user.put()
-		
+
 		return user
 
 
