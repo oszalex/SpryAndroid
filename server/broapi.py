@@ -7,6 +7,9 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 from endpoints_proto_datastore.ndb import EndpointsAliasProperty
 
 
+'''
+User Model
+'''
 class User(EndpointsModel):
 
 	_message_fields_schema = (
@@ -16,17 +19,18 @@ class User(EndpointsModel):
     )
 
 	name = ndb.StringProperty()
-	password = ndb.StringProperty()
-
+	
+	'''
+	password
+	'''
 	_md5pw = ""
-#    friends = ndb.KeyProperty(kind='User', repeated=True)
-
 
 	def PasswordSet(self, value):
 		if not isinstance(value, basestring):
 			raise TypeError("Password must be a string.")
 
 		self._md5pw = value + "md5"
+		self.put()
 
 
 
@@ -35,7 +39,20 @@ class User(EndpointsModel):
 		return self._md5pw
 
 
+	'''
+	events
+	'''
+	events = ndb.KeyProperty(kind="Event", repeated=True)
 
+	def create_event(self, name, datetime, place, category):
+		# requires two writes
+		event = Event(name=name, creator = self.key, datetime=datetime, place=place, category=category)
+		event.put()
+		self.events.append(event)
+		self.put()
+
+	def get_events(self):
+		return ndb.get_multi(self.events)
 
 
 
@@ -49,11 +66,15 @@ class Event(EndpointsModel):
         "category"
     )
 
+	creator = ndb.KeyProperty(Kind="User")
 	name = ndb.StringProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)
 	place = ndb.GeoPtProperty()
     # TODO: own model for categories
 	category = ndb.StringProperty(choices=('all', 'drinking'))
+
+
+
 
 class Category(EndpointsModel):
 
@@ -63,6 +84,16 @@ class Category(EndpointsModel):
     )
 
 	name = ndb.StringProperty()
+
+
+
+
+
+
+
+
+
+
 
 
 @endpoints.api(name='broapi', version='v3', description='Bro Api')
@@ -101,12 +132,10 @@ class BroApi(remote.Service):
 
 	@User.method(path='user/{id}',http_method='DELETE', name='user.delete', request_fields=("id",), response_fields=(),)
 	def UserDelete(self, user_object):
-
-		print user_object
 		
-#		if not user_object.from_datastore
-#			raise endpoints.NotFoundException("User not found.")
-#
+		if not user_object.from_datastore:
+			raise endpoints.NotFoundException("User not found.")
+
 		user_object.key.delete()
 
 		return user_object
