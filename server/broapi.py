@@ -7,52 +7,6 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 from endpoints_proto_datastore.ndb import EndpointsAliasProperty
 
 
-'''
-User Model
-'''
-class User(EndpointsModel):
-
-	_message_fields_schema = (
-        "id",
-        "name",
-        "password"
-    )
-
-	name = ndb.StringProperty()
-	
-	'''
-	password
-	'''
-	_md5pw = ""
-
-	def PasswordSet(self, value):
-		if not isinstance(value, basestring):
-			raise TypeError("Password must be a string.")
-
-		self._md5pw = value + "md5"
-		self.put()
-
-
-
-	@EndpointsAliasProperty(setter=PasswordSet, required=True)
-	def password(self):
-		return self._md5pw
-
-
-	'''
-	events
-	'''
-	events = ndb.KeyProperty(kind="Event", repeated=True)
-
-	def create_event(self, name, datetime, place, category):
-		# requires two writes
-		event = Event(name=name, creator = self.key, datetime=datetime, place=place, category=category)
-		event.put()
-		self.events.append(event)
-		self.put()
-
-	def get_events(self):
-		return ndb.get_multi(self.events)
 
 
 
@@ -61,17 +15,69 @@ class Event(EndpointsModel):
 	_message_fields_schema = (
         "id",
         "name",
+        "creator",
         "datetime",
         "place",
         "category"
     )
 
-	creator = ndb.KeyProperty(Kind="User")
+	creator = ndb.KeyProperty(kind=User)
 	name = ndb.StringProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)
 	place = ndb.GeoPtProperty()
     # TODO: own model for categories
 	category = ndb.StringProperty(choices=('all', 'drinking'))
+
+
+
+
+'''
+User Model
+'''
+class User(EndpointsModel):
+
+	_message_fields_schema = (
+        "id",
+        "name",
+        "password",
+        "events"
+    )
+
+	name = ndb.StringProperty()
+	
+	'''
+	password
+	'''
+	md5pw = ""
+
+	def PasswordSet(self, value):
+		if not isinstance(value, basestring):
+			raise TypeError("Password must be a string.")
+	
+		self.md5pw = value + "md5"
+		self.put()
+
+	@EndpointsAliasProperty(setter=PasswordSet, required=True)
+	def password(self):
+		return self.md5pw
+
+
+	'''
+	events
+	'''
+	events = ndb.KeyProperty(Event)
+
+	#def create_event(self, e_name, e_datetime, e_place, e_category):
+	#	# requires two writes
+	#	event = Event(name=e_name, creator = self.key, datetime=e_datetime, place=e_place, category=e_category)
+	#	event.put()
+	#	self.events.append(event)
+	#	self.put()
+	#
+	#def get_events(self):
+	#	return ndb.get_multi(self.events)
+
+
 
 
 
