@@ -18,10 +18,12 @@ class Event(EndpointsModel):
         "creator",
         "datetime",
         "place",
-        "category"
+        "category",
+        "participants"
     )
 
-	creator = ndb.KeyProperty(kind=User)
+	participants = ndb.KeyProperty(kind='User', repeated=True)
+	creator = ndb.KeyProperty(kind='User')
 	name = ndb.StringProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)
 	place = ndb.GeoPtProperty()
@@ -48,18 +50,18 @@ class User(EndpointsModel):
 	'''
 	password
 	'''
-	md5pw = ""
+	md5password = ndb.StringProperty()
 
 	def PasswordSet(self, value):
 		if not isinstance(value, basestring):
 			raise TypeError("Password must be a string.")
 	
-		self.md5pw = value + "md5"
+		self.md5password = value + "md5"
 		self.put()
 
 	@EndpointsAliasProperty(setter=PasswordSet, required=True)
 	def password(self):
-		return self.md5pw
+		return self.md5password
 
 
 	'''
@@ -90,15 +92,6 @@ class Category(EndpointsModel):
     )
 
 	name = ndb.StringProperty()
-
-
-
-
-
-
-
-
-
 
 
 
