@@ -1,57 +1,38 @@
-#import models
-
 from protorpc import remote
 from google.appengine.ext import ndb
 import endpoints
 from endpoints_proto_datastore.ndb import EndpointsModel
 from endpoints_proto_datastore.ndb import EndpointsAliasProperty
+from google.appengine.ext import db
+from google.appengine.api import users
+import datetime
 
 
-
+class Category(EndpointsModel):
+	_message_fields_schema = ("id", "name", "parent")
+	name = ndb.StringProperty()
+	parent = ndb.KeyProperty(kind='Category', default=None)
 
 
 class Event(EndpointsModel):
 
-	_message_fields_schema = (
-        "id",
-        "name",
-        "creator",
-        "datetime",
-        "place",
-        "category",
-        "participants"
-    )
+	_message_fields_schema = ("id", "name", "creator", "datetime", "place", "category")
 
 	participants = ndb.KeyProperty(kind='User', repeated=True)
 	creator = ndb.KeyProperty(kind='User')
 	name = ndb.StringProperty()
 	datetime = ndb.DateTimeProperty(auto_now_add=True)
 	place = ndb.GeoPtProperty()
-    # TODO: own model for categories
-	category = ndb.StringProperty(choices=('all', 'drinking'))
+	category = ndb.KeyProperty(Category)
 
-
-
-
-'''
-User Model
-'''
 class User(EndpointsModel):
 
-	_message_fields_schema = (
-        "id",
-        "name",
-        "password",
-        "events"
-    )
+	_message_fields_schema = ("id", "name", "password")
 
 	name = ndb.StringProperty()
-	
-	'''
-	password
-	'''
 	md5password = ndb.StringProperty()
-
+	events = ndb.KeyProperty(Event, repeated=True)
+	
 	def PasswordSet(self, value):
 		if not isinstance(value, basestring):
 			raise TypeError("Password must be a string.")
@@ -63,36 +44,21 @@ class User(EndpointsModel):
 	def password(self):
 		return self.md5password
 
-
-	'''
-	events
-	'''
-	events = ndb.KeyProperty(Event)
-
-	#def create_event(self, e_name, e_datetime, e_place, e_category):
-	#	# requires two writes
-	#	event = Event(name=e_name, creator = self.key, datetime=e_datetime, place=e_place, category=e_category)
-	#	event.put()
-	#	self.events.append(event)
-	#	self.put()
-	#
-	#def get_events(self):
-	#	return ndb.get_multi(self.events)
+	def create_event(self, e_name, e_datetime, e_place, e_category):
+		# requires two writes
+		event = Event(name=e_name, creator = self.key, datetime=e_datetime, place=e_place, category=e_category)
+		event.put()
+		self.events.append(event)
+		self.put()
+	
+	def get_events(self):
+		return ndb.get_multi(self.events)
 
 
 
+alice = User(name="Alice", md5password="sdadas", events=[])
 
-
-
-class Category(EndpointsModel):
-
-	_message_fields_schema = (
-        "id",
-        "name"
-    )
-
-	name = ndb.StringProperty()
-
+alice.put()
 
 
 @endpoints.api(name='broapi', version='v3', description='Bro Api')
@@ -149,14 +115,7 @@ class BroApi(remote.Service):
 			#    raise endpoints.NotFoundException("Card not found.")
 
 		user.put()
-
 		return user
-
-
-
-#    @User.method(path='user/me', name='user.getauth')
-#    def GetAuthe(self, query):
-#        return query
 
 
 application = endpoints.api_server([BroApi], restricted=False)
