@@ -10,27 +10,27 @@ import datetime
 
 class Category(EndpointsModel):
 	_message_fields_schema = ("id", "name", "parent")
-	name = ndb.StringProperty()
-	parent = ndb.KeyProperty(kind='Category', default=None)
+	name = ndb.StringProperty(required=True)
+	parent = ndb.KeyProperty(kind='Category')
 
 
 class Event(EndpointsModel):
 
 	_message_fields_schema = ("id", "name", "creator", "datetime", "place", "category")
 
-	participants = ndb.KeyProperty(kind='User', repeated=True)
-	creator = ndb.KeyProperty(kind='User')
-	name = ndb.StringProperty()
-	datetime = ndb.DateTimeProperty(auto_now_add=True)
+	creator = ndb.KeyProperty(kind='User', required=True)
+	name = ndb.StringProperty(required=True)
+	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
 	place = ndb.GeoPtProperty()
-	category = ndb.KeyProperty(Category)
+	category = ndb.KeyProperty(Category, default=Category(name="all").key)
+	participants = ndb.KeyProperty(kind='User', repeated=True)
 
 class User(EndpointsModel):
 
 	_message_fields_schema = ("id", "name", "password")
 
-	name = ndb.StringProperty()
-	md5password = ndb.StringProperty()
+	name = ndb.StringProperty(required=True)
+	md5password = ndb.StringProperty(required=True)
 	events = ndb.KeyProperty(Event, repeated=True)
 	
 	def PasswordSet(self, value):
@@ -55,10 +55,22 @@ class User(EndpointsModel):
 		return ndb.get_multi(self.events)
 
 
+#### Test
 
-alice = User(name="Alice", md5password="sdadas", events=[])
+#c = Category(name="all")
+#c.put()
 
-alice.put()
+#c2 = Category(name="something", parent=c.key)
+#c2.put()
+
+#alice = User(name="Alice", md5password="sdadas", events=[])
+#alice.put()
+
+#e = Event(creator=alice.key, name="instameeting")
+#e.put()
+
+
+
 
 
 @endpoints.api(name='broapi', version='v3', description='Bro Api')
@@ -88,8 +100,15 @@ class BroApi(remote.Service):
 
 	@User.method(path='user/{id}', http_method="GET", name='user.get', request_fields=("id",))
 	def UserGet(self, user):
+		#find user
+		qry = User.query(ancestor=user.key)
 
-		return user
+		user_object = qry.get()
+
+		if user_object is None:
+			raise endpoints.NotFoundException("User not found.")
+
+		return user_object
 
 	##
 	# delete user
@@ -111,11 +130,24 @@ class BroApi(remote.Service):
 
 	@User.method(path="user/{id}", http_method="PUT", name="user.update")
 	def UserUpdate(self, user):
-		#if not card.from_datastore or card.user != endpoints.get_current_user():
-			#    raise endpoints.NotFoundException("Card not found.")
 
-		user.put()
-		return user
+		#find user
+		qry = User.query(ancestor=user.key)
+
+		user_object = qry.get()
+
+		if user_object is None:
+			raise endpoints.NotFoundException("User not found.")
+
+		#update user
+		user_object.name = user.name
+		user_object.events = user.events
+		user_object.password = user.password
+
+		#store changes
+		user_object.put()
+
+		return user_object
 
 
 application = endpoints.api_server([BroApi], restricted=False)
