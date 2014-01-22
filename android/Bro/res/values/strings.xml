@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bro</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_username">username</string>
+    <string name="edit_password">password</string>
+    <string name="button_login">Login</string>
+    <string name="logo_description">Bro-Logo</string>
+    
+    <!-- Input Activity -->
+    <string name="title_activity_input">Start your Bromance</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>

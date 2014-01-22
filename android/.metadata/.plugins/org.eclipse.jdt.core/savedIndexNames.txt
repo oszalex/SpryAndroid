@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/home/dominik/Development/Android/bro/android/.metadata/.plugins/org.eclipse.jdt.core
+1339752130.index
+1779392103.index
+4091693268.index
