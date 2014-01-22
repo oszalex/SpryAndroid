@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#0404B4">
+    android:background="@drawable/gradient">
 
     <ImageView
         android:id="@+id/logo"
@@ -16,6 +16,8 @@
 
     <EditText
         android:id="@+id/edit_username"
+        android:textColor="#ffffff"
+        android:textColorHint="#efefef"
         android:layout_width="fill_parent"
         android:layout_height="12sp"
         android:layout_gravity="center_horizontal"
@@ -27,6 +29,8 @@
         android:hint="@string/edit_username" />
 
     <EditText
+        android:textColor="#ffffff"
+        android:textColorHint="#efefef"
         android:id="@+id/edit_password"
         android:layout_width="fill_parent"
         android:layout_height="12sp"
@@ -44,7 +48,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="40dp"
-        android:background="#0000FF"
         android:text="@string/button_login" 
         android:onClick="login"/>
 
