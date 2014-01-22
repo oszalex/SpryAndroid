@@ -29,7 +29,7 @@ public final class R {
         public static final int action_settings=0x7f080003;
         public static final int edit_password=0x7f080002;
         public static final int edit_username=0x7f080001;
-        public static final int logo=0x7f080000;
+        public static final int login_logo=0x7f080000;
     }
     public static final class layout {
         public static final int activity_input=0x7f030000;
