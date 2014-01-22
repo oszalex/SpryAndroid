@@ -45,10 +45,12 @@ class User(EndpointsModel):
 		return self.md5password
 
 	def create_event(self, e_name, e_datetime, e_place, e_category):
-		# requires two writes
+		self.put()
+		
 		event = Event(name=e_name, creator = self.key, datetime=e_datetime, place=e_place, category=e_category)
+		event.participants.append(self.key)
 		event.put()
-		self.events.append(event)
+		self.events.append(event.key)
 		self.put()
 	
 	def get_events(self):
