@@ -11,5 +11,15 @@
     <!-- Input Activity -->
     <string name="title_activity_input">Start your Bromance</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="std_category">All</string>
+    
+    <string name="more">+</string>
+    
+    <string-array name="categories">
+		<item>All</item>
+		<item>Swinger Orgy</item>
+		<item>SM Party</item>
+	</string-array>
 
 </resources>
