@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="2"
         android:contentDescription="@string/logo_description"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo_400x400px" />
 
     <EditText
         android:id="@+id/edit_username"
