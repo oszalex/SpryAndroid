@@ -48,6 +48,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="#4F86F7"
         android:text="@string/button_login" 
         android:onClick="login"/>
 
