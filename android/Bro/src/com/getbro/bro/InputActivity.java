@@ -1,16 +1,27 @@
 package com.getbro.bro;
 
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.ResourceProxy;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MyLocationOverlay;
+
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.Menu;
 
 public class InputActivity extends Activity {
 	
 	private MapView myOpenMapView;
 	private MapController myMapController;
+	private MyLocationOverlay mMyLocationOverlay;
+	
+	private MyLocationOverlay myLocationOverlay;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -18,8 +29,20 @@ public class InputActivity extends Activity {
 		
 		myOpenMapView = (MapView)findViewById(R.id.map);
         //myOpenMapView.setBuiltInZoomControls(true);
-        //myMapController = (MapController) myOpenMapView.getController();
-        //myMapController.setZoom(4);
+        myMapController = (MapController) myOpenMapView.getController();
+        
+		
+	    myLocationOverlay = new MyLocationOverlay(this, myOpenMapView);
+        myLocationOverlay.enableMyLocation();
+        myOpenMapView.getOverlays().add(myLocationOverlay);
+        
+        //TODO: last location
+        
+        myMapController.animateTo(new GeoPoint(482081743, 163738189));
+        
+        
+        myMapController.setZoom(2);
+	    
 	}
 
 	@Override
