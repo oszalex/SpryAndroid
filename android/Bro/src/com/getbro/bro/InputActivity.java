@@ -1,15 +1,25 @@
 package com.getbro.bro;
 
+import org.osmdroid.views.MapController;
+import org.osmdroid.views.MapView;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
 public class InputActivity extends Activity {
+	
+	private MapView myOpenMapView;
+	private MapController myMapController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_input);
+		
+		myOpenMapView = (MapView)findViewById(R.id.map);
+        //myOpenMapView.setBuiltInZoomControls(true);
+        //myMapController = (MapController) myOpenMapView.getController();
+        //myMapController.setZoom(4);
 	}
 
 	@Override

@@ -36,15 +36,15 @@ public final class R {
         public static final int edit_password=0x7f09000b;
         public static final int edit_username=0x7f09000a;
         public static final int login_logo=0x7f090009;
-        public static final int map=0x7f090001;
-        public static final int profiles=0x7f090002;
-        public static final int profilimage1=0x7f090003;
-        public static final int profilimage2=0x7f090004;
-        public static final int profilimage3=0x7f090005;
-        public static final int profilimage4=0x7f090006;
-        public static final int profilimage5=0x7f090007;
+        public static final int map=0x7f090002;
+        public static final int profiles=0x7f090003;
+        public static final int profilimage1=0x7f090004;
+        public static final int profilimage2=0x7f090005;
+        public static final int profilimage3=0x7f090006;
+        public static final int profilimage4=0x7f090007;
+        public static final int profilimage5=0x7f090008;
         public static final int spinner1=0x7f090000;
-        public static final int time=0x7f090008;
+        public static final int time=0x7f090001;
     }
     public static final class layout {
         public static final int activity_input=0x7f030000;
