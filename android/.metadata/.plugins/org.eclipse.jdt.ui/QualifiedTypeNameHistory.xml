@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.view.View"/>
-<fullyQualifiedTypeName name="android.content.Intent"/>
-<fullyQualifiedTypeName name="android.widget.EditText"/>
-<fullyQualifiedTypeName name="com.getbro.bro.R.id"/>
-<fullyQualifiedTypeName name="android.app.AlertDialog"/>
-<fullyQualifiedTypeName name="android.content.DialogInterface"/>
-</qualifiedTypeNameHistroy>

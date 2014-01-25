@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 	public void login(View view) {
 
 		/**
-		 * TODO verify login
+		 * TODO verify login and throw alert if no valid
 		 */
 
 		/** Intent provides runtime bindings between components. */
@@ -41,22 +41,7 @@ public class MainActivity extends Activity {
 		String username = edit_username.getText().toString();
 		intent.putExtra(EXTRA_USERNAME, username);
 
-		if (username.equals("wrong")) {
-			AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-			alertDialog.setTitle("Password");
-			alertDialog.setMessage("Wrong");
-			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Add your code for the button here.
-				}
-			});
-			// Set the Icon for the Dialog
-			// alertDialog.setIcon(R.drawable.icon);
-			alertDialog.show();
-		} else {
-
-			// Start the new Input activity
-			startActivity(intent);
-		}
+		startActivity(intent);
+		
 	}
 }

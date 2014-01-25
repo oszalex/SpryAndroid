@@ -29,9 +29,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/spinner1"
         android:background="#0000"
-        android:text="Now" />
-
-
+        android:text="Now" 
+        android:onClick="selectDateAndTime"/>
     
     <org.osmdroid.views.MapView
         android:id="@+id/map"
