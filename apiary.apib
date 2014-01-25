@@ -1,0 +1,99 @@
+FORMAT: 1A
+HOST: http://www.google.com
+
+# bro
+Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+
+
+# Group Users
+
+## Users Collection [/users]
+### List all Users [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, "title": "Jogging in park"
+        }, {
+          "id": 2, "title": "Pick-up posters from post-office"
+        }]
+
+### Create a User [POST]
++ Request (application/json)
+
+        { "title": "Buy cheese and bread for breakfast." }
+
++ Response 201 (application/json)
+
+        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+
+## User [/users/{id}]
+A single User object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve a User [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            { "id": 2, "title": "Pick-up posters from post-office" }
+
+### Remove a User [DELETE]
++ Response 204
+
+
+
+
+
+
+
+
+
+
+
+# Group Events
+Notes related resources of the **Notes API**
+
+## Notes Collection [/events]
+### List all Notes [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, "title": "Jogging in park"
+        }, {
+          "id": 2, "title": "Pick-up posters from post-office"
+        }]
+
+### Create a Event [POST]
++ Request (application/json)
+
+        { "title": "Buy cheese and bread for breakfast." }
+
++ Response 201 (application/json)
+
+        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+
+## Event [/events/{id}]
+A single Event object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve a Event [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            { "id": 2, "title": "Pick-up posters from post-office" }
+
+### Remove a Event [DELETE]
++ Response 204
