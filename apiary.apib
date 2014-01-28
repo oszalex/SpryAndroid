@@ -2,7 +2,7 @@ FORMAT: 1A
 HOST: http://www.google.com
 
 # bro
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+This API is a *short texts saving* service similar to its physical paper presence on your table.
 
 
 # Group Users
@@ -12,19 +12,29 @@ Notes API is a *short texts saving* service similar to its physical paper presen
 + Response 200 (application/json)
 
         [{
-          "id": 1, "title": "Jogging in park"
+          "id": 1, 
+          "name": "Christian Butter",
         }, {
-          "id": 2, "title": "Pick-up posters from post-office"
+          "id": 4, 
+          "name": "Dominik 'ommi' Pichler",
         }]
 
 ### Create a User [POST]
 + Request (application/json)
 
-        { "title": "Buy cheese and bread for breakfast." }
+        {
+            "name": "Dominik 'ommi' Pichler",
+            "email": "ommi@u33.sch",
+            "password": "mamamia"
+        }
 
 + Response 201 (application/json)
 
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+        {
+            "id": 4,
+            "name": "Dominik 'ommi' Pichler",
+            "email": "ommi@u33.sch"
+        }
 
 ## User [/users/{id}]
 A single User object with all its details
@@ -41,19 +51,145 @@ A single User object with all its details
 
     + Body
 
-            { "id": 2, "title": "Pick-up posters from post-office" }
+            {
+                "id": 4,
+                "name": "Dominik 'ommi' Pichler",
+                "email": "ommi@u33.sch"
+            }
 
-### Remove a User [DELETE]
++ Response 401 (application/json)
+
+    + Body
+            
+            {
+                "error" : "There is no such a user for you, dear guest."
+            }
+
+
+## Current User [/users/me]
+Operations on current user (extended information and permissions)
+
+### Retrieve current User [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            {
+                "id": 4,
+                "name": "Dominik 'ommi' Pichler",
+                "email": "ommi@u33.sch",
+                "own_events":[0,4,8,9],
+                "invitations":[1,3,2,5],
+                "androidDeviceIDs":[213123123123],
+                "iOsDeviceIds":"TODO"
+            }
+
+### Update current User [PATCH]
+
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            {
+                "id": 4,
+                "name": "Dominik 'ommi' Pichler",
+                "email": "ommi@u33.sch"
+                "password": "mamamia",
+                "own_events":[0,4,8,9],
+                "invitations":[1,3,2,5],
+                "androidDeviceIDs":[213123123123],
+                "iOsDeviceIds":"TODO"
+            }
+            
+
+
+# Group Category
+Categorie related resources of the **Category API**
+
+## Categorie Collection [/categories]
+### List all Categories [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, 
+            "name": "all",
+            "parent": null
+          
+        }, {
+          "id": 2, 
+            "name": "orgie",
+            "parent": 1
+        }]
+
+### Create a Categorie [POST]
++ Request (application/json)
+
+        { 
+        "name": "gruppensex",
+        "parent": 1
+        }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "id": 3,
+                "name": "gruppensex",
+                "parent": 1
+            }
+            
+    + Schema
+
+            {
+                "id": "integer",
+                "name": "string",
+                "parent": "integer|null"
+            }
+
+
++ Response 403 (application/json)
+
+    + Body
+    
+            {
+                "error":"Not for losers"
+            }
+            
+## Category [/categories/{id}]
+A single Categorie object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Category to perform action with. Has example value.
+
+### Retrieve a Categorie [GET]
++ Response 200 (application/json)
+
+    + Body
+
+            { 
+            "id": 1, 
+            "name": "all",
+            "parent": null
+            
+            }
+            
++ Response 401 (text/plain)
+
+    + Body
+    
+            "There is no such a message for you, dear guest."
+        
+### Remove a Categorie [DELETE]
 + Response 204
-
-
-
-
-
-
-
-
-
 
 
 # Group Events
@@ -64,22 +200,47 @@ Notes related resources of the **Notes API**
 + Response 200 (application/json)
 
         [{
-          "id": 1, "title": "Jogging in park"
+          "id": 1, 
+          "place":"-44.22,-33.55",
+          "datetime":'2008-11-22 19:53:42',
+          "participants":[1,5,23],
+          "category": 1,
+          "creator" : 3
         }, {
-          "id": 2, "title": "Pick-up posters from post-office"
+          "id": 2, 
+          "place":"-44.22,-33.55",
+          "datetime":'2012-03-24 13:13:48',
+          "participants":[4,14,3,6],
+          "category": 5,
+          "creator" : 4
         }]
 
 ### Create a Event [POST]
 + Request (application/json)
 
-        { "title": "Buy cheese and bread for breakfast." }
+        {
+            "place":"-44.22,-33.55",
+            "datetime":'2008-11-22 19:53:42',
+            "participants":[1,5,23],
+            "category": 1,
+            "creator" : 3
+        }
 
 + Response 201 (application/json)
 
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+        { "id": 1, 
+          "place":"-44.22,-33.55",
+          "datetime":'2008-11-22 19:53:42',
+          "participants":[1,5,23],
+          "category": 1,
+          "creator" : 3 
+        }
+
+## Event [/users/{id}/events]
+
 
 ## Event [/events/{id}]
-A single Event object with all its details
+A single Event object with all its details. ATTENTION: Permission denied, if user is not a paticipant.
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
@@ -93,7 +254,37 @@ A single Event object with all its details
 
     + Body
 
-            { "id": 2, "title": "Pick-up posters from post-office" }
+            { "id": 1, 
+              "place":"-44.22,-33.55",
+              "datetime":'2008-11-22 19:53:42',
+              "participants":[1,5,23],
+              "category": 1,
+              "creator" : 3 
+            }
+    
+    + Schema
+
+            {
+                "id": "integer",
+                "place": "SerializedGeoPtObject",
+                "datetime": "datetime",
+                "participants":["integer"],
+                "category": "integer",
+                "creator" : "integer" 
+                
+            }
+            
++ Response 403 (application/json)
+
+        {
+            "error": "access forbidden"
+        }
 
 ### Remove a Event [DELETE]
 + Response 204
+
+
+
+
+
+
