@@ -4,7 +4,18 @@ Der Server soll eine Restful API bereitstellen. Über HTTP können JSON Objecte 
 
 API Definitionen: http://docs.bro.apiary.io/
 
-TODO:
+
+##Links
+
+ * OAuth 2 Slides - http://www.slideshare.net/aaronpk/an-introduction-to-oauth-2
+ * Outh2 and RESTful - http://www.slideshare.net/jcleblanc/securing-restful-apis-using-oauth-2-and-openid-connect
+ * OAuth Google Apps engine - https://code.google.com/p/gae-simpleauth/
+
+
+
+
+##TODO
+
  - Authentification
  - proper model definition
  - define api for user/friends
