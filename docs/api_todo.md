@@ -9,4 +9,5 @@
  - Queries definieren
  - Online Status
  - filter
+ - statistische information über kategorie etc.
  - aktuelle Standord
