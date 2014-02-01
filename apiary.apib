@@ -63,38 +63,6 @@ Remember that TT Token has limited validity. Once you received 401 Unauthorized 
 
 # Group Users
 
-## Users Collection [/users]
-### List all Users [GET]
-+ Response 200 (application/json)
-
-        [{
-          "id": 1, 
-          "name": "Christian Butter",
-        }, {
-          "id": 4, 
-          "name": "Dominik 'ommi' Pichler",
-        }]
-
-### Create a User [POST]
-+ Request (application/json)
-
-        {
-            "name": "Dominik 'ommi' Pichler",
-            "email": "ommi@u33.sch",
-            "password": "mamamia"
-        }
-
-+ Response 201 (application/json)
-
-        {
-            "id": 4,
-            "name": "Dominik 'ommi' Pichler",
-            "email": "ommi@u33.sch"
-        }
-
-## User [/users/{id}]
-A single User object with all its details
-
 #### Userproperties
 
  * `id` positive nummeric and unique number
@@ -105,26 +73,113 @@ A single User object with all its details
  * `invitations` invitations 
  * `androidDeviceIDs` ids of all connected android devices
  * `iOSDeviceIDs` ids of all connected iOS devices
+ * `followers` list of all friend ID's
+ * `following` list of all friends to follow
+ * `private` (boolean) true if user has a private profile
+ * `sex` male/female
+ * `profile_image` optional http link to an image ressource
+ * `last_action` timestamp of last request
+ * `whitelisted_actions` ID's of allowed categories (default: [1] (= all))
+ * `blacklisted_actions` ID's of disallowed categories (default: [] (= none))
+ * `location` "-44.22,-33.55"
+ 
+## Users Collection [/users?offset=0&limit=5]
+### List all Users [GET]
+
+Paging: This resource optionally allows paging. Use offset and limit parameters on the end of the URI. example: users?offset=1&limit=3
+
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
+    + Body
+
++ Response 200 (application/json)
+
+        [{
+          "id": 1,
+          "sex":"male",
+          "name": "Christian Butter"
+        }, {
+          "id": 4,
+          "sex":"male",
+          "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
+          "name": "Dominik 'ommi' Pichler"
+        }, {
+          "id": 5,
+          "sex":"male",
+          "name": "Benjamin 'benni' Pazdernik"
+        }, {
+          "id": 6, 
+          "sex":"female",
+          "name": "Carla Schefbörger"
+        }]
+
+## Users Creaton [/users]
+Operations on current user (extended information and permissions)
+
+### Create a User [POST]
++ Request (application/json)
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
+    + Body
+    
+            {
+                "name": "Dominik 'ommi' Pichler",
+                "image" : "<Base64Image>",
+                "email": "ommi@u33.sch",
+                "password": "mamamia",
+                "whitelisted_actions":[1],
+                "blacklisted_actions":[],
+                "location":"<GeoPoint>"
+            }
+
++ Response 201 (application/json)
+
+        {
+            "id": 4,
+            "name": "Dominik 'ommi' Pichler",
+            "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
+            "email": "ommi@u33.sch",
+            "whitelisted_actions":[1],
+            "blacklisted_actions":[]
+        }
+
+## User [/users/{id}]
+A single User object with all its details
 
 
 ### Retrieve a User [GET]
 
+Whitelist and blacklist and location are only part of the response, if the receiver and the given user are friends.
+
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
 + Parameters
 
     + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
 
 + Response 200 (application/json)
 
-    + Header
-
-            X-My-Header: The Value
-
     + Body
 
             {
                 "id": 4,
                 "name": "Dominik 'ommi' Pichler",
-                "email": "ommi@u33.sch"
+                "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
+                "email": "ommi@u33.sch",
+                "whitelisted_actions":[1],
+                "blacklisted_actions":[],
+                "location": "-44.22,-33.55"
             }
 
 + Response 401 (application/json)
@@ -140,43 +195,53 @@ A single User object with all its details
 Operations on current user (extended information and permissions)
 
 ### Retrieve current User [GET]
-+ Response 200 (application/json)
++ Request
 
     + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
 
-            X-My-Header: The Value
++ Response 200 (application/json)
 
     + Body
 
             {
                 "id": 4,
                 "name": "Dominik 'ommi' Pichler",
+                "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
                 "email": "ommi@u33.sch",
                 "own_events":[0,4,8,9],
                 "invitations":[1,3,2,5],
                 "androidDeviceIDs":[213123123123],
-                "iOsDeviceIds":"TODO"
+                "iOsDeviceIds":"TODO",
+                "whitelisted_actions":[1],
+                "blacklisted_actions":[]
             }
 
 ### Update current User [PATCH]
-
-+ Response 200 (application/json)
++ Request
 
     + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
 
-            X-My-Header: The Value
++ Response 200 (application/json)
 
     + Body
 
             {
                 "id": 4,
                 "name": "Dominik 'ommi' Pichler",
+                "image": "<BASE64Image>",
                 "email": "ommi@u33.sch"
                 "password": "mamamia",
                 "own_events":[0,4,8,9],
                 "invitations":[1,3,2,5],
                 "androidDeviceIDs":[213123123123],
-                "iOsDeviceIds":"TODO"
+                "iOsDeviceIds":"TODO",
+                "whitelisted_actions":[1],
+                "blacklisted_actions":[],
+                "location":"<GeoPoint>"
             }
             
 
@@ -190,7 +255,10 @@ Categorie related resources of the **Category API**
  * `name`
  * `parent`
  
-## Categorie Collection [/categories]
+## Categorie Collection [/categories?offset=1&limit=3]
+
+Paging: This resource optionally allows paging. Use offset and limit parameters on the end of the URI. example: categories?offset=1&limit=3
+
 ### List all Categories [GET]
 + Response 200 (application/json)
 
@@ -205,13 +273,20 @@ Categorie related resources of the **Category API**
             "parent": 1
         }]
 
+## Categorie Collection [/categories]
 ### Create a Categorie [POST]
 + Request (application/json)
 
-        { 
-        "name": "gruppensex",
-        "parent": 1
-        }
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
+    + Body
+
+            { 
+                "name": "gruppensex",
+                "parent": 1
+            }
 
 + Response 201 (application/json)
 
@@ -265,11 +340,17 @@ A single Categorie object with all its details
             "There is no such a message for you, dear guest."
         
 ### Remove a Categorie [DELETE]
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
 + Response 204
 
 
 # Group Events
-Notes related resources of the **Notes API**
+Events related resources of the **BRO API**
 
 #### Event Properties
 
@@ -280,8 +361,17 @@ Notes related resources of the **Notes API**
  * `category`
  * `creator`
  
-## Notes Collection [/events]
+## Events Collection [/events?offset=1&limit=3]
+
+Paging: This resource optionally allows paging. Use offset and limit parameters on the end of the URI. example: events?offset=1&limit=3
+
 ### List all Notes [GET]
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
 + Response 200 (application/json)
 
         [{
@@ -300,16 +390,24 @@ Notes related resources of the **Notes API**
           "creator" : 4
         }]
 
+## Events Collection [/events]
+
 ### Create a Event [POST]
 + Request (application/json)
 
-        {
-            "place":"-44.22,-33.55",
-            "datetime":'2008-11-22 19:53:42',
-            "participants":[1,5,23],
-            "category": 1,
-            "creator" : 3
-        }
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
+    + Body
+
+            {
+                "place":"-44.22,-33.55",
+                "datetime":'2008-11-22 19:53:42',
+                "participants":[1,5,23],
+                "category": 1,
+                "creator" : 3
+            }
 
 + Response 201 (application/json)
 
@@ -322,6 +420,13 @@ Notes related resources of the **Notes API**
         }
 
 ## Event [/users/{id}/events]
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
+    + Body
 
 
 ## Event [/events/{id}]
@@ -331,6 +436,12 @@ A single Event object with all its details. ATTENTION: Permission denied, if use
     + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
 
 ### Retrieve a Event [GET]
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+    
 + Response 200 (application/json)
 
     + Header
@@ -366,10 +477,10 @@ A single Event object with all its details. ATTENTION: Permission denied, if use
         }
 
 ### Remove a Event [DELETE]
++ Request
+
+    + Header
+    
+            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+            
 + Response 204
-
-
-
-
-
-
