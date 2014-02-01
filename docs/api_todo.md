@@ -11,3 +11,4 @@
  - filter
  - statistische information über kategorie etc.
  - aktuelle Standord
+ - Kategorien sollten ein bild haben
