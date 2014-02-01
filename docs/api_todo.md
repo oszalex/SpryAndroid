@@ -7,3 +7,6 @@
  - Modelle/Schema definieren
  - Fehlerzustände/Fehlermeldungen
  - Queries definieren
+ - Online Status
+ - filter
+ - aktuelle Standord
