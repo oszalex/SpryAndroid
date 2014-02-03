@@ -1,155 +1,99 @@
-from protorpc import remote
 from google.appengine.ext import ndb
 import endpoints
-from endpoints_proto_datastore.ndb import EndpointsModel
-from endpoints_proto_datastore.ndb import EndpointsAliasProperty
-from google.appengine.ext import db
-from google.appengine.api import users
+from protorpc import messages
+from protorpc import message_types
+from protorpc import remote
+
 import datetime
 
 
-class Category(EndpointsModel):
-	_message_fields_schema = ("id", "name", "parent")
+
+
+
+class CategoryModel(ndb.Model):
+	#_message_fields_schema = ("id", "name", "parent")
 	name = ndb.StringProperty(required=True)
-	parent = ndb.KeyProperty(kind='Category')
+	parent = ndb.KeyProperty(kind='CategoryModel', default=None)
 
 
-class Event(EndpointsModel):
+#key_a = ndb.Key(CategoryModel, "");
+#person = Person(key=key_a)
+#person.put()
 
-	_message_fields_schema = ("id", "name", "creator", "datetime", "place", "category")
+#new_key_a =ndb.Key(Person, email);
+#a = new_key_a.get()
+#if a is not None:
+#    return
 
-	creator = ndb.KeyProperty(kind='User', required=True)
-	name = ndb.StringProperty(required=True)
-	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
-	place = ndb.GeoPtProperty()
-	category = ndb.KeyProperty(Category, default=Category(name="all").key)
-	participants = ndb.KeyProperty(kind='User', repeated=True)
+root_category=CategoryModel(name="all", parent=None)
+root_category_key=root_category.put()
 
-class User(EndpointsModel):
+#root_category_key=ndb.Key(CategoryModel, "all")
+#root_category = CategoryModel(key=root_category_key)
+#root_category.put()
 
-	_message_fields_schema = ("id", "name", "password")
+#print root_category_key
 
-	name = ndb.StringProperty(required=True)
-	md5password = ndb.StringProperty(required=True)
-	events = ndb.KeyProperty(Event, repeated=True)
+#CategoryModel.get_or_insert(root_category_key)
+
+
+class Category(messages.Message):
+	name = messages.StringField(1,required=True)
+	parent = messages.StringField(2, default=root_category_key.urlsafe())
+
+class CategoryList(messages.Message):
+	items = messages.MessageField(Category, 1, repeated=True)
+
+
+#class EventModel(ndb.Model):
+#	#_message_fields_schema = ("id", "name", "creator", "datetime", "place", "category")
+#
+#	creator = ndb.KeyProperty(kind='User', required=True)
+#	name = ndb.StringProperty(required=True)
+#	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
+#	place = ndb.GeoPtProperty()
+#	#category = ndb.KeyProperty(Category, default=Category(name="all").key)
+#	participants = ndb.KeyProperty(kind='User', repeated=True)
+
+#class UserModel(ndb.Model):
+#	#_message_fields_schema = ("id", "name", "password")
+#
+#	name = ndb.StringProperty(required=True)
+#	password = ndb.StringProperty(required=True)
+#	events = ndb.KeyProperty(Event, repeated=True)
 	
-	def PasswordSet(self, value):
-		if not isinstance(value, basestring):
-			raise TypeError("Password must be a string.")
-	
-		self.md5password = value + "md5"
-		self.put()
-
-	@EndpointsAliasProperty(setter=PasswordSet, required=True)
-	def password(self):
-		return self.md5password
-
-	def create_event(self, e_name, e_datetime, e_place, e_category):
-		self.put()
-		
-		event = Event(name=e_name, creator = self.key, datetime=e_datetime, place=e_place, category=e_category)
-		event.participants.append(self.key)
-		event.put()
-		self.events.append(event.key)
-		self.put()
-	
-	def get_events(self):
-		return ndb.get_multi(self.events)
 
 
-#### Test
+@endpoints.api(name='bro', version='v4')
 
-#c = Category(name="all")
-#c.put()
-
-#c2 = Category(name="something", parent=c.key)
-#c2.put()
-
-#alice = User(name="Alice", md5password="sdadas", events=[])
-#alice.put()
-
-#e = Event(creator=alice.key, name="instameeting")
-#e.put()
-
-
-
-
-
-@endpoints.api(name='broapi', version='v3', description='Bro Api')
 class BroApi(remote.Service):
 
-	##
-	# insert new user
-	##
+	#
+	# CATEGORIES
+	#
+	@endpoints.method(message_types.VoidMessage, CategoryList,
+		name='category.list',
+		path='categories',
+		http_method='GET')
+	def list_categories(self, unused_request):
+		categories = []
+		for category in CategoryModel.query():
+			if category.parent is None:
+				categories.append(Category(name=category.name, parent="None"))
+			else:
+				categories.append(Category(name=category.name, parent=category.parent.urlsafe()))
 
-	@User.method(path='user', http_method='POST', name='user.insert')
-	def UserInsert(self, user):
-
-		user.put()
-		return user
-
-	##
-	# Get users
-	##
-
-	@User.query_method(path='users', name='user.list')
-	def UserlList(self, query):
-		return query
-
-	##
-	# Get user
-	##
-
-	@User.method(path='user/{id}', http_method="GET", name='user.get', request_fields=("id",))
-	def UserGet(self, user):
-		#find user
-		qry = User.query(ancestor=user.key)
-
-		user_object = qry.get()
-
-		if user_object is None:
-			raise endpoints.NotFoundException("User not found.")
-
-		return user_object
-
-	##
-	# delete user
-	##
-
-	@User.method(path='user/{id}',http_method='DELETE', name='user.delete', request_fields=("id",), response_fields=(),)
-	def UserDelete(self, user_object):
-		
-		if not user_object.from_datastore:
-			raise endpoints.NotFoundException("User not found.")
-
-		user_object.key.delete()
-
-		return user_object
-
-	##
-	# update user
-	##
-
-	@User.method(path="user/{id}", http_method="PUT", name="user.update")
-	def UserUpdate(self, user):
-
-		#find user
-		qry = User.query(ancestor=user.key)
-
-		user_object = qry.get()
-
-		if user_object is None:
-			raise endpoints.NotFoundException("User not found.")
-
-		#update user
-		user_object.name = user.name
-		user_object.events = user.events
-		user_object.password = user.password
-
-		#store changes
-		user_object.put()
-
-		return user_object
+		return CategoryList(items=categories)
 
 
-application = endpoints.api_server([BroApi], restricted=False)
+	@endpoints.method(Category, Category,
+		name='category.insert',
+		path='category',
+		http_method='POST')
+	def insert_categories(self, request):
+		cm=CategoryModel(name=request.name, parent=ndb.Key(urlsafe=request.parent)).put()
+		return Category(name=request.name, parent=cm.get().parent.urlsafe())
+
+
+
+application = endpoints.api_server([BroApi])
