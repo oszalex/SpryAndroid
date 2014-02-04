@@ -84,6 +84,14 @@ class UserModel(ndb.Model):
 
 
 
+
+CATUPDATE_RESOURCE_CONTAINER = endpoints.ResourceContainer(
+        Category,
+        key=messages.StringField(2, required=True))
+
+
+
+
 @endpoints.api(name='bro', version='v4')
 
 class BroApi(remote.Service):
@@ -123,6 +131,30 @@ class BroApi(remote.Service):
 			cm=cat_query[0]
 		return Category(id=cm.key.urlsafe(), name=request.name, parent=cm.parent.urlsafe())
 
+
+
+
+	@endpoints.method(CATUPDATE_RESOURCE_CONTAINER, Category,
+		path='category/{key}',
+		http_method='PUT',
+		name='category.update')
+	def update_categories(self, request):
+
+		print request.id
+
+		cat = ndb.Key(urlsafe=request.key).get()
+
+		print cat
+
+		if cat is None:
+			message = 'No entity with the id "%s" exists.' % request.id
+			raise endpoints.NotFoundException(message)
+
+		else:
+			cat.name = request.name
+			cat.put()
+
+		return Category(id=cat.key.urlsafe(), name=request.name, parent=cat.parent.urlsafe())
 
 
 application = endpoints.api_server([BroApi])
