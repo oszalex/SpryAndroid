@@ -1,6 +1,6 @@
 - Server
- - Kategorien/Events/User Models erstellen.
- - Kategorien/Events/User ProtoRPC Messages erstellen.
+ - ---Kategorien/Events/User Models erstellen.---  (by Chris)
+ - ---Kategorien/Events/User ProtoRPC Messages erstellen.--- (by Chris)
  - API Methoden erstellen.
  
 - Android
