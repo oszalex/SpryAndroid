@@ -11,35 +11,35 @@ import datetime
 
 
 class CategoryModel(ndb.Model):
-	#_message_fields_schema = ("id", "name", "parent")
 	name = ndb.StringProperty(required=True)
 	parent = ndb.KeyProperty(kind='CategoryModel', default=None)
 
 
-#key_a = ndb.Key(CategoryModel, "");
-#person = Person(key=key_a)
-#person.put()
 
-#new_key_a =ndb.Key(Person, email);
-#a = new_key_a.get()
-#if a is not None:
-#    return
+#
+# seed root category
+#
 
-root_category=CategoryModel(name="all", parent=None)
-root_category_key=root_category.put()
+# look for all 
+root_query = CategoryModel.query(CategoryModel.name=="all").fetch(1)
 
-#root_category_key=ndb.Key(CategoryModel, "all")
-#root_category = CategoryModel(key=root_category_key)
-#root_category.put()
+#list is empty
+if not root_query:
+	#no root create it
+	root_category_key=CategoryModel(name="all", parent=None).put()
+else:
+	#found get id
+	root_category_key=root_query[0].key
 
-#print root_category_key
 
-#CategoryModel.get_or_insert(root_category_key)
-
+'''
+protorpc Messages
+'''
 
 class Category(messages.Message):
-	name = messages.StringField(1,required=True)
-	parent = messages.StringField(2, default=root_category_key.urlsafe())
+	id = messages.StringField(1)
+	name = messages.StringField(2,required=True)
+	parent = messages.StringField(3, default=root_category_key.urlsafe())
 
 class Event(messages.Message):
 	name = messages.StringField(1, required=True)
@@ -65,7 +65,9 @@ class UserList(messages.Message):
 	items = messages.MessageField(User, 1, repeated=True)
 
 
-
+'''
+ndb Models
+'''
 
 class EventModel(ndb.Model):
 	name = ndb.StringProperty(required=True)
@@ -73,11 +75,11 @@ class EventModel(ndb.Model):
 	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
 	place = ndb.GeoPtProperty()
 	participants = ndb.KeyProperty(kind='User', repeated=True)
-	category = ndb.KeyProperty(Category, default=Category(name="all").key)
+	category = ndb.KeyProperty(CategoryModel, default=root_category_key.urlsafe())
 
 class UserModel(ndb.Model):
 	name = ndb.StringProperty(required=True)
-	events = ndb.KeyProperty(Event, repeated=True)
+	events = ndb.KeyProperty(EventModel, repeated=True)
 	
 
 
@@ -97,9 +99,9 @@ class BroApi(remote.Service):
 		categories = []
 		for category in CategoryModel.query():
 			if category.parent is None:
-				categories.append(Category(name=category.name, parent="None"))
+				categories.append(Category(id=category.key.urlsafe(), name=category.name, parent="None"))
 			else:
-				categories.append(Category(name=category.name, parent=category.parent.urlsafe()))
+				categories.append(Category(id=category.key.urlsafe(), name=category.name, parent=category.parent.urlsafe()))
 
 		return CategoryList(items=categories)
 
@@ -109,8 +111,17 @@ class BroApi(remote.Service):
 		path='category',
 		http_method='POST')
 	def insert_categories(self, request):
-		cm=CategoryModel(name=request.name, parent=ndb.Key(urlsafe=request.parent)).put()
-		return Category(name=request.name, parent=cm.get().parent.urlsafe())
+		cat_query = CategoryModel.query(CategoryModel.name==request.name, CategoryModel.parent==ndb.Key(urlsafe=request.parent)).fetch(1)
+
+		#list is empty
+		if not cat_query:
+			#no root create it
+			cm=CategoryModel(name=request.name, parent=ndb.Key(urlsafe=request.parent))
+			cm.put()
+		else:
+			#found
+			cm=cat_query[0]
+		return Category(id=cm.key.urlsafe(), name=request.name, parent=cm.parent.urlsafe())
 
 
 
