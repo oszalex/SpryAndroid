@@ -8,3 +8,7 @@
  - BUG Weltkarte zoom+direkt
  - Höhe des Layoutes (Input) dynamisch anpassen.
  - Freundesliste und Profil Activity erstellen.
+
+- API
+ - delete password from user
+ - change id definition from integer to some alphanum value (base64)
