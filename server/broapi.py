@@ -41,27 +41,45 @@ class Category(messages.Message):
 	name = messages.StringField(1,required=True)
 	parent = messages.StringField(2, default=root_category_key.urlsafe())
 
+class Event(messages.Message):
+	name = messages.StringField(1, required=True)
+	creator = messages.StringField(2, required=True)
+	datetime = message_types.DateTimeField(3, required=True)
+	place = messages.StringField(4, required=True)
+	participants = messages.StringField(5, required=True)
+	category = messages.StringField(6, default=root_category_key.urlsafe())
+
+class User(messages.Message):
+	name = messages.StringField(1, required=True)
+	events = messages.StringField(2, repeated=True)
+
+
+
 class CategoryList(messages.Message):
 	items = messages.MessageField(Category, 1, repeated=True)
 
+class EventList(messages.Message):
+	items = messages.MessageField(Event, 1, repeated=True)
 
-#class EventModel(ndb.Model):
-#	#_message_fields_schema = ("id", "name", "creator", "datetime", "place", "category")
-#
-#	creator = ndb.KeyProperty(kind='User', required=True)
-#	name = ndb.StringProperty(required=True)
-#	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
-#	place = ndb.GeoPtProperty()
-#	#category = ndb.KeyProperty(Category, default=Category(name="all").key)
-#	participants = ndb.KeyProperty(kind='User', repeated=True)
+class UserList(messages.Message):
+	items = messages.MessageField(User, 1, repeated=True)
 
-#class UserModel(ndb.Model):
-#	#_message_fields_schema = ("id", "name", "password")
-#
-#	name = ndb.StringProperty(required=True)
-#	password = ndb.StringProperty(required=True)
-#	events = ndb.KeyProperty(Event, repeated=True)
+
+
+
+class EventModel(ndb.Model):
+	name = ndb.StringProperty(required=True)
+	creator = ndb.KeyProperty(kind='User', required=True)
+	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
+	place = ndb.GeoPtProperty()
+	participants = ndb.KeyProperty(kind='User', repeated=True)
+	category = ndb.KeyProperty(Category, default=Category(name="all").key)
+
+class UserModel(ndb.Model):
+	name = ndb.StringProperty(required=True)
+	events = ndb.KeyProperty(Event, repeated=True)
 	
+
 
 
 @endpoints.api(name='bro', version='v4')
