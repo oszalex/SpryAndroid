@@ -160,7 +160,7 @@ class BroApi(remote.Service):
 		name='event.list',
 		path='events',
 		http_method='GET')
-	def list_categories(self, unused_request):
+	def list_events(self, unused_request):
 		events = []
 		for event in EventModel.query():
 			events.append(Event(
@@ -179,7 +179,7 @@ class BroApi(remote.Service):
 		name='event.insert',
 		path='events',
 		http_method='POST')
-	def insert_categories(self, request):
+	def insert_events(self, request):
 		event_query = EventModel.query(
 			EventModel.name==request.name, 
 			EventModel.creator==request.creator,
@@ -210,11 +210,8 @@ class BroApi(remote.Service):
 		return Event(id=ev.key.urlsafe(), name=request.name, parent=ev.parent.urlsafe())
 
 
-	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, Event,
-		path='event/{key}',
-		http_method='PUT',
-		name='event.update')
-	def update_categories(self, request):
+	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, Event, path='event/{key}', http_method='PUT', name='event.update')
+	def update_events(self, request):
 		ev = ndb.Key(urlsafe=request.key).get()
 
 		if ev is None:
@@ -239,7 +236,7 @@ class BroApi(remote.Service):
 		name='user.list',
 		path='users',
 		http_method='GET')
-	def list_categories(self, unused_request):
+	def list_users(self, unused_request):
 		users = []
 		for user in UserModel.query():
 			users.append(User(name=user.name,events=user.events))
@@ -248,7 +245,7 @@ class BroApi(remote.Service):
 
 
 	@endpoints.method(User, User, name='user.insert', path='users', http_method='POST')
-	def insert_categories(self, request):
+	def insert_users(self, request):
 		user_query = UserModel.query(UserModel.name==request.name).fetch(1)
 
 		#list is empty
@@ -264,11 +261,8 @@ class BroApi(remote.Service):
 		return User(id=usr.key.urlsafe(), name=request.name)
 
 
-	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, Event,
-		path='event/{key}',
-		http_method='PUT',
-		name='event.update')
-	def update_categories(self, request):
+	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, Event, path='user/{key}', http_method='PUT', name='user.update')
+	def update_users(self, request):
 		ev = ndb.Key(urlsafe=request.key).get()
 
 		if ev is None:
