@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient"
+    android:orientation="vertical">
+
+    
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="256dp"
+        android:layout_weight="2"
+        android:layout_height="0dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dip"
+        android:contentDescription="@string/logo_description"
+        android:src="@drawable/buddy" />
+    
+   
+   <TextView
+        android:id="@+id/friend_username"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"    	
+        android:layout_weight="2"
+        android:layout_height="0dip"
+        android:singleLine="true"
+    	android:textColor="#FFFFFF"
+    	android:textSize="30sp"
+        android:text="Linda Grafenstein" />
+   
+   <TextView
+        android:id="@+id/friend_sex"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"    	
+        android:layout_weight="1"
+        android:layout_height="0dip"
+        android:singleLine="true"
+    	android:textColor="#FF0000"
+    	android:textSize="15sp"
+        android:text="female" />
+   
+
+ 	<LinearLayout 
+        android:id="@+id/friend_events"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        >
+        
+        <TextView
+	        android:layout_width="match_parent"
+	        android:gravity="center_horizontal"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	    	android:textColor="#000000"
+	    	android:textSize="20sp"
+	        android:text="You and your Bro" />
+        
+        
+        <TextView       
+	        android:layout_width="match_parent"
+	        android:gravity="center_horizontal"
+	        android:layout_height="wrap_content"     
+	        android:singleLine="true"
+	    	android:textColor="#FFFFFF"
+	    	android:textSize="15sp"
+	        android:text="Drinking - DickMacks - 02.03.2014 02:03" />
+        
+        <TextView       
+	        android:layout_width="match_parent"
+	        android:gravity="center_horizontal"
+	        android:layout_height="wrap_content"     
+	        android:singleLine="true"
+	    	android:textColor="#FFFFFF"
+	    	android:textSize="15sp"
+	        android:text="Pool - Im Keller - 17.03.2014 13:33" />
+        
+        
+         <TextView
+	        android:layout_width="match_parent"
+	        android:gravity="center_horizontal"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:layout_marginTop="30dp"
+	    	android:textColor="#000000"
+	    	android:textSize="20sp"
+	        android:text="Just your Bro" />
+        
+        
+        <TextView       
+	        android:layout_width="match_parent"
+	        android:gravity="center_horizontal"
+	        android:layout_height="wrap_content"     
+	        android:singleLine="true"
+	    	android:textColor="#FFFFFF"
+	    	android:textSize="15sp"
+	        android:text="Heiratn - Karibik - morgen 08:00" />
+    </LinearLayout> 
+
+</LinearLayout>

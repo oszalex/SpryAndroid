@@ -88,16 +88,39 @@
             android:textSize="40sp"/>
     </LinearLayout>
     
-    <Button
-        android:layout_width="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
+    
+    <LinearLayout 
+        android:id="@+id/buttons"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#4F86F7"
-        android:text="Start your Bromance"/>
+        android:orientation="horizontal"
+        >
+        <Button
+	        android:layout_width="0dip"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:background="#4F86F7"
+	        android:text="Friends-list"
+	        />
+        
+         <Button
+	        android:layout_width="0dip"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:background="#4F86F7"
+	        android:onClick="showFriend"
+	        android:text="One Friend"
+	        />
+    </LinearLayout>
+       
 
    
 

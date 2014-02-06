@@ -7,19 +7,19 @@
     <string name="edit_password">password</string>
     <string name="button_login">Login</string>
     <string name="logo_description">Bro-Logo</string>
-    
+
     <!-- Input Activity -->
     <string name="title_activity_input">Start your Bromance</string>
     <string name="hello_world">Hello world!</string>
-    
     <string name="std_category">All</string>
-    
     <string name="more">+</string>
-    
+
     <string-array name="categories">
-		<item>All</item>
-		<item>Swinger Orgy</item>
-		<item>SM Party</item>
-	</string-array>
+        <item>All</item>
+        <item>Swinger Orgy</item>
+        <item>SM Party</item>
+    </string-array>
+
+    <string name="title_activity_show_friend">ShowFriendActivity</string>
 
 </resources>
