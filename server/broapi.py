@@ -99,10 +99,7 @@ class BroApi(remote.Service):
 	#
 	# CATEGORIES
 	#
-	@endpoints.method(message_types.VoidMessage, CategoryList,
-		name='category.list',
-		path='categories',
-		http_method='GET')
+	@endpoints.method(message_types.VoidMessage, CategoryList, name='category.list', path='categories', http_method='GET')
 	def list_categories(self, unused_request):
 		categories = []
 		for category in CategoryModel.query():
