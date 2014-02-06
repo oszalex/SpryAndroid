@@ -6,7 +6,7 @@
 - Android
  - Kategorien per JSON in Dropdown laden.
  - BUG Weltkarte zoom+direkt
- - Höhe des Layoutes (Input) dynamisch anpassen.
+ - ~~Höhe des Layoutes (Input) dynamisch anpassen.~~ (by Ommi)
  - Freundesliste und Profil Activity erstellen.
 
 - API
