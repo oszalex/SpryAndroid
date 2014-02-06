@@ -43,7 +43,7 @@ public class InputActivity extends Activity {
 		setContentView(R.layout.activity_input);
 		
 		myOpenMapView = (MapView)findViewById(R.id.map);
-        //myOpenMapView.setBuiltInZoomControls(true);
+        myOpenMapView.setBuiltInZoomControls(true);
         myMapController = (MapController) myOpenMapView.getController();
         
 		
