@@ -13,9 +13,11 @@ import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 
 public class InputActivity extends Activity {
 	
@@ -92,6 +94,14 @@ public class InputActivity extends Activity {
 	public void showDatePickerDialog(){
 		DialogFragment datePickerFragment = new DatePickerFragment();
 		datePickerFragment.show(getFragmentManager(), "datePicker");
+	}
+	
+	public void showFriend(View view) {
+
+		/** Intent provides runtime bindings between components. */
+		Intent intent = new Intent(this, ShowFriendActivity.class);
+		startActivity(intent);
+		
 	}
 	
 }
