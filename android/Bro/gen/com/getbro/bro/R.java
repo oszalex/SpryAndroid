@@ -36,12 +36,13 @@ public final class R {
         public static final int sample_map=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0010;
+        public static final int action_settings=0x7f0a0011;
         public static final int buttons=0x7f0a0009;
         public static final int edit_password=0x7f0a000c;
         public static final int edit_username=0x7f0a000b;
-        public static final int friend_events=0x7f0a000f;
-        public static final int friend_sex=0x7f0a000e;
+        public static final int friend_lastlogin=0x7f0a0010;
+        public static final int friend_nickname=0x7f0a000e;
+        public static final int friend_sex=0x7f0a000f;
         public static final int friend_username=0x7f0a000d;
         public static final int login_logo=0x7f0a000a;
         public static final int map=0x7f0a0002;
