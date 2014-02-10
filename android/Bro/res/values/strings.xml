@@ -21,5 +21,6 @@
     </string-array>
 
     <string name="title_activity_show_friend">ShowFriendActivity</string>
+    <string name="title_activity_friendlist">FriendlistActivity</string>
 
 </resources>

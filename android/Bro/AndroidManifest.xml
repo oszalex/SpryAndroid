@@ -38,6 +38,10 @@
             android:name="com.getbro.bro.ShowFriendActivity"
             android:label="@string/title_activity_show_friend" >
         </activity>
+        <activity
+            android:name="com.getbro.bro.FriendlistActivity"
+            android:label="@string/title_activity_friendlist" >
+        </activity>
     </application>
 
 </manifest>

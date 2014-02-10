@@ -56,14 +56,16 @@ public final class R {
         public static final int time=0x7f0a0001;
     }
     public static final class layout {
-        public static final int activity_input=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_show_friend=0x7f030002;
+        public static final int activity_friendlist=0x7f030000;
+        public static final int activity_input=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_show_friend=0x7f030003;
     }
     public static final class menu {
-        public static final int input=0x7f090000;
-        public static final int main=0x7f090001;
-        public static final int show_friend=0x7f090002;
+        public static final int friendlist=0x7f090000;
+        public static final int input=0x7f090001;
+        public static final int main=0x7f090002;
+        public static final int show_friend=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
@@ -75,6 +77,7 @@ public final class R {
         public static final int logo_description=0x7f060005;
         public static final int more=0x7f060009;
         public static final int std_category=0x7f060008;
+        public static final int title_activity_friendlist=0x7f06000b;
         /**  Input Activity 
          */
         public static final int title_activity_input=0x7f060006;

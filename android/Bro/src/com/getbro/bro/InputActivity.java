@@ -104,4 +104,12 @@ public class InputActivity extends Activity {
 		
 	}
 	
+	public void showFriendlist(View view) {
+
+		/** Intent provides runtime bindings between components. */
+		Intent intent = new Intent(this, FriendlistActivity.class);
+		startActivity(intent);
+		
+	}
+	
 }
