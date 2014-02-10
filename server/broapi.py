@@ -45,12 +45,13 @@ class Category(messages.Message):
 	parent = messages.StringField(3, default=root_category_key.urlsafe())
 
 class Event(messages.Message):
-	name = messages.StringField(1, required=True)
-	creator = messages.StringField(2, required=True)
-	datetime = message_types.DateTimeField(3, required=True)
-	place = messages.StringField(4, required=True)
-	participants = messages.StringField(5, repeated=True)
-	category = messages.StringField(6, default=root_category_key.urlsafe())
+	id = messages.StringField(1)
+	name = messages.StringField(2, required=True)
+	creator = messages.StringField(3, required=True)
+	datetime = message_types.DateTimeField(4, required=True)
+	place = messages.StringField(5, required=True)
+	participants = messages.StringField(6, repeated=True)
+	category = messages.StringField(7, default=root_category_key.urlsafe())
 
 
 
@@ -72,10 +73,10 @@ ndb Models
 
 class EventModel(ndb.Model):
 	name = ndb.StringProperty(required=True)
-	creator = ndb.KeyProperty(kind='User', required=True)
+	creator = ndb.KeyProperty(kind='UserModel', required=True)
 	datetime = ndb.DateTimeProperty(auto_now_add=True, required=True)
 	place = ndb.GeoPtProperty()
-	participants = ndb.KeyProperty(kind='User', repeated=True)
+	participants = ndb.KeyProperty(kind='UserModel', repeated=True)
 	category = ndb.KeyProperty(CategoryModel, default=root_category_key.urlsafe())
 
 class UserModel(ndb.Model):
@@ -165,49 +166,48 @@ class BroApi(remote.Service):
 		for event in EventModel.query():
 			events.append(Event(
 				name=event.name, 
-				creator=event.creator, 
-				place=event.place, 
+				creator=event.creator.urlsafe(), 
+				place=str(event.place), 
 				datetime=event.datetime, 
 				participants=event.participants, 
-				category=event.category
+				category=event.category.urlsafe()
 				))
 
 		return EventList(items=events)
 
 
-	@endpoints.method(Event, Event,
-		name='event.insert',
-		path='events',
-		http_method='POST')
+	@endpoints.method(Event, Event, name='event.insert', path='events', http_method='POST')
 	def insert_events(self, request):
+
+		print "query"
+
 		event_query = EventModel.query(
 			EventModel.name==request.name, 
-			EventModel.creator==request.creator,
-			EventModel.place==request.place,
+			EventModel.creator==ndb.Key(urlsafe=request.creator),
+			EventModel.place== ndb.GeoPt(request.place),
 			EventModel.datetime==request.datetime,
-			EventModel.participants==request.participants,
-			EventModel.category==request.category
+			EventModel.category==ndb.Key(urlsafe=request.category)
 			).fetch(1)
 
 		#list is empty
 		if not event_query:
 			#no root create it
-
-			lat, _ , lon = request.place.partition(" ")
+			print "empty query"
 
 			ev=EventModel(
 				name=request.name, 
 				creator=ndb.Key(urlsafe=request.creator), 
-				place=datastore_types.GeoPt(lat=lat, lon=lon), 
-				datetime=utils.DatetimeValueFromString(request.datetime),
-				participants=[ndb.Key(urlsafe=p_key) for p_key in request.parent],
+				place=ndb.GeoPt(request.place),
+				datetime=request.datetime,
+				#datetime=datetime.datetime.strptime(request.datetime, '%Y-%m-%dT%H:%M:%S.%f'),
+				participants=[ndb.Key(urlsafe=p_key) for p_key in request.participants],
 				category=ndb.Key(urlsafe=request.category))
 			ev.put()
 		else:
 			#found
 			ev=event_query[0]
 
-		return Event(id=ev.key.urlsafe(), name=request.name, parent=ev.parent.urlsafe())
+		return Event(id=ev.key.urlsafe(), creator=ev.creator.urlsafe(), datetime=ev.datetime, name=request.name, place=str(ev.place))
 
 
 	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, Event, path='event/{key}', http_method='PUT', name='event.update')
@@ -261,7 +261,7 @@ class BroApi(remote.Service):
 		return User(id=usr.key.urlsafe(), name=request.name)
 
 
-	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, Event, path='user/{key}', http_method='PUT', name='user.update')
+	@endpoints.method(EV_UPDATE_RESOURCE_CONTAINER, User, path='user/{key}', http_method='PUT', name='user.update')
 	def update_users(self, request):
 		ev = ndb.Key(urlsafe=request.key).get()
 
@@ -274,7 +274,7 @@ class BroApi(remote.Service):
 			ev.name = request.name
 			ev.put()
 
-		return Event(id=ev.key.urlsafe(), name=request.name, parent=ev.parent.urlsafe())
+		return User(id=ev.key.urlsafe(), name=request.name, parent=ev.parent.urlsafe())
 
 
 

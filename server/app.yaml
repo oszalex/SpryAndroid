@@ -1,5 +1,6 @@
 application: broappapi
-version: 3
+module: api
+version: 4
 runtime: python27
 api_version: 1
 threadsafe: true
