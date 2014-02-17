@@ -36,13 +36,15 @@ public final class R {
         public static final int sample_map=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0010;
+        public static final int action_settings=0x7f0a0011;
         public static final int buttons=0x7f0a0009;
         public static final int edit_password=0x7f0a000c;
         public static final int edit_username=0x7f0a000b;
-        public static final int friend_events=0x7f0a000f;
-        public static final int friend_sex=0x7f0a000e;
+        public static final int friend_lastlogin=0x7f0a0010;
+        public static final int friend_nickname=0x7f0a000e;
+        public static final int friend_sex=0x7f0a000f;
         public static final int friend_username=0x7f0a000d;
+        public static final int input_categories=0x7f0a0000;
         public static final int login_logo=0x7f0a000a;
         public static final int map=0x7f0a0002;
         public static final int profiles=0x7f0a0003;
@@ -51,18 +53,19 @@ public final class R {
         public static final int profilimage3=0x7f0a0006;
         public static final int profilimage4=0x7f0a0007;
         public static final int profilimage5=0x7f0a0008;
-        public static final int spinner1=0x7f0a0000;
         public static final int time=0x7f0a0001;
     }
     public static final class layout {
-        public static final int activity_input=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_show_friend=0x7f030002;
+        public static final int activity_friendlist=0x7f030000;
+        public static final int activity_input=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_show_friend=0x7f030003;
     }
     public static final class menu {
-        public static final int input=0x7f090000;
-        public static final int main=0x7f090001;
-        public static final int show_friend=0x7f090002;
+        public static final int friendlist=0x7f090000;
+        public static final int input=0x7f090001;
+        public static final int main=0x7f090002;
+        public static final int show_friend=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
@@ -74,6 +77,7 @@ public final class R {
         public static final int logo_description=0x7f060005;
         public static final int more=0x7f060009;
         public static final int std_category=0x7f060008;
+        public static final int title_activity_friendlist=0x7f06000b;
         /**  Input Activity 
          */
         public static final int title_activity_input=0x7f060006;

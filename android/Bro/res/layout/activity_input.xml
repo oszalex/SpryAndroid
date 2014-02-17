@@ -13,13 +13,11 @@
     tools:context=".InputActivity" >
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/input_categories"
         android:layout_marginTop="10dp"
         android:layout_width="fill_parent"
         android:layout_weight="1"
-        android:layout_height="0dip"
-        android:entries="@array/categories"
-        android:prompt="@string/std_category" />
+        android:layout_height="0dip"/>
     
     
      <Button
@@ -95,6 +93,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
+        
         <Button
 	        android:layout_width="0dip"
 	        android:paddingLeft="10dp"
@@ -104,6 +103,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal"
 	        android:background="#4F86F7"
+	        android:onClick="showFriendlist"
 	        android:text="Friends-list"
 	        />
         

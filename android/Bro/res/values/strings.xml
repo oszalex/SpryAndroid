@@ -11,7 +11,7 @@
     <!-- Input Activity -->
     <string name="title_activity_input">Start your Bromance</string>
     <string name="hello_world">Hello world!</string>
-    <string name="std_category">All</string>
+    <string name="std_category">Categories</string>
     <string name="more">+</string>
 
     <string-array name="categories">
@@ -21,5 +21,6 @@
     </string-array>
 
     <string name="title_activity_show_friend">ShowFriendActivity</string>
+    <string name="title_activity_friendlist">FriendlistActivity</string>
 
 </resources>
