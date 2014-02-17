@@ -7,6 +7,15 @@ from protorpc import remote
 import datetime
 
 
+
+WEB_CLIENT_ID = '816207457648.apps.googleusercontent.com'
+ANDROID_CLIENT_ID = '816207457648-5l3q7b0pp2phtldg9gkabq8s2jvqi2ut.apps.googleusercontent.com'
+IOS_CLIENT_ID = '816207457648-4l0s8v7r5vja4u5pc216qdl6sk8ltgen.apps.googleusercontent.com'
+ANDROID_AUDIENCE = WEB_CLIENT_ID
+
+
+
+
 class CategoryModel(ndb.Model):
 	name = ndb.StringProperty(required=True)
 	parent = ndb.KeyProperty(kind='CategoryModel', default=None)
@@ -83,7 +92,9 @@ class UserModel(ndb.Model):
 	name = ndb.StringProperty(required=True)
 	events = ndb.KeyProperty(EventModel, repeated=True)
 	
-
+class Greeting(messages.Message):
+    """Greeting that stores a message."""
+    message = messages.StringField(1)
 
 
 CATUPDATE_RESOURCE_CONTAINER = endpoints.ResourceContainer(
@@ -97,9 +108,21 @@ EV_UPDATE_RESOURCE_CONTAINER = endpoints.ResourceContainer(
 
 
 
-@endpoints.api(name='bro', version='v4')
-
+@endpoints.api(name='bro', version='v5', 
+	allowed_client_ids=[WEB_CLIENT_ID, ANDROID_CLIENT_ID,
+	IOS_CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID],
+               audiences=[ANDROID_AUDIENCE],
+               scopes=[endpoints.EMAIL_SCOPE])
 class BroApi(remote.Service):
+
+	@endpoints.method(message_types.VoidMessage, Greeting,
+		path='hellogreeting/authed', http_method='POST',
+		name='greetings.authed')
+	def greeting_authed(self, request):
+		current_user = endpoints.get_current_user()
+		email = (current_user.email() if current_user is not None else 'Anonymous')
+
+		return Greeting(message='hello %s' % (email,))
 
 	#
 	# CATEGORIES

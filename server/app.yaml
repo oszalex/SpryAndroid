@@ -1,15 +1,13 @@
 application: broappapi
-module: api
-version: 4
-runtime: python27
+version: 7
+runtime: php
 api_version: 1
-threadsafe: true
 
 handlers:
-# Endpoints handler
-- url: /_ah/spi/.*
-  script: broapi.application
 
-libraries:
-- name: endpoints
-  version: 1.0
+- url: /favicon\.ico
+  static_files: public/favicon.ico
+  upload: public/favicon\.ico
+
+- url: /.*
+  script: public/index.php
