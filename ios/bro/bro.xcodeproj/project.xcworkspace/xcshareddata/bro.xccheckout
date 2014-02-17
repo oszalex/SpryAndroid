@@ -5,16 +5,16 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>3F428BD2-DBBD-486C-B8EA-9C77AE235BE3</string>
+	<string>CE0FF120-FBAA-4C82-8CF9-68B0C0E54561</string>
 	<key>IDESourceControlProjectName</key>
-	<string>bro</string>
+	<string>BRO</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>0E394AA6-30CA-4022-92C6-358A42D59C84</key>
 		<string>https://github.com/inkrement/bro.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/bro/bro.xcodeproj/project.xcworkspace</string>
+	<string>ios/BRO/BRO.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0E394AA6-30CA-4022-92C6-358A42D59C84</key>

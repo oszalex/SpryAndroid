@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>bro.xcscheme</key>
+		<key>BRO.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>83E7895118A2A72700C46D62</key>
+		<key>83F4AC2118B20F4E002AD352</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>83E7897B18A2A72700C46D62</key>
+		<key>83F4AC4518B20F4E002AD352</key>
 		<dict>
 			<key>primary</key>
 			<true/>

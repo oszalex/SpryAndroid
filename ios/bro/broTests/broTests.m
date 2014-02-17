@@ -1,18 +1,18 @@
 //
-//  broTests.m
-//  broTests
+//  BROTests.m
+//  BROTests
 //
-//  Created by Christians Hotz-Behofsits on 05/02/14.
+//  Created by Christians Hotz-Behofsits on 17/02/14.
 //  Copyright (c) 2014 Christians Hotz-Behofsits. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface broTests : XCTestCase
+@interface BROTests : XCTestCase
 
 @end
 
-@implementation broTests
+@implementation BROTests
 
 - (void)setUp
 {

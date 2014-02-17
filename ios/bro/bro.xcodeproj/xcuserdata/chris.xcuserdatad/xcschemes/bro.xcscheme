@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83E7895118A2A72700C46D62"
-               BuildableName = "bro.app"
-               BlueprintName = "bro"
-               ReferencedContainer = "container:bro.xcodeproj">
+               BlueprintIdentifier = "83F4AC2118B20F4E002AD352"
+               BuildableName = "BRO.app"
+               BlueprintName = "BRO"
+               ReferencedContainer = "container:BRO.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83E7897B18A2A72700C46D62"
-               BuildableName = "broTests.xctest"
-               BlueprintName = "broTests"
-               ReferencedContainer = "container:bro.xcodeproj">
+               BlueprintIdentifier = "83F4AC4518B20F4E002AD352"
+               BuildableName = "BROTests.xctest"
+               BlueprintName = "BROTests"
+               ReferencedContainer = "container:BRO.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "83E7895118A2A72700C46D62"
-            BuildableName = "bro.app"
-            BlueprintName = "bro"
-            ReferencedContainer = "container:bro.xcodeproj">
+            BlueprintIdentifier = "83F4AC2118B20F4E002AD352"
+            BuildableName = "BRO.app"
+            BlueprintName = "BRO"
+            ReferencedContainer = "container:BRO.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -61,10 +61,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "83E7895118A2A72700C46D62"
-            BuildableName = "bro.app"
-            BlueprintName = "bro"
-            ReferencedContainer = "container:bro.xcodeproj">
+            BlueprintIdentifier = "83F4AC2118B20F4E002AD352"
+            BuildableName = "BRO.app"
+            BlueprintName = "BRO"
+            ReferencedContainer = "container:BRO.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -79,10 +79,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "83E7895118A2A72700C46D62"
-            BuildableName = "bro.app"
-            BlueprintName = "bro"
-            ReferencedContainer = "container:bro.xcodeproj">
+            BlueprintIdentifier = "83F4AC2118B20F4E002AD352"
+            BuildableName = "BRO.app"
+            BlueprintName = "BRO"
+            ReferencedContainer = "container:BRO.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

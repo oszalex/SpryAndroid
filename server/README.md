@@ -1,24 +1,21 @@
-#Server API
+## Laravel PHP Framework
 
-Der Server soll eine Restful API bereitstellen. Über HTTP können JSON Objecte abgefragt werden. Für Authentifizierung wird OAuth2 verwendet, sodass Facebook, Twitter etc. als Auth-Provider verwendet werden können. Als Plattform wird google app engine verwendet, wobei sogenannte Endpoints verwendet werden um schnell und einfach APIs erstellen zu können. NDB wird als Datenbank und Python als Programmiersprache vorgeschlagen.
+[![Latest Stable Version](https://poser.pugx.org/laravel/framework/version.png)](https://packagist.org/packages/laravel/framework) [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.png)](https://packagist.org/packages/laravel/framework) [![Build Status](https://travis-ci.org/laravel/framework.png)](https://travis-ci.org/laravel/framework)
 
-API Definitionen: http://docs.bro.apiary.io/
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
 
+Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
 
-##Links
+Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
- * OAuth 2 Slides - http://www.slideshare.net/aaronpk/an-introduction-to-oauth-2
- * Outh2 and RESTful - http://www.slideshare.net/jcleblanc/securing-restful-apis-using-oauth-2-and-openid-connect
- * OAuth Google Apps engine - https://code.google.com/p/gae-simpleauth/
+## Official Documentation
 
+Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
 
+### Contributing To Laravel
 
+**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
 
-##TODO
+### License
 
- - Authentification
- - proper model definition
- - define api for user/friends
- - Seeding of Database
- - solve KeyProperty problems
- - delete direction
+The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
