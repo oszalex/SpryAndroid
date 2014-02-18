@@ -58,17 +58,31 @@ class EventController extends \BaseController {
 
 			if(is_array($participants)){
 				foreach($participants as $participant_id){
-					//TODO: asociate object
+					$p = User::find($participant_id);
+
+					if(! is_null($p))
+						$bvt->participants()->save($p);
 				}
 			}
 
 			/// associate category
-			//test if exists. if not set default
+			$cat_id = (int) Input::get('category_id');
+
+			// set to default if unset
+			if(empty($cat_id)) $cat_id = 1;
+
+			$cat = Category::findOrFail($cat_id);
+			$cat->events()->attach($bvt);
+			
 
 			///associate creator
 			//TODO Input::get('creator_id');
+			$user = User::findOrFail(Input::get('creator_id'));
 
-			$user->save();
+			
+
+			$bvt->save();
+			$user->events()->attach($bvt->id);
 
 			return Response::json($user->toArray());
 		}
