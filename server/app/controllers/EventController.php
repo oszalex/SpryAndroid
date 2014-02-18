@@ -33,7 +33,7 @@ class EventController extends \BaseController {
 
 		// process the login
 		if ($validator->fails()) {
-			return "validator error";
+			return "validator error". $validator->messages();
 		} else {
 
 			// store
@@ -45,13 +45,21 @@ class EventController extends \BaseController {
 			/// parse datetime
 			$datetime = Input::get('datetime');
 
-			if(empty($datetime)){
-				$dt = carbon::now();
-			} else {
-				$dt = Carbon::createFromFormat('Y-m-d\TH:i:sO', $datetime);
+
+			try{
+				if(empty($datetime)){
+					$dt = Carbon::now();
+				} else {
+					$dt = Carbon::createFromFormat(DateTime::ISO8601, $datetime);
+				}
+
+				$dt_str = $dt->toDateTimeString();
+			} catch (Exception $e) {
+				//TODO: log error
+			    $dt_str = date('Y-m-d H:i:s');
 			}
 
-			$bvt->datetime = $dt->toDateTimeString();
+			$bvt->datetime = $dt_str;
 
 			/// associate participants
 			$participants = json_decode(Input::get('participant_ids'));
@@ -72,7 +80,7 @@ class EventController extends \BaseController {
 			if(empty($cat_id)) $cat_id = 1;
 
 			$cat = Category::findOrFail($cat_id);
-			$cat->events()->attach($bvt);
+			$cat->includes()->attach($bvt);
 			
 
 			///associate creator

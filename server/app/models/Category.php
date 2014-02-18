@@ -13,4 +13,8 @@ class Category extends Eloquent {
 		return $this->hasOne('Category', 'parent_id');
 	}
 
+	public function includes(){
+		$this->belongsToMany('Brovent');
+	}
+
 }
