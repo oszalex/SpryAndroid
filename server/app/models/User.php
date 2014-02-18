@@ -6,6 +6,8 @@ class User extends Eloquent {
 	public $timestamps = true;
 	protected $softDelete = false;
 
+	protected $hidden = array('created_at', 'updated_at');
+
 	public function followers()
 	{
 		return $this->hasMany('User');

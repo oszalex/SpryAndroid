@@ -13,6 +13,7 @@
 
 Route::resource('users', 'UserController');
 Route::resource('events', 'EventController');
+Route::resource('categories', 'CategoryController');
 
 Route::get('/', function()
 {

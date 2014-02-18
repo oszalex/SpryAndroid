@@ -9,7 +9,7 @@ class UserController extends \BaseController {
 	 */
 	public function index()
 	{
-		return User::all();
+		return Response::json(User::all()->toArray());
 	}
 
 	/**
@@ -19,6 +19,7 @@ class UserController extends \BaseController {
 	 */
 	public function store()
 	{
+
 		$rules = array(
 			'name'       => 'required',
 			'email'      => 'required|email',
@@ -35,7 +36,7 @@ class UserController extends \BaseController {
 			$user->email      = Input::get('email');
 			$user->save();
 
-			return $user;
+			return Response::json($user->toArray());
 		}
 	}
 
@@ -47,7 +48,7 @@ class UserController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		return User::findOrFail($id);
+		return Response::json(User::findOrFail($id)->toArray());
 	}
 
 
@@ -61,6 +62,9 @@ class UserController extends \BaseController {
 	{
 		// validate
 		// read more on validation at http://laravel.com/docs/validation
+
+		
+
 		$rules = array(
 			'name'       => 'required',
 			'email'      => 'required|email',
@@ -69,7 +73,7 @@ class UserController extends \BaseController {
 
 		// process the login
 		if ($validator->fails()) {
-			return "validator error";
+			return "validator error: ". implode(" ", $validator->messages());
 		} else {
 			// store
 			$user = User::find($id);
@@ -77,7 +81,7 @@ class UserController extends \BaseController {
 			$user->email      = Input::get('email');
 			$user->save();
 
-			return $user;
+			return Response::json($user->toArray());
 		}
 	}
 
@@ -89,7 +93,7 @@ class UserController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		return User::findOrFail($id)->delete();
+		return Response::json(User::findOrFail($id)->delete()->toArray());
 	}
 
 }

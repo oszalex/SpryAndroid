@@ -6,4 +6,6 @@ class Place extends Eloquent {
 	public $timestamps = true;
 	protected $softDelete = false;
 
+	protected $hidden = array('created_at', 'updated_at');
+
 }
