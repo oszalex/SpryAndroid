@@ -41,6 +41,7 @@ import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 
 public class InputActivity extends Activity {
@@ -61,7 +62,7 @@ public class InputActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_input);
 
-		// Prepare Map
+		/************** Prepare Map **********************/
 		final MapView mapView = (MapView) findViewById(R.id.map);
 		mapView.setBuiltInZoomControls(true);
 
@@ -97,17 +98,29 @@ public class InputActivity extends Activity {
 		MapController myMapController = (MapController) mapView.getController();
 		myMapController.setZoom(15);
 
-		catSpinner = (Spinner) findViewById(R.id.input_categories);
-
 		// call AsynTask to perform network operation on separate thread
+		// Loads the categories from the server
 		new LoadCategories()
 				.execute("http://bro.apiary.io/categories?offset=1&limit=3");
 
-		ArrayAdapter dataAdapter = new ArrayAdapter(this,
-				android.R.layout.simple_spinner_item, catList);
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		catSpinner.setAdapter(dataAdapter);
+		// Fill Autocomplete for categories
+		//setSearchContext(catList);
+
+	}
+
+	private void setSearchContext(List<String> searchItems) {
+		AutoCompleteTextView input_search = (AutoCompleteTextView) findViewById(R.id.input_search);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, searchItems);
+		input_search.setAdapter(adapter);
+	}
+
+	// TODO Nur mal irgendwas...auslesen muss mans anders
+	public void selectCategorie(View view){
+		AutoCompleteTextView input_search = (AutoCompleteTextView) findViewById(R.id.input_search);
+		input_search.setVisibility(View.VISIBLE);
+		setSearchContext(catList);
+		input_search.requestFocus();
 	}
 
 	@Override
