@@ -6,11 +6,6 @@ class Brovent extends Eloquent {
 	public $timestamps = true;
 	protected $softDelete = false;
 
-	public function place()
-	{
-		return $this->hasOne('Place');
-	}
-
 	public function creator()
 	{
 		return $this->belongsTo('User');

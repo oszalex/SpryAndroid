@@ -6,15 +6,14 @@ class Category extends Eloquent {
 	public $timestamps = true;
 	protected $softDelete = false;
 
-	protected $hidden = array('created_at', 'updated_at');
-
 	public function parent()
 	{
 		return $this->hasOne('Category', 'parent_id');
 	}
 
-	public function includes(){
-		$this->belongsToMany('Brovent');
+	public function includes()
+	{
+		return $this->belongsToMany('Brovent');
 	}
 
 }

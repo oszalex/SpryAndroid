@@ -10,6 +10,8 @@ class CreateBroventTable extends Migration {
 		Schema::create('brovent', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
+			$table->string('name');
+			$table->datetime('datetime');
 		});
 	}
 

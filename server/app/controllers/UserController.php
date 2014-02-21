@@ -31,10 +31,20 @@ class UserController extends \BaseController {
 			return "validator error";
 		} else {
 			// store
-			$user = new User;
-			$user->name       = Input::get('name');
-			$user->email      = Input::get('email');
-			$user->save();
+			try{
+				$user = new User;
+				$user->name       = Input::get('name');
+				$user->email      = Input::get('email');
+			
+				$user->save();
+			} catch(Exception $e){
+				$return['success'] = false;
+				$return['error'] = $e->getMessage();
+
+				Log::error($e->__toString());
+				return Response::json($return, 500);
+			}
+			
 
 			return Response::json($user->toArray());
 		}

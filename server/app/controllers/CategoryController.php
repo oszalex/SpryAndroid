@@ -29,7 +29,40 @@ class CategoryController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$rules = array(
+			'name'       => 'required'
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		// process the login
+		if ($validator->fails()) {
+			return "validator error";
+		} else {
+			// store
+			try{
+				$cat = new Category;
+				$cat->name = Input::get('name');
+
+				$parent_id = Input::get('parent_id');
+
+				if(empty($parent_id))
+					$parent_id = 1; //TODO: bitte nicht hardcoden.
+
+				$cat->save();
+
+				$cat->parent()->update(Category::findOrFail($parent_id)->toArray());
+				
+			} catch(Exception $e){
+				$return['success'] = false;
+				$return['error'] = $e->getMessage();
+
+				Log::error($e->__toString());
+				return Response::json($return, 500);
+			}
+			
+
+			return Response::json($cat->toArray());
+		}
 	}
 
 	/**
