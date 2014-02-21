@@ -26,6 +26,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MyLocationOverlay;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
 
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -37,14 +38,11 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.AndroidRuntimeException;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class InputActivity extends Activity {
 
@@ -52,38 +50,95 @@ public class InputActivity extends Activity {
 	private MapController myMapController;
 	private MyLocationOverlay mMyLocationOverlay;
 
-	private MyLocationOverlay myLocationOverlay;
-
 	private Spinner catSpinner;
 	private List<String> catList = new ArrayList<String>();
-	
+
+	private MyLocationOverlay myLocationOverlay = null;
+	MyItemizedOverlay myItemizedOverlay = null;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_input);
 
-		myOpenMapView = (MapView) findViewById(R.id.map);
-		myOpenMapView.setBuiltInZoomControls(true);
-		myMapController = (MapController) myOpenMapView.getController();
+		/************** Prepare Map **********************/
+		final MapView mapView = (MapView) findViewById(R.id.map);
+		mapView.setBuiltInZoomControls(true);
 
-		myLocationOverlay = new MyLocationOverlay(this, myOpenMapView);
-		myLocationOverlay.enableMyLocation();
-		myOpenMapView.getOverlays().add(myLocationOverlay);
+		Drawable marker = getResources().getDrawable(
+				android.R.drawable.star_big_on);
+		int markerWidth = marker.getIntrinsicWidth();
+		int markerHeight = marker.getIntrinsicHeight();
+		marker.setBounds(0, markerHeight, markerWidth, 0);
 
-		// TODO: last location
+		ResourceProxy resourceProxy = new DefaultResourceProxyImpl(
+				getApplicationContext());
 
-		myMapController.animateTo(new GeoPoint(482081743, 163738189));
-		myMapController.setZoom(2);
-		
-		catSpinner = (Spinner) findViewById(R.id.input_categories);
-		
+		myItemizedOverlay = new MyItemizedOverlay(marker, resourceProxy);
+		mapView.getOverlays().add(myItemizedOverlay);
+
+		GeoPoint myPoint1 = new GeoPoint(0 * 1000000, 0 * 1000000);
+		myItemizedOverlay.addItem(myPoint1, "myPoint1", "myPoint1");
+		GeoPoint myPoint2 = new GeoPoint(50 * 1000000, 50 * 1000000);
+		myItemizedOverlay.addItem(myPoint2, "myPoint2", "myPoint2");
+
+		// Current Location
+		myLocationOverlay = new MyLocationOverlay(this, mapView);
+		mapView.getOverlays().add(myLocationOverlay);
+		// myLocationOverlay.enableMyLocation();
+
+		myLocationOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				mapView.getController().animateTo(
+						myLocationOverlay.getMyLocation());
+			}
+		});
+
+		MapController myMapController = (MapController) mapView.getController();
+		myMapController.setZoom(15);
+
 		// call AsynTask to perform network operation on separate thread
-        new LoadCategories().execute("http://bro.apiary.io/categories?offset=1&limit=3");
-        
-        ArrayAdapter dataAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, catList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        catSpinner.setAdapter(dataAdapter);       
+		// Loads the categories from the server
+		new LoadCategories()
+				.execute("http://bro.apiary.io/categories?offset=1&limit=3");
+
+		// Fill Autocomplete for categories
+		//setSearchContext(catList);
+
+	}
+
+	private void setSearchContext(List<String> searchItems) {
+		AutoCompleteTextView input_search = (AutoCompleteTextView) findViewById(R.id.input_search);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, searchItems);
+		input_search.setAdapter(adapter);
+	}
+
+	// TODO Nur mal irgendwas...auslesen muss mans anders
+	public void selectCategorie(View view){
+		AutoCompleteTextView input_search = (AutoCompleteTextView) findViewById(R.id.input_search);
+		input_search.setVisibility(View.VISIBLE);
+		setSearchContext(catList);
+		input_search.requestFocus();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		myLocationOverlay.enableMyLocation();
+		myLocationOverlay.enableCompass();
+		myLocationOverlay.enableFollowLocation();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		myLocationOverlay.disableMyLocation();
+		myLocationOverlay.disableCompass();
+		myLocationOverlay.disableFollowLocation();
 	}
 
 	@Override
@@ -96,44 +151,45 @@ public class InputActivity extends Activity {
 	public void showFriend(View view) {
 		/** Intent provides runtime bindings between components. */
 		Intent intent = new Intent(this, ShowFriendActivity.class);
-		startActivity(intent);			
+		startActivity(intent);
 	}
-	
-	private static String getCategories(String url){		
+
+	private static String getCategories(String url) {
 		InputStream inputStream = null;
-        String result = "";
-        try { 
-            // create HttpClient
-            HttpClient httpclient = new DefaultHttpClient(); 
-            // make GET request to the given URL
-            HttpResponse httpResponse = httpclient.execute(new HttpGet(url)); 
-            // receive response as inputStream
-            inputStream = httpResponse.getEntity().getContent(); 
-            // convert inputstream to string
-            if(inputStream != null)
-                result = convertInputStreamToString(inputStream);
-            else
-                result = "Did not work!"; 
-        } catch (Exception e) {
-        	//TODO Was, wenn Fehler passiert?
-            return "fail";
-        }
- 
-        return result;
+		String result = "";
+		try {
+			// create HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// make GET request to the given URL
+			HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+			// receive response as inputStream
+			inputStream = httpResponse.getEntity().getContent();
+			// convert inputstream to string
+			if (inputStream != null)
+				result = convertInputStreamToString(inputStream);
+			else
+				result = "Did not work!";
+		} catch (Exception e) {
+			// TODO Was, wenn Fehler passiert?
+			return "fail";
+		}
+
+		return result;
 	}
-	
-	 private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-	        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-	        String line = "";
-	        String result = "";
-	        while((line = bufferedReader.readLine()) != null)
-	            result += line;
-	 
-	        inputStream.close();
-	        return result;
-	 
-	    }
-	
+
+	private static String convertInputStreamToString(InputStream inputStream)
+			throws IOException {
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream));
+		String line = "";
+		String result = "";
+		while ((line = bufferedReader.readLine()) != null)
+			result += line;
+
+		inputStream.close();
+		return result;
+
+	}
 
 	public void showFriendlist(View view) {
 		/** Intent provides runtime bindings between components. */
@@ -157,33 +213,34 @@ public class InputActivity extends Activity {
 		DialogFragment datePickerFragment = new DatePickerFragment();
 		datePickerFragment.show(getFragmentManager(), "datePicker");
 	}
-	
+
 	private class LoadCategories extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
- 
-            return getCategories(urls[0]);
-        }
-        // onPostExecute displays the results of the AsyncTask.
-        // Is called automatically
-        @Override
-        protected void onPostExecute(String result) {
-            
-        	JSONArray categories = null;
-			
+		@Override
+		protected String doInBackground(String... urls) {
+
+			return getCategories(urls[0]);
+		}
+
+		// onPostExecute displays the results of the AsyncTask.
+		// Is called automatically
+		@Override
+		protected void onPostExecute(String result) {
+
+			JSONArray categories = null;
+
 			try {
 				categories = new JSONArray(result);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			if(categories == null){
-				//TODO was tun wenn leer
+
+			if (categories == null) {
+				// TODO was tun wenn leer
 			}
-			
-			//TODO was tun wenn categories leer
-			for(int i = 0; i < categories.length(); i++){
+
+			// TODO was tun wenn categories leer
+			for (int i = 0; i < categories.length(); i++) {
 				try {
 					catList.add(categories.getJSONObject(i).getString("name"));
 				} catch (JSONException e) {
@@ -191,11 +248,7 @@ public class InputActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
-			
-			
-			
 
-
-       }
-    }
+		}
+	}
 }
