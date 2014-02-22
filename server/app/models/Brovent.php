@@ -18,7 +18,23 @@ class Brovent extends Eloquent {
 
 	public function tags()
 	{
-		return $this->morphToMany('Tag', 'taggable');
+		//return $this->morphToMany('Tag', 'taggable');
+		 return $this->morphToMany('Tag', 'taggable', 'taggables', 'taggable_id', 'tag_id');
+	}
+
+
+	public function toArray(){
+		$old = parent::toArray();
+
+		$tags = [];
+		foreach($this->tags() as $tag){
+			$tags[] = $tag->name;
+		}
+
+
+		$old["tags"] = $tags;
+
+		return $old;
 	}
 
 }

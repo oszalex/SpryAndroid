@@ -10,7 +10,7 @@ class CreateBroventUserTable extends Migration {
 		Schema::create('brovent_user', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('brovent_id')->unsigned()->index();
-			$table->integer('users_id')->unsigned()->index();
+			$table->integer('user_id')->unsigned()->index();
 			$table->integer('state_id')->unsigned()->index()->default('1');
 		});
 	}

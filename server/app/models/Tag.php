@@ -8,7 +8,8 @@ class Tag extends Eloquent {
 
 	public function brovents()
 	{
-		return $this->morphedByMany('Brovent', 'taggable');
+		//return $this->morphedByMany('Brovent', 'taggable');
+		return $this->morphedByMany('Brovent', 'taggable', 'taggables', 'tag_id', 'taggable_id');
 	}
 
 }

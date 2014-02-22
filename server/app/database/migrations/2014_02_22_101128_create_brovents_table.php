@@ -13,6 +13,7 @@ class CreateBroventsTable extends Migration {
 			$table->string('name');
 			$table->datetime('datetime');
 			$table->integer('venue_id')->index();
+			$table->integer('creator_id')->unsigned()->index();
 		});
 	}
 

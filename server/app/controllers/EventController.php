@@ -23,6 +23,9 @@ class EventController extends \BaseController {
 	public function store()
 	{
 
+		
+		
+
 		$rules = array(
 			'name'       => 'required',
 			'participant_ids' => 'required',
@@ -61,39 +64,31 @@ class EventController extends \BaseController {
 
 			$bvt->datetime = $dt_str;
 
-			/// associate participants
-			$participants = json_decode(Input::get('participant_ids'));
+			//TODO: check
+			$bvt->creator_id = (int) Input::get('creator_id');
+			$bvt->save();
 
-			if(is_array($participants)){
-				foreach($participants as $participant_id){
-					$p = User::find($participant_id);
 
-					if(! is_null($p))
-						$p->events()->attach($p->id);
-				}
+
+			$tags_raw = json_decode(Input::get('tags'));
+
+			$tag_ids = [];
+
+			foreach($tags_raw as $tag){
+				$t = Tag::firstOrCreate(["name" => $tag]);
+
+				//$t->save($bvt);
+				$bvt->save($t->toArray());
+
+				$tag_ids[] = $t->id;
 			}
 
-			/// associate category
-			$cat_id = (int) Input::get('category_id');
 
-			// set to default if unset
-			if(empty($cat_id)) $cat_id = 1;
+			$bvt->tags()->sync($tag_ids);
 
-			$cat = Category::findOrFail($cat_id);
-			//$cat->includes()->save($bvt);
-			//$bvt->category()->attach($cat->id);
-
-			$bvt = $cat->includes()->save($bvt);
-			
-
-			///associate creator
-			//TODO Input::get('creator_id');
-			//$user = User::findOrFail(Input::get('creator_id'));
-
-			
-
-			$bvt->save();
-			//$user->events()->attach($bvt->id);
+			/// associate participants
+			$participants = json_decode(Input::get('participant_ids'));
+			$bvt->participants()->sync($participants);
 
 			return Response::json($bvt->toArray());
 		}

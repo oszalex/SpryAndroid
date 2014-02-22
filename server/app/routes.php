@@ -13,7 +13,7 @@
 
 Route::resource('users', 'UserController');
 Route::resource('events', 'EventController');
-Route::resource('categories', 'CategoryController');
+Route::resource('tags', 'TagController');
 
 Route::get('/', function()
 {
