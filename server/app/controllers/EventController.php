@@ -77,14 +77,12 @@ class EventController extends \BaseController {
 			foreach($tags_raw as $tag){
 				$t = Tag::firstOrCreate(["name" => $tag]);
 
-				//$t->save($bvt);
-				$bvt->save($t->toArray());
-
 				$tag_ids[] = $t->id;
 			}
 
-
 			$bvt->tags()->sync($tag_ids);
+
+			//return $bvt->tags()->get();
 
 			/// associate participants
 			$participants = json_decode(Input::get('participant_ids'));

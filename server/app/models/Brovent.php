@@ -27,7 +27,7 @@ class Brovent extends Eloquent {
 		$old = parent::toArray();
 
 		$tags = [];
-		foreach($this->tags() as $tag){
+		foreach($this->tags()->get() as $tag){
 			$tags[] = $tag->name;
 		}
 

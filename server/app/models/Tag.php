@@ -6,6 +6,8 @@ class Tag extends Eloquent {
 	public $timestamps = false;
 	protected $softDelete = false;
 
+	protected $fillable = array('name');
+
 	public function brovents()
 	{
 		//return $this->morphedByMany('Brovent', 'taggable');
