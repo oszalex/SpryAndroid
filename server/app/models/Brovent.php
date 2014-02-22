@@ -2,7 +2,7 @@
 
 class Brovent extends Eloquent {
 
-	protected $table = 'brovent';
+	protected $table = 'brovents';
 	public $timestamps = true;
 	protected $softDelete = false;
 
@@ -13,12 +13,12 @@ class Brovent extends Eloquent {
 
 	public function participants()
 	{
-		return $this->hasMany('User');
+		return $this->belongsToMany('User');
 	}
 
-	public function category()
+	public function tags()
 	{
-		return $this->hasOne('Category');
+		return $this->morphToMany('Tag', 'taggable');
 	}
 
 }

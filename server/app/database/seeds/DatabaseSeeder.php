@@ -9,7 +9,10 @@ class DatabaseSeeder extends Seeder {
 		$this->call('UserTableSeeder');
 		$this->command->info('User table seeded!');
 
-		$this->call('CategoryTableSeeder');
-		$this->command->info('Category table seeded!');
+		$this->call('StateTableSeeder');
+		$this->command->info('State table seeded!');
+
+		$this->call('ProfileImageTableSeeder');
+		$this->command->info('ProfileImage table seeded!');
 	}
 }

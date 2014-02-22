@@ -16,9 +16,14 @@ class User extends Eloquent {
 		return $this->belongsToMany('User');
 	}
 
-	public function events()
+	public function brovents()
 	{
-		return $this->hasMany('');
+		return $this->belongsToMany('Brovent');
+	}
+
+	public function image()
+	{
+		return $this->hasOne('ProfileImage');
 	}
 
 }

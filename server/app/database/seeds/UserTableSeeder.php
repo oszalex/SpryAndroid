@@ -11,5 +11,12 @@ class UserTableSeeder extends Seeder {
 				'name' => "Dominik 'the guest' Pichler",
 				'email' => "dominik@getbro.com"
 			));
+
+		// ommi
+		User::create(array(
+				'name' => 'dominik',
+				'email' => 'pichlbäre@getbro.com',
+				'profileimage_id' => 1
+			));
 	}
 }

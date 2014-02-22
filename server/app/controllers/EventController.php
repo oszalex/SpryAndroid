@@ -69,7 +69,7 @@ class EventController extends \BaseController {
 					$p = User::find($participant_id);
 
 					if(! is_null($p))
-						$bvt->participants()->save($p);
+						$p->events()->attach($p->id);
 				}
 			}
 
@@ -80,19 +80,22 @@ class EventController extends \BaseController {
 			if(empty($cat_id)) $cat_id = 1;
 
 			$cat = Category::findOrFail($cat_id);
-			$cat->includes()->attach($bvt);
+			//$cat->includes()->save($bvt);
+			//$bvt->category()->attach($cat->id);
+
+			$bvt = $cat->includes()->save($bvt);
 			
 
 			///associate creator
 			//TODO Input::get('creator_id');
-			$user = User::findOrFail(Input::get('creator_id'));
+			//$user = User::findOrFail(Input::get('creator_id'));
 
 			
 
 			$bvt->save();
-			$user->events()->attach($bvt->id);
+			//$user->events()->attach($bvt->id);
 
-			return Response::json($user->toArray());
+			return Response::json($bvt->toArray());
 		}
 	}
 

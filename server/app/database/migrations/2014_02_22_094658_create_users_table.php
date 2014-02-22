@@ -3,20 +3,21 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateCategoriesTable extends Migration {
+class CreateUsersTable extends Migration {
 
 	public function up()
 	{
-		Schema::create('categories', function(Blueprint $table) {
+		Schema::create('users', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->integer('parent_id')->unsigned()->default('1');
 			$table->string('name')->unique();
+			$table->string('email')->unique();
+			$table->integer('profileimage_id')->unsigned()->index()->default('1');
 		});
 	}
 
 	public function down()
 	{
-		Schema::drop('categories');
+		Schema::drop('users');
 	}
 }
