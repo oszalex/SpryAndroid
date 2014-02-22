@@ -23,9 +23,6 @@ class EventController extends \BaseController {
 	public function store()
 	{
 
-		
-		
-
 		$rules = array(
 			'name'       => 'required',
 			'participant_ids' => 'required',
