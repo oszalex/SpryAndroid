@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "NXOAuth2AccountStore.h"
 
 @implementation AppDelegate
 
@@ -41,6 +42,17 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
++ (void)initialize;
+{
+    [[NXOAuth2AccountStore sharedStore] setClientID:@"UrnPHUSYLLcFc0aPYG9w"
+                                             secret:@"NsYdl1dUyxstFu8ak2FzVUFCQVC8zZP5hXNANiGyP1k"
+                                   authorizationURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/authorize"]
+                                           tokenURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"]
+                                        redirectURL:[NSURL URLWithString:@"getbro://twitter-callback"]
+                                     forAccountType:@"Twitter"];
 }
 
 @end
