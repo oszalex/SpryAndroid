@@ -4,10 +4,10 @@
  - ~~API Methoden erstellen.~~ (by Chris)
  
 - Android
- - Kategorien per JSON in Dropdown laden.
- - BUG Weltkarte zoom+direkt
+ - ~~Kategorien per JSON in Dropdown laden.~~~(by Ommi)
+ - ~~Bug Weltkarte zoom+direkt~~~(by Ommi)
  - ~~Höhe des Layoutes (Input) dynamisch anpassen.~~ (by Ommi)
- - Freundesliste und Profil Activity erstellen.
+ - ~~Freundesliste und Profil Activity erstellen.~~ (by Ommi)
 
 - API
  - ~~delete password from user~~ (by Chris)
