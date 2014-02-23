@@ -3,19 +3,25 @@ bro
 
 andorid: includes the android app
 
+docs: documentation
+
 ios: prototype for iPhone/iPad app
+
+ressources: logos, etc.
 
 www: official website
 
-server: application backend (API)
-
-toolchain: some fancy tools and scripts for better life
-
-docs: documentation
+www/api: application backend (API)
 
 
 ##TODO
 
- - extend documentation
- - add logo
- - add website to repository
+Take a look at
+
+ * docs/sprint1.md
+ * docs/sprint2.md
+ * docs/roadmap.md
+
+## Blueprints
+
+Ideenvorschläge und Konzepte in Planung werden in docs/blueprints/ zu finden sein! Pro Idee immer eine Datei!
