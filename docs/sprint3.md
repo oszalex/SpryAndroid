@@ -4,7 +4,6 @@
 #Server
  - Update (PUT/PULL) außer bei Tags, diese werden implizit erzeugt und nicht upgedated
  - Delete ?
- - OAuth2
 
 #iOS
 
