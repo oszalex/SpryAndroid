@@ -10,5 +10,7 @@
 
 #Sonstiges
  - Mockups, Oberfläche designen
+ - Konzept
+ - Webseite
  - Apiary updaten
  - Issues Github verwenden!
