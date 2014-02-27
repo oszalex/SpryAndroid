@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -23,7 +23,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo" >
+        android:theme="@style/ActionBarTheme" >
         <activity
             android:name="com.getbro.bro.MainActivity"
             android:label="@string/app_name"
@@ -45,6 +45,10 @@
         <activity
             android:name="com.getbro.bro.FriendlistActivity"
             android:label="@string/title_activity_friendlist" >
+        </activity>
+        <activity
+            android:name="com.getbro.bro.DisplayEventsActivity"
+            android:label="@string/title_activity_display_events" >
         </activity>
     </application>
 

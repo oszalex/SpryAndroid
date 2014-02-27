@@ -129,7 +129,7 @@
 	        android:layout_gravity="center_horizontal"
 	        android:background="#4F86F7"
 	        android:onClick="showFriend"
-	        android:text="One Friend"
+	        android:text="Events"
 	        />
     </LinearLayout>
        

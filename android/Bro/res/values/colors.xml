@@ -1,3 +1,5 @@
 <resources>
 	<color name="textColor" >#0000FF</color>
+	<color name="actionbar_background">#007AFF</color>
+	<color name="actionbar_text">#5AC8FA</color>
 </resources>

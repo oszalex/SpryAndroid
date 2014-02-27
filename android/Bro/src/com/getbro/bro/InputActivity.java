@@ -19,22 +19,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MyLocationOverlay;
-import org.osmdroid.views.overlay.ScaleBarOverlay;
 
-import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -102,7 +96,7 @@ public class InputActivity extends Activity {
 		// Loads the categories from the server
 		new LoadCategories()
 				.execute("http://bro.apiary.io/categories?offset=1&limit=3");
-
+		
 		// Fill Autocomplete for categories
 		//setSearchContext(catList);
 
@@ -150,7 +144,7 @@ public class InputActivity extends Activity {
 
 	public void showFriend(View view) {
 		/** Intent provides runtime bindings between components. */
-		Intent intent = new Intent(this, ShowFriendActivity.class);
+		Intent intent = new Intent(this, DisplayEventsActivity.class);
 		startActivity(intent);
 	}
 
