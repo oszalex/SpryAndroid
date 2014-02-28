@@ -14,13 +14,8 @@
     <string name="std_category">Categories</string>
     <string name="more">+</string>
 
-    <string-array name="categories">
-        <item>All</item>
-        <item>Swinger Orgy</item>
-        <item>SM Party</item>
-    </string-array>
-
     <string name="title_activity_show_friend">ShowFriendActivity</string>
     <string name="title_activity_friendlist">FriendlistActivity</string>
+    <string name="title_activity_display_events">DisplayEventsActivity</string>
 
 </resources>
