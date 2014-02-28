@@ -10,6 +10,7 @@
 		83E03E0D18C08C3A00360FE8 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E03E0C18C08C3A00360FE8 /* EventViewController.m */; };
 		83E03E1018C08C7A00360FE8 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E03E0F18C08C7A00360FE8 /* EventTableViewCell.m */; };
 		83E03E1218C0946400360FE8 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 83E03E1118C0946400360FE8 /* placeholder.jpg */; };
+		83E03E1418C09BC100360FE8 /* SourceSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 83E03E1318C09BC100360FE8 /* SourceSansPro-Light.otf */; };
 		83F4AC2618B20F4E002AD352 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F4AC2518B20F4E002AD352 /* Foundation.framework */; };
 		83F4AC2818B20F4E002AD352 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F4AC2718B20F4E002AD352 /* CoreGraphics.framework */; };
 		83F4AC2A18B20F4E002AD352 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F4AC2918B20F4E002AD352 /* UIKit.framework */; };
@@ -45,6 +46,7 @@
 		83E03E0E18C08C7A00360FE8 /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		83E03E0F18C08C7A00360FE8 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
 		83E03E1118C0946400360FE8 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = placeholder.jpg; path = ../../../../../../Downloads/placeholder.jpg; sourceTree = "<group>"; };
+		83E03E1318C09BC100360FE8 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Light.otf"; path = "../../../../../../Downloads/source-sans-pro/SourceSansPro-Light.otf"; sourceTree = "<group>"; };
 		83F4AC2218B20F4E002AD352 /* BRO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BRO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83F4AC2518B20F4E002AD352 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		83F4AC2718B20F4E002AD352 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -132,6 +134,7 @@
 		83F4AC2B18B20F4E002AD352 /* BRO */ = {
 			isa = PBXGroup;
 			children = (
+				83E03E1318C09BC100360FE8 /* SourceSansPro-Light.otf */,
 				83E03E1118C0946400360FE8 /* placeholder.jpg */,
 				83F4AC3418B20F4E002AD352 /* AppDelegate.h */,
 				83E03E0E18C08C7A00360FE8 /* EventTableViewCell.h */,
@@ -256,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83E03E1418C09BC100360FE8 /* SourceSansPro-Light.otf in Resources */,
 				83F4AC3C18B20F4E002AD352 /* Main_iPad.storyboard in Resources */,
 				83F4AC4118B20F4E002AD352 /* Images.xcassets in Resources */,
 				83E03E1218C0946400360FE8 /* placeholder.jpg in Resources */,

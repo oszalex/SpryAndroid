@@ -104,6 +104,10 @@
     cell.eventImage.layer.cornerRadius = 20.0;
     cell.eventImage.layer.masksToBounds = YES;
     
+    
+    cell.eventTitle.font = [UIFont fontWithName:@"SourceSansPro-Light" size:20.f];
+    cell.eventTags.font = [UIFont fontWithName:@"SourceSansPro-Light" size:12.f];
+    
     return cell;
 }
 
