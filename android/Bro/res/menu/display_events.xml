@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!-- Appears in the action bar -->
+    <!-- Appears directly in the action bar -->
     <item android:id="@+id/action_event_new"         
           android:title="+"
           android:showAsAction="always"/>
     
     
-    <!-- Appears in the overflow -->
+    <!-- Appears in the overflow of the action bar-->
     <item
         android:id="@+id/action_event_settings"
         android:orderInCategory="100"
@@ -17,6 +17,11 @@
         android:id="@+id/action_event_myprofile"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="My Profile"/>     
+        android:title="My Profile"/>
+    
+     <item
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Refresh"/>  
 
 </menu>

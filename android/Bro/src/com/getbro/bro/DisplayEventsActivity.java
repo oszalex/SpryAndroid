@@ -19,20 +19,39 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.util.SparseArray;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
 
 public class DisplayEventsActivity extends Activity {
 
-	private List<String> catList = new ArrayList<String>();
+	private List<String> eventList = new ArrayList<String>();
+
+	SparseArray<Event> events = new SparseArray<Event>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_events);
+		createData();
+		ExpandableListView listView = (ExpandableListView) findViewById(R.id.events_listview);
+		EventsExpandableListAdapter adapter = new EventsExpandableListAdapter(
+				this, events);
+		listView.setAdapter(adapter);
+		
+		//new LoadEvents()
+		//	.execute("http://api.getbro.com/events");
+	}
 
-		new LoadEvents()
-				.execute("http://api.getbro.com/events");
+	public void createData() {
+		for (int j = 0; j < 5; j++) {
+			Event event = new Event("Event " + j);
+			event.children.add("Map und sonstiges");
+
+			events.append(j, event);
+		}
 	}
 
 	@Override
@@ -43,15 +62,29 @@ public class DisplayEventsActivity extends Activity {
 
 	}
 
-	//TODO helper...deleteME
+	/**
+	 * Handle interactions with the action-bar menu
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		/*
+		 * switch (item.getItemId()) { case R.id.action_search: openSearch();
+		 * return true; case R.id.action_compose: composeMessage(); return true;
+		 * default: return super.onOptionsItemSelected(item); }
+		 */
+		return true;
+	}
+
+	// TODO testirgendwas...please kill me
 	public void displayMessage(View view) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("Title");
-		alertDialog.setMessage(catList.toString());
+		alertDialog.setMessage(eventList.toString());
 		alertDialog.show();
 	}
 
-	private static String getCategories(String url) {
+	private static String getEventsFromServer(String url) {
 		InputStream inputStream = null;
 		String result = "";
 		try {
@@ -100,8 +133,9 @@ public class DisplayEventsActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 
+			// Dismiss loading Dialog
 			dialog.dismiss();
-			
+
 			JSONArray categories = null;
 
 			try {
@@ -118,7 +152,8 @@ public class DisplayEventsActivity extends Activity {
 			// TODO was tun wenn categories leer
 			for (int i = 0; i < categories.length(); i++) {
 				try {
-					catList.add(categories.getJSONObject(i).getString("name"));
+					eventList
+							.add(categories.getJSONObject(i).getString("name"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -126,10 +161,10 @@ public class DisplayEventsActivity extends Activity {
 			}
 
 		}
-		
+
 		@Override
 		protected String doInBackground(String... urls) {
-			return getCategories(urls[0]);
+			return getEventsFromServer(urls[0]);
 		}
 	}
 }
