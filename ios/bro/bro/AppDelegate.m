@@ -13,6 +13,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
+    pageControl.backgroundColor = [UIColor whiteColor];
+    
     // Override point for customization after application launch.
     return YES;
 }
@@ -45,14 +50,42 @@
 }
 
 
-+ (void)initialize;
+
++ (void)initialize
 {
+    NSLog(@"init this");
     [[NXOAuth2AccountStore sharedStore] setClientID:@"UrnPHUSYLLcFc0aPYG9w"
                                              secret:@"NsYdl1dUyxstFu8ak2FzVUFCQVC8zZP5hXNANiGyP1k"
                                    authorizationURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/authorize"]
                                            tokenURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"]
                                         redirectURL:[NSURL URLWithString:@"getbro://twitter-callback"]
                                      forAccountType:@"Twitter"];
+    
+    [[NXOAuth2AccountStore sharedStore] setClientID:@"2738356d941f41dbbfb99e2ab6c326d5"
+                                             secret:@"09c1fbe52cf64f669c6480428ce54cf7"
+                                              scope:[NSSet setWithObjects:@"likes", @"relationships", @"comments", nil]
+                                   authorizationURL:[NSURL URLWithString:@"https://api.instagram.com/oauth/authorize"]
+                                           tokenURL:[NSURL URLWithString:@"https://api.instagram.com/oauth/access_token"]
+                                        redirectURL:[NSURL URLWithString:@"getbro://instagram"]
+                                     forAccountType:@"Instagram"];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:NXOAuth2AccountStoreAccountsDidChangeNotification
+                                                      object:[NXOAuth2AccountStore sharedStore]
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *aNotification){
+                                                      // Update your UI
+                                                      NSLog(@"wuhuu. i am in!");
+                                                  }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:NXOAuth2AccountStoreDidFailToRequestAccessNotification
+                                                      object:[NXOAuth2AccountStore sharedStore]
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *aNotification){
+                                                      NSError *error = [aNotification.userInfo objectForKey:NXOAuth2AccountStoreErrorKey];
+                                                      // Do something with the error
+                                                      NSLog(@"some error");
+                                                  }];
 }
 
 @end
