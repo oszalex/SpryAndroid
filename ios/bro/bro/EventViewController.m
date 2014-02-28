@@ -43,7 +43,7 @@
     self.eventTimeLeft = [[NSArray alloc]
                           initWithObjects:@"1h",
                           @"2h",
-                          @"3t",
+                          @"3d",
                           @"44w", nil];
     
     self.eventTags = [[NSArray alloc]
