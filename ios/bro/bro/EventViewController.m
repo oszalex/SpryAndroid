@@ -101,7 +101,7 @@
     
     cell.eventImage.image = eventPhoto;
     
-    cell.eventImage.layer.cornerRadius = 5.0;
+    cell.eventImage.layer.cornerRadius = 20.0;
     cell.eventImage.layer.masksToBounds = YES;
     
     return cell;
