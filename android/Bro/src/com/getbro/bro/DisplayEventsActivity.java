@@ -35,11 +35,13 @@ public class DisplayEventsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_events);
+		
 		createData();
+		
 		ExpandableListView listView = (ExpandableListView) findViewById(R.id.events_listview);
 		EventsExpandableListAdapter adapter = new EventsExpandableListAdapter(
 				this, events);
-		listView.setAdapter(adapter);
+		listView.setAdapter(adapter);		
 		
 		//new LoadEvents()
 		//	.execute("http://api.getbro.com/events");
@@ -48,8 +50,7 @@ public class DisplayEventsActivity extends Activity {
 	public void createData() {
 		for (int j = 0; j < 5; j++) {
 			Event event = new Event("Event " + j);
-			event.children.add("Map und sonstiges");
-
+			event.children.add("@Dick Mack's Wien");
 			events.append(j, event);
 		}
 	}
@@ -77,7 +78,7 @@ public class DisplayEventsActivity extends Activity {
 	}
 
 	// TODO testirgendwas...please kill me
-	public void displayMessage(View view) {
+	public void displayMessage() {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("Title");
 		alertDialog.setMessage(eventList.toString());

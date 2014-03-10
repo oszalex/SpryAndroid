@@ -16,7 +16,7 @@
         android:groupIndicator="@null"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:childDivider="#00000000">
+        >
     </ExpandableListView>
 
 </LinearLayout>

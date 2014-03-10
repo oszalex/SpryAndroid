@@ -35,15 +35,18 @@ public final class R {
         public static final int sample_map=0x7f020006;
     }
     public static final class id {
-        public static final int action_event_myprofile=0x7f090017;
-        public static final int action_event_new=0x7f090015;
-        public static final int action_event_settings=0x7f090016;
-        public static final int action_settings=0x7f090018;
+        public static final int action_event_myprofile=0x7f09001a;
+        public static final int action_event_new=0x7f090018;
+        public static final int action_event_settings=0x7f090019;
+        public static final int action_settings=0x7f09001b;
         public static final int buttons=0x7f09000c;
         public static final int categories=0x7f090003;
         public static final int edit_password=0x7f09000f;
         public static final int edit_username=0x7f09000e;
         public static final int events_listview=0x7f090001;
+        public static final int events_map=0x7f090015;
+        public static final int events_participants=0x7f090016;
+        public static final int events_reaction=0x7f090017;
         public static final int events_wrap_linear_layout=0x7f090000;
         public static final int friend_lastlogin=0x7f090013;
         public static final int friend_nickname=0x7f090011;

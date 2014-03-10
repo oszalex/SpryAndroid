@@ -24,19 +24,20 @@ public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
   }
 
   @Override
-  public Object getChild(int groupPosition, int childPosition) {
-    return events.get(groupPosition).children.get(childPosition);
+  public Object getChild(int eventPosition, int childPosition) {
+    return events.get(eventPosition).children.get(childPosition);
   }
 
   @Override
-  public long getChildId(int groupPosition, int childPosition) {
+  public long getChildId(int eventPosition, int childPosition) {
     return 0;
   }
 
+  //Maps und sonstigen Text hier setzen
   @Override
-  public View getChildView(int groupPosition, final int childPosition,
+  public View getChildView(int eventPosition, final int childPosition,
       boolean isLastChild, View convertView, ViewGroup parent) {
-    final String children = (String) getChild(groupPosition, childPosition);
+    final String children = (String) getChild(eventPosition, childPosition);
     TextView text = null;
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.listrow_details, null);
@@ -54,13 +55,13 @@ public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
   }
 
   @Override
-  public int getChildrenCount(int groupPosition) {
-    return events.get(groupPosition).children.size();
+  public int getChildrenCount(int eventPosition) {
+    return events.get(eventPosition).children.size();
   }
 
   @Override
-  public Object getGroup(int groupPosition) {
-    return events.get(groupPosition);
+  public Object getGroup(int eventPosition) {
+    return events.get(eventPosition);
   }
 
   @Override
@@ -69,27 +70,27 @@ public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
   }
 
   @Override
-  public void onGroupCollapsed(int groupPosition) {
-    super.onGroupCollapsed(groupPosition);
+  public void onGroupCollapsed(int eventPosition) {
+    super.onGroupCollapsed(eventPosition);
   }
 
   @Override
-  public void onGroupExpanded(int groupPosition) {
-    super.onGroupExpanded(groupPosition);
+  public void onGroupExpanded(int eventPosition) {
+    super.onGroupExpanded(eventPosition);
   }
 
   @Override
-  public long getGroupId(int groupPosition) {
+  public long getGroupId(int eventPosition) {
     return 0;
   }
 
   @Override
-  public View getGroupView(int groupPosition, boolean isExpanded,
+  public View getGroupView(int eventPosition, boolean isExpanded,
       View convertView, ViewGroup parent) {
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.listrow_group, null);
     }
-    Event group = (Event) getGroup(groupPosition);
+    Event group = (Event) getGroup(eventPosition);
     ((CheckedTextView) convertView).setText(group.string);
     ((CheckedTextView) convertView).setChecked(isExpanded);
     return convertView;
@@ -101,7 +102,7 @@ public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
   }
 
   @Override
-  public boolean isChildSelectable(int groupPosition, int childPosition) {
+  public boolean isChildSelectable(int eventPosition, int childPosition) {
     return false;
   }
 }
