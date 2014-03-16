@@ -4,3 +4,5 @@
 *.jar
 .DS_Store
 .metadata/
+
+ios/.DS_Store
