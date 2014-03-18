@@ -1,28 +1,3 @@
-1. Version bis 05.04.2014
-===
-
-Benni
-  - Erstellung der Mock-Ups bis 23.03.2014
-  - Registrierung
-  - Login
-  - Eventlist
-  - Textbox fuer Eventeingabe
-  - Menu - Sowohl ueber Button rechts oben als auch per Wisch-Geste
-
-Hotzi
-  - Server, Schnittstellen
-  - API
-  - Login & Registrierung
-
-Ommi
-  - Umsetzung der Mock-Ups
-
-Raphi
-  - Parser
-  - API
-  - Server-Unterstuetzung
-
-
 bro
 ===
 
