@@ -22,53 +22,99 @@ This API is a *short texts saving* service similar to its physical paper presenc
  * `405` Method Not Allowed - requested method is not supported for resource.
  * `429` Too Many Requests - exceeded GoodData API limits. Pause requests, wait up to one minute, and try again.
 
-# Group Login
+# Group Authentication
 
-To login into the GoodData API, use following calls:
- * 1. `POST` your credentials in JSON body to the gdc/account/login resource. An **SST Token** is returned back in SetCookie header.
- * 2. `GET` the gdc/account/token resource using the **SST Token** in your header to receive a **TT Token**.
- * 3. Use the **TT Token** in your API calls header: -cookie
-Remember that TT Token has limited validity. Once you received 401 Unauthorized Response, you need to GET new **TT Token** in following resource with **SST Token** specified in call header.
+
+
+ 
+#### Return Properties
+
+ * status (string) : Status message
+
+## Login [/login]
 
 #### Login Properties
 
- * login (string) : User's email
- * remember (boolean) : Remember user login
- 
- deprecated:
- 
- * password (string) : Password in not longer stored within this database. OAuth will be used for authentication purposes.
+ * username (string) : User's email
+ * password (string) : User's hashed password
 
-## Login [/account/login]
-
-### Login User [POST]
+### Login User [GET]
 + Request (application/json)
 
-        {"postUserLogin":{"login":"user@company.com","password":"YourPassword","remember":1}}
+        {
+            "username": "username",
+            "password": "hashed_password"
+        
+        }
 
 
 + Response 200 (application/json)
 
     + Header
     
-            Set-Cookie: GDCAuthTT=; path=/gdc; expires=Mon, 30-Jul-2012 09:12:42 GMT; secure; HttpOnly, GDCAuthSST={super-secured-token}; path=/gdc/account; secure; HttpOnly
+            Set-Cookie: "setcookie"
 
     + Body
     
-            {"userLogin":{"profile":"/gdc/account/profile/USER-ID","state":"/gdc/account/login/USER-ID"}}
+            {
+                "status" : "successfully logged in"
+            }
 
-### Logout [DELETE]
+## Logout [/logout]
+
+### Logout User [GET]
++ Request (application/json)
+
+        {
+            "username": "username",
+            "password": "hashed_password"
+        
+        }
+
 
 + Response 200 (application/json)
-        
-        {}
+
+    + Header
+    
+            Set-Cookie: "setcookie"
+
+    + Body
+    
+            {
+                "status" : "successfully logged out"
+            }
+            
+## Registration [/register]
+Operations on current user (extended information and permissions)
+
+### register new user [POST]
++ Request (application/json)
+    
+    + Body
+    
+            {
+                "name": "Dominik 'ommi' Pichler",
+                "email": "ommi@u33.sch",
+                "password": "hashed_password"
+            }
+
++ Response 201 (application/json)
+
+        {
+            "id": 4,
+            "name": "Dominik 'ommi' Pichler",
+            "email": "ommi@u33.sch",
+            "password": "hashed_password"
+        }
+
+
 
 
 # Group Users
 
 #### Userproperties
 
- * `id` positive alphanumeric and unique string
+ * `id` positive nummeric and unique number
  * `name` full name including optional nickname. "surname ['nickname'] lastname"
  * `email` email adress
  * `password` hased password
@@ -102,56 +148,24 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
 + Response 200 (application/json)
 
         [{
-          "id": "SdjhS3u4238SDJkk",
+          "id": 1,
           "sex":"male",
           "name": "Christian Butter"
         }, {
-          "id": "sdkSDJk245kj3kDjk3",
+          "id": 4,
           "sex":"male",
           "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
           "name": "Dominik 'ommi' Pichler"
         }, {
-          "id": "sdjkja38743DJK3SDkj",
+          "id": 5,
           "sex":"male",
           "name": "Benjamin 'benni' Pazdernik"
         }, {
-          "id": "jksdj3889a89sdJKJDKSi3kjDu", 
+          "id": 6, 
           "sex":"female",
           "name": "Carla Schefbörger"
         }]
 
-## Users Creaton [/users]
-Operations on current user (extended information and permissions)
-
-### Create a User [POST]
-+ Request (application/json)
-
-    + Header
-    
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
-    
-    + Body
-    
-            {
-                "name": "Dominik 'ommi' Pichler",
-                "image" : "<Base64Image>",
-                "email": "ommi@u33.sch",
-                "password": "mamamia",
-                "whitelisted_actions":[1],
-                "blacklisted_actions":[],
-                "location":"<GeoPoint>"
-            }
-
-+ Response 201 (application/json)
-
-        {
-            "id": "SdD3jjD5JDKsdjk2",
-            "name": "Dominik 'ommi' Pichler",
-            "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
-            "email": "ommi@u33.sch",
-            "whitelisted_actions":[1],
-            "blacklisted_actions":[]
-        }
 
 ## User [/users/{id}]
 A single User object with all its details
@@ -176,7 +190,7 @@ Whitelist and blacklist and location are only part of the response, if the recei
     + Body
 
             {
-                "id": "jkSDKJDSisdi3292DJK",
+                "id": 4,
                 "name": "Dominik 'ommi' Pichler",
                 "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
                 "email": "ommi@u33.sch",
@@ -209,7 +223,7 @@ Operations on current user (extended information and permissions)
     + Body
 
             {
-                "id": "JSdkj43edjkasld39sd",
+                "id": 4,
                 "name": "Dominik 'ommi' Pichler",
                 "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
                 "email": "ommi@u33.sch",
@@ -233,7 +247,7 @@ Operations on current user (extended information and permissions)
     + Body
 
             {
-                "id": "SDjSDh33i23kjLDJSDkjD3",
+                "id": 4,
                 "name": "Dominik 'ommi' Pichler",
                 "image": "<BASE64Image>",
                 "email": "ommi@u33.sch"
@@ -249,120 +263,20 @@ Operations on current user (extended information and permissions)
             
 
 
-# Group Category
-Categorie related resources of the **Category API**
-
-#### Category Properties
-
- * `id` : alphanumeric string
- * `name`
- * `parent`
- 
-## Categorie Collection [/categories?offset=1&limit=3]
-
-Paging: This resource optionally allows paging. Use offset and limit parameters on the end of the URI. example: categories?offset=1&limit=3
-
-### List all Categories [GET]
-+ Response 200 (application/json)
-
-        [{
-          "id": "jksdJDSKDjsDjisdjksaDD389D", 
-            "name": "all",
-            "parent": null
-          
-        }, {
-          "id": "JSKDksd93299saJDKJSKDK", 
-            "name": "orgie",
-            "parent": 1
-        }]
-
-## Categorie Collection [/categories]
-### Create a Categorie [POST]
-+ Request (application/json)
-
-    + Header
-    
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
-    
-    + Body
-
-            { 
-                "name": "gruppensex",
-                "parent": 1
-            }
-
-+ Response 201 (application/json)
-
-    + Body
-    
-            {
-                "id": "asdHJ3jksdJJSDKSKDjksdj",
-                "name": "gruppensex",
-                "parent": 1
-            }
-            
-    + Schema
-
-            {
-                "id": "alphanum",
-                "name": "string",
-                "parent": "integer|null"
-            }
-
-
-+ Response 403 (application/json)
-
-    + Body
-    
-            {
-                "error":"Not for losers"
-            }
-            
-## Category [/categories/{id}]
-A single Categorie object with all its details
-
-+ Parameters
-    + id (required, number, `asdahA2usDXisudias`) ... Alphanumeric `id` of the Category to perform action with. Has example value.
-
-### Retrieve a Categorie [GET]
-+ Response 200 (application/json)
-
-    + Body
-
-            { 
-            "id": "SSDsjadsa38SDsada3DHhsad", 
-            "name": "all",
-            "parent": null
-            
-            }
-            
-+ Response 401 (text/plain)
-
-    + Body
-    
-            "There is no such a message for you, dear guest."
-        
-### Remove a Categorie [DELETE]
-+ Request
-
-    + Header
-    
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
-    
-+ Response 204
-
 
 # Group Events
 Events related resources of the **BRO API**
 
 #### Event Properties
 
- * `id` :  alphanummeric string
- * `place`
- * `datetime`
- * `participants`
- * `category`
- * `creator`
+ * `id` (required, autoincrement, numeric)
+ * `name` (unique, required)
+ * `datetime` (default:now) ISO 8601, Complete date plus hours, minutes and seconds: YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00)
+ * `creator_id` (required)
+ * `participant_ids` (required) list of participant identifers
+ * `venue_id` identifer of place (foresquare venue id)
+ * `tags` list of tags
+
  
 ## Events Collection [/events?offset=1&limit=3]
 
@@ -378,18 +292,18 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
 + Response 200 (application/json)
 
         [{
-          "id": "hAHsd874r3e3j43kj4kj4kj3qkj4qkj3jdas", 
+          "id": 1, 
           "place":"-44.22,-33.55",
           "datetime":'2008-11-22 19:53:42',
           "participants":[1,5,23],
-          "category": 1,
+          "tags": ["beer", "party"],
           "creator" : 3
         }, {
-          "id": "asd3434324hIDUIUEUSJDUJDUSHDJHJKj7767sd", 
+          "id": 2, 
           "place":"-44.22,-33.55",
           "datetime":'2012-03-24 13:13:48',
           "participants":[4,14,3,6],
-          "category": 5,
+          "tags": ["feier", "crazy"],
           "creator" : 4
         }]
 
@@ -408,17 +322,17 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
                 "place":"-44.22,-33.55",
                 "datetime":'2008-11-22 19:53:42',
                 "participants":[1,5,23],
-                "category": 1,
+                "tags": ["beer", "party"],
                 "creator" : 3
             }
 
 + Response 201 (application/json)
 
-        { "id": "Jsdjida6a7ejHD8sda3aasdhjasdHSD", 
+        { "id": 1, 
           "place":"-44.22,-33.55",
           "datetime":'2008-11-22 19:53:42',
           "participants":[1,5,23],
-          "category": 1,
+          "tags": ["beer", "party"],
           "creator" : 3 
         }
 
@@ -436,7 +350,7 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
 A single Event object with all its details. ATTENTION: Permission denied, if user is not a paticipant.
 
 + Parameters
-    + id (required, alphanum, `asdadhJSjh378SHkdksdD34`) ... Numeric `id` of the Note to perform action with. Has example value.
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
 
 ### Retrieve a Event [GET]
 + Request
@@ -453,22 +367,22 @@ A single Event object with all its details. ATTENTION: Permission denied, if use
 
     + Body
 
-            { "id": "HSdjasd839284hjda9Du9", 
+            { "id": 1, 
               "place":"-44.22,-33.55",
               "datetime":'2008-11-22 19:53:42',
               "participants":[1,5,23],
-              "category": 1,
+              "tags": ["beer", "party"],
               "creator" : 3 
             }
     
     + Schema
 
             {
-                "id": "alphanum",
+                "id": "integer",
                 "place": "SerializedGeoPtObject",
                 "datetime": "datetime",
                 "participants":["integer"],
-                "category": "integer",
+                "tags": ["beer", "party"],
                 "creator" : "integer" 
                 
             }
@@ -487,3 +401,6 @@ A single Event object with all its details. ATTENTION: Permission denied, if use
             Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
             
 + Response 204
+
+
+
