@@ -10,7 +10,7 @@
 default.properties
 
 bin/
-gen/ 
+gen/
 out/
 
 android/android.iml

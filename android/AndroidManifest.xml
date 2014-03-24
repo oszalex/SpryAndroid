@@ -50,6 +50,7 @@
             android:name="com.getbro.bro.DisplayEventsActivity"
             android:label="@string/title_activity_display_events" >
         </activity>
+        <activity android:name=".NewEventActivity"/>
     </application>
 
 </manifest>
