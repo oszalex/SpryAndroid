@@ -10,23 +10,13 @@ app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
+app.debug = True
+
 db = SQLAlchemy(app)
 auth = HTTPBasicAuth()
 
 
-@auth.get_password
-def get_pw(username):
-    if username in users:
-        return users.get(username)
-    return None
 
-@auth.verify_password
-def verify_password(username, password):
-    user = User.query.filter_by(username = username).first()
-    if not user or not user.verify_password(password):
-        return False
-    g.user = user
-    return True
 
 
 '''
@@ -60,6 +50,25 @@ class User(db.Model):
             return None    # invalid token
         user = User.query.get(data['id'])
         return user
+
+
+
+db.create_all()
+
+
+@auth.get_password
+def get_pw(username):
+    if username in users:
+        return users.get(username)
+    return None
+
+@auth.verify_password
+def verify_password(username, password):
+    user = User.query.filter_by(username = username).first()
+    if not user or not user.verify_password(password):
+        return False
+    g.user = user
+    return True
 
 
 
@@ -104,10 +113,40 @@ def new_user():
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
 
 
+
+'''
+users
+'''
+@app.route("/users")
+def get_users():
+
+    users = User.query.all()
+
+    output = []
+    for user in users:
+        row = {}
+
+    for user in User.__table__.c:
+        row[str(field)] = getattr(user, field, None)
+        output.append(row)
+
+    return jsonify(data=output)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     app.run()
-
-
-
-
-
