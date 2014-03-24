@@ -5,8 +5,13 @@
 .DS_Store
 .metadata/
 .idea/
+.classpath
+.project
+default.properties
 
-out/
 bin/
+gen/ 
+out/
 
-ios/.DS_Store
+android/android.iml
+android/gen/com/getbro/bro/Manifest.java
