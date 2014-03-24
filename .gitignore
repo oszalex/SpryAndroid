@@ -1,8 +1,12 @@
 *.pyc
 *.class
 *.cache
-*.jar
+
 .DS_Store
 .metadata/
+.idea/
+
+out/
+bin/
 
 ios/.DS_Store
