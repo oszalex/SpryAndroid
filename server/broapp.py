@@ -4,8 +4,8 @@ from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 
 # imort models
-from models.user import db
-
+from models.user import db, User, UserSerializer
+from models.event import db, Event, EventSerializer
 
 
 app = Flask(__name__)
@@ -84,27 +84,12 @@ def new_user():
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
 
 
-
 '''
 users
 '''
 @app.route("/users")
 def get_users():
-
-    users = User.query.all()
-
-    output = []
-    for user in users:
-        row = {}
-
-    for user in User.__table__.c:
-        row[str(field)] = getattr(user, field, None)
-        output.append(row)
-
-    return jsonify(data=output)
-
-
-
+    return jsonify({"users": UserSerializer(User.query.all(), many=True).data})
 
 
 if __name__ == "__main__":

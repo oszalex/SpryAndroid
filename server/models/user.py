@@ -1,6 +1,8 @@
 from flask.ext.sqlalchemy import SQLAlchemy
+from marshmallow import Serializer, fields
 
 db = SQLAlchemy()
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -29,3 +31,9 @@ class User(db.Model):
             return None    # invalid token
         user = User.query.get(data['id'])
         return user
+
+
+class UserSerializer(Serializer):
+
+    class Meta:
+        fields = ('id', 'username', 'password_hash')
