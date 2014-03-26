@@ -63,11 +63,13 @@ This API is a *short texts saving* service similar to its physical paper presenc
 ## Logout [/logout]
 
 ### Logout User [GET]
-+ Request
++ Request (application/json)
 
-    + Header
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
-    + Body
+        {
+            "username": "username",
+            "password": "hashed_password"
+        
+        }
 
 
 + Response 200 (application/json)
@@ -130,7 +132,7 @@ Operations on current user (extended information and permissions)
  * `blacklisted_actions` ID's of disallowed categories (default: [] (= none))
  * `location` "-44.22,-33.55"
  
-## Users Collection [/users?offset=0&limit=5]
+## Users Collection [/users]
 ### List all Users [GET]
 
 Paging: This resource optionally allows paging. Use offset and limit parameters on the end of the URI. example: users?offset=1&limit=3
@@ -145,24 +147,20 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
 
 + Response 200 (application/json)
 
-        [{
-          "id": 1,
-          "sex":"male",
-          "name": "Christian Butter"
-        }, {
-          "id": 4,
-          "sex":"male",
-          "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
-          "name": "Dominik 'ommi' Pichler"
-        }, {
-          "id": 5,
-          "sex":"male",
-          "name": "Benjamin 'benni' Pazdernik"
-        }, {
-          "id": 6, 
-          "sex":"female",
-          "name": "Carla Schefbörger"
-        }]
+        {
+          "users": [
+            {
+              "id": 1,
+              "password": null,
+              "username": "username"
+            },
+            {
+              "id": 6,
+              "password": "some fancy hash",
+              "username": "username"
+            }
+          ]
+        }
 
 
 ## User [/users/{id}]
@@ -188,16 +186,14 @@ Whitelist and blacklist and location are only part of the response, if the recei
     + Body
 
             {
-                "id": 4,
-                "name": "Dominik 'ommi' Pichler",
-                "profile_image" : "http://upload.wikimedia.org/wikipedia/commons/a/a6/Caparica_December_2011-1a.jpg",
-                "email": "ommi@u33.sch",
-                "whitelisted_actions":[1],
-                "blacklisted_actions":[],
-                "location": "-44.22,-33.55"
+              "user": {
+                "id": 2,
+                "password": null,
+                "username": "username"
+              }
             }
 
-+ Response 401 (application/json)
++ Response 404 (application/json)
 
     + Body
             
@@ -233,6 +229,14 @@ Operations on current user (extended information and permissions)
                 "blacklisted_actions":[]
             }
 
++ Response 401 (application/json)
+
+    + Body
+            
+            {
+                "error" : "You're not logged in, bro!"
+            }
+            
 ### Update current User [PATCH]
 + Request
 
