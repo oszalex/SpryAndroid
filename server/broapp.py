@@ -42,6 +42,8 @@ def verify_password(username, password):
     return True
 
 
+def errormsg(msg, code):
+    return jsonify({"error": msg}), code
 
 
 
@@ -90,6 +92,30 @@ users
 @app.route("/users")
 def get_users():
     return jsonify({"users": UserSerializer(User.query.all(), many=True).data})
+
+
+@app.route("/users/<int:user_id>")
+def get_user(user_id):
+    user = User.query.get(user_id)
+
+    if user is not None:
+        return jsonify({"user": UserSerializer(user).data})
+    else:
+        return errormsg("There is no such a user for you, dear guest.", 404)
+
+
+
+@app.route("/users/me")
+def get_current_user():
+    user = User.query.first() #TODO get authenticated used, not this stupid random one
+
+    if user is not None:
+        return jsonify({"user": UserSerializer(user).data})
+    else:
+        return errormsg("You're not logged in, bro", 404)
+
+
+
 
 
 if __name__ == "__main__":
