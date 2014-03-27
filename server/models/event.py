@@ -1,7 +1,7 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from marshmallow import Serializer, fields
 
-db = SQLAlchemy()
+
 
 class Event(db.Model):
     __tablename__ = 'events'

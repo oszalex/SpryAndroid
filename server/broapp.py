@@ -4,9 +4,10 @@ from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 
 # imort models
-from models.user import db, User, UserSerializer
-from models.event import db, Event, EventSerializer
+#from models.user import db, User, UserSerializer
+#from models.event import db, Event, EventSerializer
 
+import models
 
 app = Flask(__name__)
 
