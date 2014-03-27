@@ -1,27 +1,11 @@
 bro
 ===
 
-andorid: includes the android app
+Dear C0der, 
 
-docs: documentation
+welcome to our Codebase! We have the following folders:
 
-ios: prototype for iPhone/iPad app
-
-ressources: logos, etc.
-
-www: official website
-
-www/api: application backend (API)
-
-
-##TODO
-
-Take a look at
-
- * docs/sprint1.md
- * docs/sprint2.md
- * docs/roadmap.md
-
-## Blueprints
-
-Ideenvorschläge und Konzepte in Planung werden in docs/blueprints/ zu finden sein! Pro Idee immer eine Datei!
+> `andorid` includes the android app  
+> `ressources` logos, etc.
+> `www` official website
+> `server` application backend (API)
