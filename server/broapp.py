@@ -3,11 +3,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 
-# imort models
-#from models.user import db, User, UserSerializer
-#from models.event import db, Event, EventSerializer
-
-import models
+from models import db, User, Event, UserSerializer, EventSerializer
 
 app = Flask(__name__)
 
@@ -24,7 +20,6 @@ with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
         db.create_all()
-
 
 
 
@@ -111,7 +106,7 @@ def get_current_user():
     user = User.query.first() #TODO get authenticated used, not this stupid random one
 
     if user is not None:
-        return jsonify({"user": UserSerializer(user).data})
+        return jsonify({"user": UserSerializer(thisuser).data})
     else:
         return errormsg("You're not logged in, bro", 404)
 
