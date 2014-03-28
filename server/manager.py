@@ -1,6 +1,7 @@
 from flask.ext.script import Manager
 from models import db, User, Event, Tag
 from broapp import app
+from random import shuffle
 
 import datetime
 import random
@@ -13,11 +14,8 @@ def random_db_entry(cls):
 	return db.session.query(cls)[rand]
 
 def random_users():
-	users = db.session.query(User)
-	#user_ids = [u.id for u in users]
-
-	#todo shuffle
-
+	users = db.session.query(User).all()
+	shuffle(users)
 	rand = random.randrange(0, db.session.query(User).count()) 
 
 	return users[:rand]
