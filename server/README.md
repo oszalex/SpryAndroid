@@ -9,6 +9,7 @@
 ## Commands
 
 `python manager.py clean_db` deletes all tables
+
 `python manager.py seed` seed db with dummy values
 
 ## Technologies
