@@ -121,5 +121,27 @@ def get_events():
 
 
 
+@app.route("/events/<int:event_id>")
+def get_event(event_id):
+    event = Event.query.get(event_id)
+
+    if event is not None:
+        return jsonify({"event": EventSerializer(event).data})
+    else:
+        return errormsg("There is no such an event for you, dear guest.", 404)
+
+
+@app.route("/events/<int:event_id>", methods=['DELETE'])
+def remove_event(event_id):
+    event = Event.query.get(event_id)
+
+    if event is not None:
+        db.session.delete(event)
+        abort(204)
+    else:
+        return errormsg("There is no such an event for you, dear guest.", 404)
+
+
+
 if __name__ == "__main__":
     app.run()

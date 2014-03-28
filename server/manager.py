@@ -44,9 +44,9 @@ def seed():
 	tags = ["test", "some", "fancy", "party"]
 
 	users = [
-		["chris", "something"],
-		["ommi", "ommispw"],
-		["david", "somepw"]
+		["chris", "some@mail.com", "something", "male"],
+		["ommi", "ommi@gmail.com", "ommispw", "male"],
+		["david", "me@home.at", "somepw", "male"]
 	]
 
 	events = [
@@ -61,8 +61,10 @@ def seed():
 
 	for u in users:
 		user = User(
-			username=u[0], 
-			password=u[1]
+			username=u[0],
+			email=u[1],
+			password=u[2],
+			sex=u[3]
 			)
 		db.session.add(user)
 

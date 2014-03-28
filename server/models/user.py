@@ -8,6 +8,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True)
     password = db.Column(db.String(64))
+    email = db.Column(db.String(32), index=True)
+    sex = db.Column(db.Enum('male', 'female'))
 
     def hash_password(self, password):
         self.password = pwd_context.encrypt(password)
@@ -35,4 +37,4 @@ class User(db.Model):
 class UserSerializer(Serializer):
 
     class Meta:
-        fields = ('id', 'username', 'password')
+        fields = ('id', 'username', 'sex')
