@@ -20,7 +20,3 @@
  * ORM (SQLalchemy)
  * Python
  * Hash-function: scrypt
-
- ## TODO
- - ER Diagramm
- - ER umsetzen
