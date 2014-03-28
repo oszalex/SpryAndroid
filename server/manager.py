@@ -5,8 +5,14 @@ from models import db, User, Event
 from broapp import app
 
 import datetime
+import random
 
 manager = Manager(app)
+
+
+def random_db_entry(cls):
+	rand = random.randrange(0, db.session.query(cls).count()) 
+	return db.session.query(cls)[rand]
 
 
 @manager.command
@@ -36,14 +42,26 @@ def seed():
 	]
 
 	for u in users:
-		user = User(username=u[0], password=u[1])
+		user = User(
+			username=u[0], 
+			password=u[1]
+			)
 		db.session.add(user)
 
+	#add users
+	db.session.commit()
+
 	for e in events:
-		event = Event(name=e[0], venue_id=e[1], public=e[2], datetime=datetime.datetime.utcnow())
+		event = Event(
+			name=e[0], 
+			venue_id=e[1], 
+			public=e[2], 
+			datetime=datetime.datetime.utcnow(), 
+			creator_id=random_db_entry(User).id
+			)
 		db.session.add(event)
 	
-	db.session.commit()
+	
 
 if __name__ == "__main__":
     manager.run()
