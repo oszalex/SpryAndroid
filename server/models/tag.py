@@ -1,7 +1,5 @@
-# Tags
-
 from flask.ext.sqlalchemy import SQLAlchemy
-from marshmallow import Serializer, fields
+from marshmallow import Serializer
 
 from . import db
 

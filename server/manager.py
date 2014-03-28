@@ -1,5 +1,3 @@
-# manage.py
-
 from flask.ext.script import Manager
 from models import db, User, Event, Tag
 from broapp import app
@@ -14,13 +12,21 @@ def random_db_entry(cls):
 	rand = random.randrange(0, db.session.query(cls).count()) 
 	return db.session.query(cls)[rand]
 
+def random_users():
+	users = db.session.query(User)
+	#user_ids = [u.id for u in users]
+
+	#todo shuffle
+
+	rand = random.randrange(0, db.session.query(User).count()) 
+
+	return users[:rand]
+
+
 @manager.command
 def reset():
 	clean_db()
-
 	seed()
-
-
 
 
 @manager.command
@@ -74,6 +80,9 @@ def seed():
 			creator_id=random_db_entry(User).id
 			)
 		event.tags.append(random_db_entry(Tag))
+		for p in random_users():
+			event.participant_ids.append(p)
+		
 
 		db.session.add(event)
 	
