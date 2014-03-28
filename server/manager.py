@@ -4,6 +4,8 @@ from flask.ext.script import Manager
 from models import db, User, Event
 from broapp import app
 
+import datetime
+
 manager = Manager(app)
 
 
@@ -28,9 +30,9 @@ def seed():
 	]
 
 	events = [
-		[],
-		[],
-		[]
+		["GreenSheep Energy Drinks Promo", 12321, True ],
+		["Ommis gebfeier", 123245, True],
+		["Test123", 0007, False]
 	]
 
 	for u in users:
@@ -38,7 +40,7 @@ def seed():
 		db.session.add(user)
 
 	for e in events:
-		event = Event()
+		event = Event(name=e[0], venue_id=e[1], public=e[2], datetime=datetime.datetime.utcnow())
 		db.session.add(event)
 	
 	db.session.commit()

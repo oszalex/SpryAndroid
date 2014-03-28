@@ -111,6 +111,13 @@ def get_current_user():
         return errormsg("You're not logged in, bro", 404)
 
 
+'''
+events
+'''
+
+@app.route("/events")
+def get_events():
+    return jsonify({"events": EventSerializer(Event.query.filter_by(public=True).all(), many=True).data})
 
 
 
