@@ -1,7 +1,7 @@
 # manage.py
 
 from flask.ext.script import Manager
-from models import db, User, Event
+from models import db, User, Event, Tag
 from broapp import app
 
 import datetime
@@ -13,6 +13,14 @@ manager = Manager(app)
 def random_db_entry(cls):
 	rand = random.randrange(0, db.session.query(cls).count()) 
 	return db.session.query(cls)[rand]
+
+@manager.command
+def reset():
+	clean_db()
+
+	seed()
+
+
 
 
 @manager.command
@@ -29,6 +37,8 @@ def clean_db():
 @manager.command
 def seed():
 
+	tags = ["test", "some", "fancy", "party"]
+
 	users = [
 		["chris", "something"],
 		["ommi", "ommispw"],
@@ -40,6 +50,10 @@ def seed():
 		["Ommis gebfeier", 123245, True],
 		["Test123", 0007, False]
 	]
+
+	for t in tags:
+		tag = Tag(name=t)
+		db.session.add(tag)
 
 	for u in users:
 		user = User(
@@ -59,6 +73,8 @@ def seed():
 			datetime=datetime.datetime.utcnow(), 
 			creator_id=random_db_entry(User).id
 			)
+		event.tags.append(random_db_entry(Tag))
+
 		db.session.add(event)
 	
 	
