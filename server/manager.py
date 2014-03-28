@@ -4,13 +4,8 @@ from flask.ext.script import Manager
 from models import db, User, Event
 from broapp import app
 
-import os
-
 manager = Manager(app)
 
-@manager.command
-def hello():
-    print "hello"
 
 @manager.command
 def clean_db():
