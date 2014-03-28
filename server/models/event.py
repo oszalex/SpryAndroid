@@ -32,4 +32,4 @@ class EventSerializer(Serializer):
 	participant_ids = fields.Nested(UserSerializer, only='id', many=True)
 
 	class Meta:
-		fields = ('id', 'name', 'datetime', 'creator_id', 'tags', 'participant_ids')
+		fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids')
