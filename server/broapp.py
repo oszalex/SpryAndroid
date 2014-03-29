@@ -105,13 +105,23 @@ def get_current_user():
         return errormsg("You're not logged in, bro", 404)
 
 
+
+
+
+
 '''
 events
 '''
 
 @app.route("/events")
 def get_events():
-    return jsonify({"events": EventSerializer(Event.query.filter_by(public=True).all(), many=True).data})
+    events = Event.query.filter_by(public=True).all()
+
+    if g.user is not None:
+        events.append(Event.query.filter_by(public=False, creator_id=g.user.id).all())
+        #TODO: add all, where g.user is participant
+
+    return jsonify({"events": EventSerializer(events, many=True).data})
 
 
 
@@ -120,18 +130,36 @@ def get_event(event_id):
     event = Event.query.get(event_id)
 
     if event is not None:
-        return jsonify({"event": EventSerializer(event).data})
+
+        ##
+        # access allowed if:
+        #  - ) user is creator
+        #  - ) user is participant
+        #  - ) event is public
+        ##
+
+        if (event.public or
+            (g.user is not None and g.user.id is event.creator_id) or
+            (g.user is not None and g.user.id in event.participant_ids)):
+                return jsonify({"event": EventSerializer(event).data})
+        else:
+            return errormsg("access forbidden", 403)
+
     else:
         return errormsg("There is no such an event for you, dear guest.", 404)
 
 
 @app.route("/events/<int:event_id>", methods=['DELETE'])
+@auth.login_required
 def remove_event(event_id):
     event = Event.query.get(event_id)
 
     if event is not None:
-        db.session.delete(event)
-        abort(204)
+        if g.user.id == event.creator_id:
+            db.session.delete(event)
+            abort(204)
+        else:
+            errormsg("access forbidden", 403)
     else:
         return errormsg("There is no such an event for you, dear guest.", 404)
 

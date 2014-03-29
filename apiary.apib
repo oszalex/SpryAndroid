@@ -422,11 +422,7 @@ A single Event object with all its details.
     + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
 
 ### Retrieve a Event [GET]
-+ Request
 
-    + Header
-    
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
     
 + Response 200 (application/json)
 
@@ -474,9 +470,26 @@ A single Event object with all its details.
 
     + Header
     
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+            Authorization:Basic Y2hyaXM6MTIz
             
 + Response 204
 
++ Response 401
+
+        {
+            "error": "unauthorized"
+        }
+
++ Response 403
+
+        {
+            "error": "access forbidden"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "There is no such an event for you, dear guest."
+        }
 
 
