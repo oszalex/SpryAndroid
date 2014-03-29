@@ -1,4 +1,5 @@
-# port 591
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from broapp import app
 from OpenSSL import SSL
