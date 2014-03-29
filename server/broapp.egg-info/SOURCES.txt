@@ -1,8 +1,0 @@
-setup.py
-broapp/__init__.py
-broapp.egg-info/PKG-INFO
-broapp.egg-info/SOURCES.txt
-broapp.egg-info/dependency_links.txt
-broapp.egg-info/requires.txt
-broapp.egg-info/top_level.txt
-tests/__init__.py
