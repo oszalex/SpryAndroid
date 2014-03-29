@@ -9,6 +9,7 @@ include
 
 #setuptools
 broapp.egg-info
+dist
 
 #db
 *.sqlite

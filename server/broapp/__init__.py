@@ -125,6 +125,14 @@ def get_events():
     return jsonify({"events": EventSerializer(events, many=True).data})
 
 
+@app.route('/events', methods=["PUT", "POST"])
+def insert_event():
+    return jsonify(request.get_json(force=True))
+
+
+
+
+
 
 @app.route("/events/<int:event_id>")
 def get_event(event_id):

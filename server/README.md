@@ -42,6 +42,7 @@ stop the process and then deactive the environment
  * ORM (SQLalchemy)
  * Python
  
-### Hashfunction
-http://stackoverflow.com/questions/800685/which-cryptographic-hash-function-should-i-choose
+#Links
 
+Hash: http://stackoverflow.com/questions/800685/which-cryptographic-hash-function-should-i-choose
+Flask: http://pycoder.net/bospy/presentation.html
