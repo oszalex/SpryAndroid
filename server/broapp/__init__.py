@@ -82,6 +82,7 @@ def new_user():
 users
 '''
 @app.route("/users")
+@auth.login_required
 def get_users():
     return jsonify({"users": UserSerializer(User.query.all(), many=True).data})
 
