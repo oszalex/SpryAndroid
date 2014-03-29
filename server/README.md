@@ -19,4 +19,7 @@
  * relational DB (MySQL)
  * ORM (SQLalchemy)
  * Python
- * Hash-function: scrypt
+ 
+### Hashfunction
+http://stackoverflow.com/questions/800685/which-cryptographic-hash-function-should-i-choose
+
