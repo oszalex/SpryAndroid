@@ -35,12 +35,6 @@ stop the process and then deactive the environment
 `python manager.py seed` seed db with dummy values
 
 `python manager.py reset` clear and seed db with dummy values
-
-## Technologies
-
- * relational DB (MySQL)
- * ORM (SQLalchemy)
- * Python
  
 #Links
 
