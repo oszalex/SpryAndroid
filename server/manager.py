@@ -44,7 +44,7 @@ def seed():
 	tags = ["test", "some", "fancy", "party"]
 
 	users = [
-		["chris", "some@mail.com", "something", "male"],
+		["chris", "some@mail.com", "123", "male"],
 		["ommi", "ommi@gmail.com", "ommispw", "male"],
 		["david", "me@home.at", "somepw", "male"]
 	]
@@ -60,12 +60,8 @@ def seed():
 		db.session.add(tag)
 
 	for u in users:
-		user = User(
-			username=u[0],
-			email=u[1],
-			password=u[2],
-			sex=u[3]
-			)
+		#username, email, sex, password
+		user = User(u[0], u[1], u[3], u[2])
 		db.session.add(user)
 
 	#add users

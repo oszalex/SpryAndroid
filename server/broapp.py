@@ -22,25 +22,21 @@ with app.app_context():
         db.create_all()
 
 
-
-@auth.get_password
-def get_pw(username):
-    if username in users:
-        return users.get(username)
-    return None
-
 @auth.verify_password
 def verify_password(username, password):
     user = User.query.filter_by(username = username).first()
-    if not user or not user.verify_password(password):
+
+    if not user or not user.check_password(password):
+        app.logger.warning('password %s is invalid for user %s' % (password, user.username))
         return False
+
+    app.logger.debug('user %s: sucessfully logged in' % (user.username))
     g.user = user
     return True
 
 
 def errormsg(msg, code):
     return jsonify({"error": msg}), code
-
 
 
 '''
@@ -50,8 +46,6 @@ Endpoints
 @app.route("/")
 def hello():
 	return "Hello Bro!"
-
-
 
 
 '''
@@ -65,7 +59,7 @@ def login():
 @app.route("/logout")
 @auth.login_required
 def logout():
-	return ""
+	abort(401)
 
 @app.route('/register', methods = ['POST'])
 def new_user():
@@ -102,11 +96,11 @@ def get_user(user_id):
 
 
 @app.route("/users/me")
+@auth.login_required
 def get_current_user():
-    user = User.query.first() #TODO get authenticated used, not this stupid random one
 
-    if user is not None:
-        return jsonify({"user": UserSerializer(thisuser).data})
+    if g.user is not None:
+        return jsonify({"user": UserSerializer(g.user).data})
     else:
         return errormsg("You're not logged in, bro", 404)
 
