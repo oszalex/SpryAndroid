@@ -51,8 +51,9 @@ Authentication Endpoints
 '''
 
 @app.route("/login")
+@auth.login_required
 def login():
-    return "Hello World!"
+    return "Hello %s!" % g.user.username
 
 @app.route("/logout")
 @auth.login_required
