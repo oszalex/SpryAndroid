@@ -20,7 +20,7 @@ with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
         db.create_all()
-
+        g.user = None
 
 @auth.verify_password
 def verify_password(username, password):
@@ -61,6 +61,8 @@ def login():
 def logout():
 	abort(401)
 
+'''
+#<<NOT PART OF BETA-PHASE>>
 @app.route('/register', methods = ['POST'])
 def new_user():
     username = request.json.get('username')
@@ -74,6 +76,7 @@ def new_user():
     db.session.add(user)
     db.session.commit()
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
+'''
 
 
 '''
@@ -107,8 +110,6 @@ def get_current_user():
 
 
 
-
-
 '''
 events
 '''
@@ -117,7 +118,7 @@ events
 def get_events():
     events = Event.query.filter_by(public=True).all()
 
-    if g.user is not None:
+    if hasattr(g, 'user') and g.user is not None:
         events.append(Event.query.filter_by(public=False, creator_id=g.user.id).all())
         #TODO: add all, where g.user is participant
 
@@ -139,8 +140,8 @@ def get_event(event_id):
         ##
 
         if (event.public or
-            (g.user is not None and g.user.id is event.creator_id) or
-            (g.user is not None and g.user.id in event.participant_ids)):
+            (hasattr(g, 'user') and g.user is not None and g.user.id is event.creator_id) or
+            (hasattr(g, 'user') and g.user is not None and g.user.id in event.participant_ids)):
                 return jsonify({"event": EventSerializer(event).data})
         else:
             return errormsg("access forbidden", 403)
