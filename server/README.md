@@ -12,7 +12,8 @@ active it
 
 install all dependencies
 
-> sudo pip install -r requirements.txt  
+> python setup.py build  
+> python setup.py install  
 
 run the server
 

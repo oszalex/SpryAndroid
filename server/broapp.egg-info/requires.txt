@@ -1,0 +1,17 @@
+setuptools
+Flask
+Flask-HTTPAuth
+Flask-SQLAlchemy
+Jinja2
+MarkupSafe
+SQLAlchemy
+Werkzeug
+cffi
+cryptography
+itsdangerous
+marshmallow
+passlib
+pyOpenSSL
+pycparser
+six
+wsgiref
