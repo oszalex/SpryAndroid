@@ -12,8 +12,6 @@ app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
-# DEBUG!
-app.debug = True
 auth = HTTPBasicAuth()
 
 with app.app_context():
