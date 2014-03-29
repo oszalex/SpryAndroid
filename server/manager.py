@@ -1,6 +1,5 @@
 from flask.ext.script import Manager
-from models import db, User, Event, Tag
-from broapp import app
+from broapp import app, db, User, Event, Tag
 from random import shuffle
 
 import datetime
