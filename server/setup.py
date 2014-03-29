@@ -29,6 +29,7 @@ setup(
 	    'Flask',
 	    'Flask-HTTPAuth',
 	    'Flask-SQLAlchemy',
+	    'Flask-Script',
 		'Jinja2',
 		'MarkupSafe',
 		'SQLAlchemy',
