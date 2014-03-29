@@ -1,10 +1,31 @@
 # README
 
-## Install
+## Install & Run
+
+create a virtual environment
+
+> virtualenv venv
+
+active it
 
 > . venv/bin/activate  
+
+install all dependencies
+
 > sudo pip install -r requirements.txt  
 
+run the server
+
+> ./server.py
+
+Now you can open `https://127.0.0.1:8080` with your favourite browser.
+
+
+## shut it down
+
+stop the process and then deactive the environment
+
+> deactivate
 
 ## Commands
 

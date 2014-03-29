@@ -3,9 +3,14 @@ Flask-HTTPAuth==2.2.1
 Flask-SQLAlchemy==1.0
 Jinja2==2.7.2
 MarkupSafe==0.19
-SQLAlchemy==0.9.3
+SQLAlchemy==0.9.4
 Werkzeug==0.9.4
-itsdangerous==0.23
-passlib==1.6.2
+cffi==0.8.2
+cryptography==0.3
+itsdangerous==0.24
 marshmallow==0.5.3
+passlib==1.6.2
+pyOpenSSL==0.14
+pycparser==2.10
+six==1.6.1
 wsgiref==0.1.2
