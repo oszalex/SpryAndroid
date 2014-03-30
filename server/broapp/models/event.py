@@ -32,7 +32,7 @@ class Event(db.Model):
         self.name = json_obj["name"]
         self.datetime = dt.datetime.strptime(json_obj["datetime"],'%Y-%m-%dT%H:%M:%S.%fZ')
         self.venue_id = json_obj["venue_id"]
-        self.public = True if ('true' is json_obj["public"]) else False
+        self.public = json_obj["public"]
         self.creator_id = json_obj["creator_id"]
 
 

@@ -136,6 +136,9 @@ def get_events():
         events.append(Event.query.filter_by(public=False, creator_id=g.user.id).all())
         #TODO: add all, where g.user is participant
 
+    #Sort events
+    events.sort(key=lambda x: x.datetime)
+
     return jsonify({"events": EventSerializer(events, many=True).data})
 
 
@@ -146,8 +149,8 @@ def insert_event():
     validate_json('event', json_event)
 
     event = Event(json_event)
-
-    #TODO: store event
+    
+    db.session.add(event)
     
     return jsonify({"event": EventSerializer(event).data})
 
