@@ -5,6 +5,11 @@ from passlib.apps import custom_app_context as pwd_context
 
 from models import db, User, Event, Tag, UserSerializer, EventSerializer
 
+from jsonschema import validate
+
+import json
+import os
+
 app = Flask(__name__)
 
 db.init_app(app)
@@ -35,6 +40,15 @@ def verify_password(username, password):
 
 def errormsg(msg, code):
     return jsonify({"error": msg}), code
+
+
+
+def validate_json(scheme, input):
+    with open(os.path.join(os.path.dirname(__file__), 'schemes/%s.json' % scheme)) as data_file:    
+        data = json.load(data_file)
+
+        validate(input, data)
+
 
 
 '''
@@ -127,7 +141,15 @@ def get_events():
 
 @app.route('/events', methods=["PUT", "POST"])
 def insert_event():
-    return jsonify(request.get_json(force=True))
+    json_event = request.get_json(force=True)
+    #validate
+    validate_json('event', json_event)
+
+    event = Event(json_event)
+
+    #TODO: store event
+    
+    return jsonify({"event": EventSerializer(event).data})
 
 
 

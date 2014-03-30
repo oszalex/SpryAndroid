@@ -1,6 +1,8 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from marshmallow import Serializer, fields
 
+import datetime as dt
+
 from . import db, TagSerializer, UserSerializer
 
 event_tags = db.Table('event_tags',
@@ -25,6 +27,13 @@ class Event(db.Model):
         backref=db.backref('events', lazy='dynamic'))
     participant_ids = db.relationship('User', secondary=event_participants,
         backref=db.backref('participants', lazy='dynamic'))
+
+    def __init__(self, json_obj):
+        self.name = json_obj["name"]
+        self.datetime = dt.datetime.strptime(json_obj["datetime"],'%Y-%m-%dT%H:%M:%S.%fZ')
+        self.venue_id = json_obj["venue_id"]
+        self.public = True if ('true' is json_obj["public"]) else False
+        self.creator_id = json_obj["creator_id"]
 
 
 class EventSerializer(Serializer):
