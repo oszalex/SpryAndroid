@@ -6,3 +6,10 @@ include
 
 # Mac OS X custom attribute files
 .DS_Store
+
+#setuptools
+broapp.egg-info
+dist
+
+#db
+*.sqlite

@@ -35,18 +35,7 @@ This API is a *short texts saving* service similar to its physical paper presenc
 
 #### Login Properties
 
- * username (string) : User's email
- * password (string) : User's hashed password
-
 ### Login User [GET]
-+ Request (application/json)
-
-        {
-            "username": "username",
-            "password": "hashed_password"
-        
-        }
-
 
 + Response 200 (application/json)
 
@@ -293,23 +282,88 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
     
 + Response 200 (application/json)
 
-        [{
-          "id": 1, 
-          "place":"-44.22,-33.55",
-          "datetime":'2008-11-22 19:53:42',
-          "participants":[1,5,23],
-          "tags": ["beer", "party"],
-          "creator" : 3
-        }, {
-          "id": 2, 
-          "place":"-44.22,-33.55",
-          "datetime":'2012-03-24 13:13:48',
-          "participants":[4,14,3,6],
-          "tags": ["feier", "crazy"],
-          "creator" : 4
-        }]
+        {
+          "events": [
+            {
+              "creator_id": 1, 
+              "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+              "id": 1, 
+              "name": "GreenSheep Energy Drinks Promo", 
+              "participant_ids": [], 
+              "public": true, 
+              "tags": [
+                {
+                  "id": 3, 
+                  "name": "fancy"
+                }
+              ], 
+              "venue_id": 12321
+            }, 
+            {
+              "creator_id": 3, 
+              "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+              "id": 2, 
+              "name": "Ommis gebfeier", 
+              "participant_ids": [
+                3, 
+                2
+              ], 
+              "public": true, 
+              "tags": [
+                {
+                  "id": 1, 
+                  "name": "test"
+                }
+              ], 
+              "venue_id": 123245
+            }
+          ]
+        }
 
 ## Events Collection [/events]
+
+list all *public* events
+
++ Response 201 (application/json)
+    
+        {
+          "events": [
+            {
+              "creator_id": 1, 
+              "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+              "id": 1, 
+              "name": "GreenSheep Energy Drinks Promo", 
+              "participant_ids": [], 
+              "public": true, 
+              "tags": [
+                {
+                  "id": 3, 
+                  "name": "fancy"
+                }
+              ], 
+              "venue_id": 12321
+            }, 
+            {
+              "creator_id": 3, 
+              "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+              "id": 2, 
+              "name": "Ommis gebfeier", 
+              "participant_ids": [
+                3, 
+                2
+              ], 
+              "public": true, 
+              "tags": [
+                {
+                  "id": 1, 
+                  "name": "test"
+                }
+              ], 
+              "venue_id": 123245
+            }
+          ]
+        }
+
 
 ### Create a Event [POST]
 + Request (application/json)
@@ -349,17 +403,15 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
 
 
 ## Event [/events/{id}]
-A single Event object with all its details. ATTENTION: Permission denied, if user is not a paticipant.
+A single Event object with all its details. 
+
+**ATTENTION: Permission denied, if user is not a paticipant.**
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
 
 ### Retrieve a Event [GET]
-+ Request
 
-    + Header
-    
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
     
 + Response 200 (application/json)
 
@@ -369,24 +421,22 @@ A single Event object with all its details. ATTENTION: Permission denied, if use
 
     + Body
 
-            { "id": 1, 
-              "place":"-44.22,-33.55",
-              "datetime":'2008-11-22 19:53:42',
-              "participants":[1,5,23],
-              "tags": ["beer", "party"],
-              "creator" : 3 
-            }
-    
-    + Schema
-
             {
-                "id": "integer",
-                "place": "SerializedGeoPtObject",
-                "datetime": "datetime",
-                "participants":["integer"],
-                "tags": ["beer", "party"],
-                "creator" : "integer" 
-                
+              "event": {
+                "creator_id": 1, 
+                "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+                "id": 1, 
+                "name": "GreenSheep Energy Drinks Promo", 
+                "participant_ids": [], 
+                "public": true, 
+                "tags": [
+                  {
+                    "id": 3, 
+                    "name": "fancy"
+                  }
+                ], 
+                "venue_id": 12321
+              }
             }
             
 + Response 403 (application/json)
@@ -395,14 +445,40 @@ A single Event object with all its details. ATTENTION: Permission denied, if use
             "error": "access forbidden"
         }
 
++ Response 404 (application/json)
+
+        {
+            "error": "There is no such an event for you, dear guest."
+        }
+
 ### Remove a Event [DELETE]
+
+**ATTENTION: Only possible if current user is creator of specific event**
+
 + Request
 
     + Header
     
-            Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia
+            Authorization:Basic Y2hyaXM6MTIz
             
 + Response 204
 
++ Response 401
+
+        {
+            "error": "unauthorized"
+        }
+
++ Response 403
+
+        {
+            "error": "access forbidden"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "There is no such an event for you, dear guest."
+        }
 
 
