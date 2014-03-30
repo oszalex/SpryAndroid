@@ -3,17 +3,13 @@ from marshmallow import Serializer, fields
 
 import datetime as dt
 
-from . import db, TagSerializer, UserSerializer
+from . import db, TagSerializer, UserSerializer, ModelValidator
 
 event_tags = db.Table('event_tags',
 	    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
 	    db.Column('event_id', db.Integer, db.ForeignKey('events.id'))
 	)
 
-event_participants = db.Table('event_participants',
-	    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-	    db.Column('event_id', db.Integer, db.ForeignKey('events.id'))
-	)
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -25,15 +21,23 @@ class Event(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     tags = db.relationship('Tag', secondary=event_tags,
         backref=db.backref('events', lazy='dynamic'))
-    participant_ids = db.relationship('User', secondary=event_participants,
-        backref=db.backref('participants', lazy='dynamic'))
+    participant_ids = db.relationship('Invitation')
 
-    def __init__(self, json_obj):
-        self.name = json_obj["name"]
-        self.datetime = dt.datetime.strptime(json_obj["datetime"],'%Y-%m-%dT%H:%M:%S.%fZ')
-        self.venue_id = json_obj["venue_id"]
-        self.public = json_obj["public"]
-        self.creator_id = json_obj["creator_id"]
+
+class EventFactory(object):
+    @staticmethod
+    def fromJson(json_obj):
+
+        ModelValidator.json('event', json_obj)
+
+        event = Event(
+            name=json_obj["name"],
+            datetime=dt.datetime.strptime(json_obj["datetime"],'%Y-%m-%dT%H:%M:%S.%fZ'),
+            venue_id = json_obj["venue_id"],
+            public = json_obj["public"],
+            creator_id = json_obj["creator_id"]
+            )
+        return event
 
 
 class EventSerializer(Serializer):

@@ -3,12 +3,10 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 
-from models import db, User, Event, Tag, UserSerializer, EventSerializer
-
-from jsonschema import validate
+from models import db, User, Event, Tag, UserSerializer, EventSerializer, EventFactory
 
 import json
-import os
+
 
 app = Flask(__name__)
 
@@ -40,14 +38,6 @@ def verify_password(username, password):
 
 def errormsg(msg, code):
     return jsonify({"error": msg}), code
-
-
-
-def validate_json(scheme, input):
-    with open(os.path.join(os.path.dirname(__file__), 'schemes/%s.json' % scheme)) as data_file:    
-        data = json.load(data_file)
-
-        validate(input, data)
 
 
 
@@ -139,23 +129,18 @@ def get_events():
     #Sort events
     events.sort(key=lambda x: x.datetime)
 
+    #add attending state
+
     return jsonify({"events": EventSerializer(events, many=True).data})
 
 
 @app.route('/events', methods=["PUT", "POST"])
 def insert_event():
-    json_event = request.get_json(force=True)
-    #validate
-    validate_json('event', json_event)
+    event = EventFactory.fromJson(request.get_json(force=True))
 
-    event = Event(json_event)
-    
     db.session.add(event)
     
     return jsonify({"event": EventSerializer(event).data})
-
-
-
 
 
 

@@ -1,5 +1,5 @@
 from flask.ext.script import Manager
-from broapp import app, db, User, Event, Tag
+from broapp import app, db, User, Event, Tag, Invitation
 from random import shuffle
 
 import datetime
@@ -74,9 +74,16 @@ def seed():
 			datetime=datetime.datetime.utcnow(), 
 			creator_id=random_db_entry(User).id
 			)
+
+		for person in random_users():
+			#event.participant_ids.append(p)
+
+			i = Invitation()
+			i.user = person
+			event.participant_ids.append(i)
+
 		event.tags.append(random_db_entry(Tag))
-		for p in random_users():
-			event.participant_ids.append(p)
+		
 		
 
 		db.session.add(event)
