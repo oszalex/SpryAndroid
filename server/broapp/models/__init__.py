@@ -23,11 +23,5 @@ class Invitation(db.Model):
     attending = db.Column(db.Enum('undefined', 'yes', 'maybe', 'no'), default="undefined")
     user = db.relationship('User', backref=db.backref('invitations', cascade='delete'))
 
-from user import User, UserSerializer
-from tag import Tag, TagSerializer
-from event import Event, EventSerializer, EventFactory
-
 __all__ = ["event", "user", "tag", "invitation"]
 
-
-#from invitation import Invitation
