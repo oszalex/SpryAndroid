@@ -1,14 +1,29 @@
 package com.getbro.bro.Webservice;
 
-import com.getbro.bro.Json.Event;
+import com.getbro.bro.Json.*;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.security.KeyStore;
+
+
+import org.apache.http.HttpVersion;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 
 public class HttpGetRequest {
 
@@ -19,12 +34,51 @@ public class HttpGetRequest {
     }
 
     public void foo() {
-        HttpClient client = new DefaultHttpClient();
-        String fullUrl = webServiceUrl + "/events/1";
-        HttpGet request = new HttpGet(fullUrl);
-        request.addHeader("Authorization", "Bearer RsT5OjbzRn430zqMLgV3Ia");
+        DefaultHttpClient client = null;
+        String fullUrl = webServiceUrl + "/users/1";
 
         try {
+
+            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            trustStore.load(null, null);
+
+            SSLSocketFactory sf = new CustomSSLSocketFactory(trustStore);
+            sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+
+            // Setting up parameters
+            HttpParams params = new BasicHttpParams();
+            HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+            HttpProtocolParams.setContentCharset(params, "utf-8");
+            params.setBooleanParameter("http.protocol.expect-continue", false);
+
+            // Setting timeout
+            HttpConnectionParams.setConnectionTimeout(params, 1000);
+            HttpConnectionParams.setSoTimeout(params, 1000);
+
+            // Registering schemes for both HTTP and HTTPS
+            SchemeRegistry registry = new SchemeRegistry();
+            registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+            registry.register(new Scheme("https", sf, 443));
+
+            // Creating thread safe client connection manager
+            ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+
+            // Creating HTTP client
+            client = new DefaultHttpClient(ccm, params);
+
+            // Registering user name and password for authentication
+            //client.getCredentialsProvider().setCredentials(
+            //       new AuthScope(null, -1),
+            //        new UsernamePasswordCredentials(mUsername, mPassword));
+
+        } catch (Exception e) {
+            client = new DefaultHttpClient();
+        }
+
+        try {
+            HttpGet request = new HttpGet(fullUrl);
+            //request.addHeader("Authorization", "Bearer RsT5OjbzRn430zqMLgV3Ia");
+
             HttpResponse response = client.execute(request);
             int responsecode = response.getStatusLine().getStatusCode();
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -37,8 +91,15 @@ public class HttpGetRequest {
             }
 
             Gson gson = new Gson();
-            Event event = gson.fromJson(result.toString(), Event.class);
-            String name = event.name;
+            BufferedReader br = new BufferedReader(new StringReader("{\"id\": 1,\"sex\": \"male\",\"username\": \"chris\"}  "));
+
+
+            User user = gson.fromJson(br, User.class);
+            String name = user.username;
+
+            br = new BufferedReader(new StringReader(" [ { \"id\": 1, \"sex\": \"male\", \"username\": \"chris\" }, { \"id\": 2, \"sex\": \"male\", \"username\": \"ommi\" }, { \"id\": 3, \"sex\": \"male\", \"username\": \"david\" } ]"));
+            User[] users = gson.fromJson(br, User[].class);
+            name=users[0].username;
         }
         catch (Exception ex) {
             java.lang.System.out.println(ex.getMessage());
@@ -47,3 +108,6 @@ public class HttpGetRequest {
     }
 
 }
+
+
+
