@@ -1,4 +1,5 @@
 from flask.ext.script import Manager
+from broapp import Invitation
 from broapp import app, db, User, Event, Tag, Invitation
 from random import shuffle
 
