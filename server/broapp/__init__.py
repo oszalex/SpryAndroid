@@ -8,6 +8,8 @@ from models.tag import Tag
 from models.user import User, UserSerializer
 from models.event import Event, EventSerializer, EventFactory
 
+from flask import Response
+
 import json
 
 app = Flask(__name__)
@@ -90,7 +92,7 @@ users
 @app.route("/users")
 @auth.login_required
 def get_users():
-    return jsonify({"users": UserSerializer(User.query.all(), many=True).data})
+    return jsonify({"data": UserSerializer(User.query.all(), many=True).data})
 
 
 @app.route("/users/<int:user_id>")
@@ -98,7 +100,7 @@ def get_user(user_id):
     user = User.query.get(user_id)
 
     if user is not None:
-        return jsonify({"user": UserSerializer(user).data})
+        return jsonify({"data": UserSerializer(user).data})
     else:
         return errormsg("There is no such a user for you, dear guest.", 404)
 
@@ -109,7 +111,7 @@ def get_user(user_id):
 def get_current_user():
 
     if g.user is not None:
-        return jsonify({"user": UserSerializer(g.user).data})
+        return jsonify({"data": UserSerializer(g.user).data})
     else:
         return errormsg("You're not logged in, bro", 404)
 
@@ -133,7 +135,7 @@ def get_events():
 
     #add attending state
 
-    return jsonify({"events": EventSerializer(events, many=True).data})
+    return jsonify({ "data" : EventSerializer(events, many=True).data } )
 
 
 @app.route('/events', methods=["PUT", "POST"])
@@ -142,7 +144,7 @@ def insert_event():
 
     db.session.add(event)
     
-    return jsonify({"event": EventSerializer(event).data})
+    return jsonify({"data": EventSerializer(event).data})
 
 
 
@@ -162,7 +164,7 @@ def get_event(event_id):
         if (event.public or
             (hasattr(g, 'user') and g.user is not None and g.user.id is event.creator_id) or
             (hasattr(g, 'user') and g.user is not None and g.user.id in event.participant_ids)):
-                return jsonify({"event": EventSerializer(event).data})
+                return jsonify({"data": EventSerializer(event).data})
         else:
             return errormsg("access forbidden", 403)
 
