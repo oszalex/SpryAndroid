@@ -1,8 +1,7 @@
 package com.getbro.bro.Json;
 
-public class Event {
+public class Event extends Item {
 
-    public int id;
     public String place;
     public String name;
     public String datetime;

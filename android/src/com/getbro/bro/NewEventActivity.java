@@ -47,7 +47,7 @@ public class NewEventActivity extends Activity {
             public void run() {
                 try {
                     HttpGetRequest request = new HttpGetRequest(getResources().getString(R.string.webService));
-                    request.foo();
+                    request.bar();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

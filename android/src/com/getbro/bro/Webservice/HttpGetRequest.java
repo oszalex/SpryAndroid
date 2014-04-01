@@ -2,7 +2,10 @@ package com.getbro.bro.Webservice;
 
 import com.getbro.bro.Json.*;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -33,7 +36,13 @@ public class HttpGetRequest {
         this.webServiceUrl = webServiceUrl;
     }
 
+
     public void foo() {
+
+
+    }
+
+    public void bar() {
         DefaultHttpClient client = null;
         String fullUrl = webServiceUrl + "/users/1";
 
@@ -67,9 +76,9 @@ public class HttpGetRequest {
             client = new DefaultHttpClient(ccm, params);
 
             // Registering user name and password for authentication
-            //client.getCredentialsProvider().setCredentials(
-            //       new AuthScope(null, -1),
-            //        new UsernamePasswordCredentials(mUsername, mPassword));
+//            client.getCredentialsProvider().setCredentials(
+//                   new AuthScope(null, -1),
+//                    new UsernamePasswordCredentials("raphi", "password"));
 
         } catch (Exception e) {
             client = new DefaultHttpClient();
@@ -90,16 +99,16 @@ public class HttpGetRequest {
                 result.append(line);
             }
 
+
             Gson gson = new Gson();
-            BufferedReader br = new BufferedReader(new StringReader("{\"id\": 1,\"sex\": \"male\",\"username\": \"chris\"}  "));
+            Data<User> data = gson.fromJson(result.toString(), new TypeToken<Data<User>>(){}.getType());
+            User user = data.data;
+            String name = user.name;
 
 
-            User user = gson.fromJson(br, User.class);
-            String name = user.username;
-
-            br = new BufferedReader(new StringReader(" [ { \"id\": 1, \"sex\": \"male\", \"username\": \"chris\" }, { \"id\": 2, \"sex\": \"male\", \"username\": \"ommi\" }, { \"id\": 3, \"sex\": \"male\", \"username\": \"david\" } ]"));
-            User[] users = gson.fromJson(br, User[].class);
-            name=users[0].username;
+            //br = new BufferedReader(new StringReader(" [ { \"id\": 1, \"sex\": \"male\", \"username\": \"chris\" }, { \"id\": 2, \"sex\": \"male\", \"username\": \"ommi\" }, { \"id\": 3, \"sex\": \"male\", \"username\": \"david\" } ]"));
+            //User[] users = gson.fromJson(br, User[].class);
+            //name=users[0].username;
         }
         catch (Exception ex) {
             java.lang.System.out.println(ex.getMessage());
