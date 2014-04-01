@@ -52,13 +52,15 @@ def seed():
 	users = [
 		["chris", "some@mail.com", "123", "male"],
 		["ommi", "ommi@gmail.com", "ommispw", "male"],
-		["david", "me@home.at", "somepw", "male"]
+		["david", "me@home.at", "somepw", "male"],
+		["raphi", "raphi011@gmail.com", "password", "male"]
+
 	]
 
 	events = [
 		["GreenSheep Energy Drinks Promo", 12321, True ],
 		["Ommis gebfeier", 123245, True],
-		["Test123", 0007, False]
+		["Test123", 7, False]
 	]
 
 	for t in tags:
