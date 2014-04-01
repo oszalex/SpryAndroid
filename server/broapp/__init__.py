@@ -8,8 +8,6 @@ from models.tag import Tag
 from models.user import User, UserSerializer
 from models.event import Event, EventSerializer, EventFactory
 
-from flask import Response
-
 import json
 
 app = Flask(__name__)
