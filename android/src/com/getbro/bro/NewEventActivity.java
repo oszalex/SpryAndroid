@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.MultiAutoCompleteTextView;
 import com.getbro.bro.EventParser.TokenWebserviceResource;
+import com.getbro.bro.Webservice.HttpGetRequest;
 
 public class NewEventActivity extends Activity {
 
@@ -13,6 +14,8 @@ public class NewEventActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newevent);
+
+        test();
 
         final MultiAutoCompleteTextView textView = (MultiAutoCompleteTextView)findViewById(R.id.text);
         // textView.setThreshold(1);
@@ -36,5 +39,21 @@ public class NewEventActivity extends Activity {
 //                textView.setDropDownVerticalOffset(baseline-bottom);
 //
 //            }
+    }
+
+    private void test()  {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    HttpGetRequest request = new HttpGetRequest(getResources().getString(R.string.webService));
+                    request.foo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 }
