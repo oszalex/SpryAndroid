@@ -1,7 +1,5 @@
 from . import db
 
-print "loaded invitations!!!!"
-
 class Invitation(db.Model):
     __tablename__ = 'event_participants'
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)

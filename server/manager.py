@@ -1,6 +1,12 @@
 from flask.ext.script import Manager
-from broapp import Invitation
-from broapp import app, db, User, Event, Tag, Invitation
+
+from broapp import app
+from broapp.models import db
+from broapp.models.tag import Tag
+from broapp.models.user import User, UserSerializer
+from broapp.models.event import Event, EventSerializer, EventFactory
+from broapp.models.invitation import Invitation
+
 from random import shuffle
 
 import datetime
