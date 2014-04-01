@@ -3,10 +3,12 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 
-from models import db, User, Event, Tag, UserSerializer, EventSerializer, EventFactory
+from models import db
+from models.tag import Tag
+from models.user import User, UserSerializer
+from models.event import Event, EventSerializer, EventFactory
 
 import json
-
 
 app = Flask(__name__)
 

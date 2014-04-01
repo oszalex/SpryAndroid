@@ -22,3 +22,4 @@ from event import Event, EventSerializer, EventFactory
 from invitation import Invitation
 
 __all__ = ["event", "user", "tag", "invitation"]
+
