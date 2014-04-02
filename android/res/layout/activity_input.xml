@@ -59,35 +59,35 @@
             android:id="@+id/profilimage1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/logo_description"
+            android:contentDescription="hallo"
             android:src="@drawable/head_icon" />
 
         <ImageView
             android:id="@+id/profilimage2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/logo_description"
+            android:contentDescription="hallo"
             android:src="@drawable/head_icon" />
 
         <ImageView
             android:id="@+id/profilimage3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/logo_description"
+            android:contentDescription="hallo"
             android:src="@drawable/head_icon" />
 
         <ImageView
             android:id="@+id/profilimage4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/logo_description"
+            android:contentDescription="hallo"
             android:src="@drawable/head_icon" />
 
         <ImageView
             android:id="@+id/profilimage5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/logo_description"
+            android:contentDescription="hallo"
             android:src="@drawable/head_icon" />
 
         <TextView
