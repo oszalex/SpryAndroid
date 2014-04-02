@@ -50,11 +50,11 @@ class EventSerializer(Serializer):
 	participant_ids = fields.Method("get_participant_ids")
 
 	def get_participant_ids(self, obj):
-		users = []
+		user_ids = []
 
 		for invitation in obj.participant_ids:
-			users.append(invitation.user)
-		return UserSerializer(users, many=True).data
+			user_ids.append(invitation.user.id)
+		return user_ids #UserSerializer(users, many=True).data
 
 	class Meta:
 		fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids', 'public')
