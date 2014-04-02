@@ -3,7 +3,10 @@ from marshmallow import Serializer, fields
 
 import datetime as dt
 
-from . import db, TagSerializer, UserSerializer, ModelValidator
+from . import db, ModelValidator
+from tag import TagSerializer
+from user import UserSerializer
+
 
 event_tags = db.Table('event_tags',
 	    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -21,7 +24,8 @@ class Event(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     tags = db.relationship('Tag', secondary=event_tags,
         backref=db.backref('events', lazy='dynamic'))
-    participant_ids = db.relationship('Invitation')
+    participant_ids = db.relationship('Invitation',
+        backref=db.backref('events'))
 
 
 class EventFactory(object):
@@ -42,7 +46,15 @@ class EventFactory(object):
 
 class EventSerializer(Serializer):
 	tags = fields.Nested(TagSerializer, many=True)
-	participant_ids = fields.Nested(UserSerializer, only='id', many=True)
+	participant_ids = fields.Nested(UserSerializer, many=True)
+	participant_ids = fields.Method("get_participant_ids")
+
+	def get_participant_ids(self, obj):
+		users = []
+
+		for invitation in obj.participant_ids:
+			users.append(invitation.user)
+		return UserSerializer(users, many=True).data
 
 	class Meta:
 		fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids', 'public')
