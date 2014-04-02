@@ -37,38 +37,40 @@ public class HttpGetRequest {
 
     public HttpGetRequest(String webServiceUrl, String userName, String password) {
         this.webServiceUrl = webServiceUrl;
-        this.client = GetClient(userName,password);
+        this.client = getClient(userName,password);
     }
 
-    public User[] GetUsers() {
-        String json = GetJson("/users");
-        Data<User[]> data = GsonFactory().fromJson(json, new TypeToken<Data<User[]>>() {}.getType());
+    public User[] getUsers() {
+        String json = getJson("/users");
+        Data<User[]> data = gsonFactory().fromJson(json, new TypeToken<Data<User[]>>() {}.getType());
         return data.data;
     }
 
-    public User GetUser(int id) {
-        String json = GetJson("/users/" + id);
-        Data<User> data = GsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
+    public User getUser(int id) {
+        String json = getJson("/users/" + id);
+        Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
         return data.data;
     }
 
-    public Event[] GetEvents() {
-        String json = GetJson("/events");
-        Data<Event[]> data = GsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
+    public Event[] getEvents() {
+        String json = getJson("/events");
+        Data<Event[]> data = gsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
         return data.data;
     }
 
-    public Event GetEvent(int id) {
-        String json = GetJson("/events/" + id);
-        Data<Event> data = GsonFactory().fromJson(json, new TypeToken<Data<Event>>() {}.getType());
+    public Event getEvent(int id) {
+        String json = getJson("/events/" + id);
+        Data<Event> data = gsonFactory().fromJson(json, new TypeToken<Data<Event>>() {}.getType());
         return data.data;
     }
 
-    public Gson GsonFactory() {
-       return new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ").create();
+    public Gson gsonFactory() {
+        return new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ").create();
+       // 2014-04-02T10:14:21.409802
+       // return new GsonBuilder().setDateFormat("yyyy-MM-ddTHH:mm:ssZZZZZ").create();
     }
 
-    public String GetJson(String url) {
+    public String getJson(String url) {
         String fullUrl = webServiceUrl + url;
         HttpGet request = new HttpGet(fullUrl);
         StringBuffer result = new StringBuffer();
@@ -89,11 +91,11 @@ public class HttpGetRequest {
         return result.toString();
     }
 
-    private HttpClient GetClient() {
-        return GetClient("","");
+    private HttpClient getClient() {
+        return getClient("","");
     }
 
-    private HttpClient GetClient(String userName, String password) {
+    private HttpClient getClient(String userName, String password) {
         DefaultHttpClient client = null;
 
         try {

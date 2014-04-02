@@ -15,12 +15,9 @@ public class NewEventActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newevent);
 
-        test();
-
         final MultiAutoCompleteTextView textView = (MultiAutoCompleteTextView)findViewById(R.id.text);
-        // textView.setThreshold(1);
 
-        AutoCompleteAdapter adapter = new AutoCompleteAdapter(context,android.R.layout.simple_list_item_1,new TokenWebserviceResource(getString(R.string.webService)));
+        AutoCompleteAdapter adapter = new AutoCompleteAdapter(context,android.R.layout.simple_list_item_1,new TokenWebserviceResource(getResources().getString(R.string.webService),"raphi","password"));
         textView.setAdapter(adapter);
         textView.setTokenizer(new WhitespaceTokenizer());
 
@@ -40,26 +37,26 @@ public class NewEventActivity extends Activity {
 //
 //            }
     }
-
-    private void test()  {
-        Thread thread = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                try {
-                    HttpGetRequest request = new HttpGetRequest(getResources().getString(R.string.webService),"raphi","password");
-                    com.getbro.bro.Json.Event[] events = request.GetEvents();
-                    com.getbro.bro.Json.User[] users = request.GetUsers();
-                    com.getbro.bro.Json.User user = request.GetUser(1);
-                    com.getbro.bro.Json.Event event = request.GetEvent(1);
-
-
-                    int count = events.length;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
-    }
+//
+//    private void test()  {
+//        Thread thread = new Thread(new Runnable(){
+//            @Override
+//            public void run() {
+//                try {
+//                    HttpGetRequest request = new HttpGetRequest();
+//                    com.getbro.bro.Json.Event[] events = request.GetEvents();
+//                    com.getbro.bro.Json.User[] users = request.GetUsers();
+//                    com.getbro.bro.Json.User user = request.GetUser(1);
+//                    com.getbro.bro.Json.Event event = request.GetEvent(1);
+//
+//
+//                    int count = events.length;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        thread.start();
+//    }
 }
