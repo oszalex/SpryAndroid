@@ -2,6 +2,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from marshmallow import Serializer, fields
 
 import datetime as dt
+from dateutil import parser
 
 from . import db, ModelValidator
 from tag import TagSerializer
@@ -36,7 +37,7 @@ class EventFactory(object):
 
         event = Event(
             name=json_obj["name"],
-            datetime=dt.datetime.strptime(json_obj["datetime"],'%Y-%m-%dT%H:%M:%S.%fZ'),
+            datetime=parser.parse(json_obj["datetime"]),
             venue_id = json_obj["venue_id"],
             public = json_obj["public"],
             creator_id = json_obj["creator_id"]
@@ -58,7 +59,7 @@ class EventSerializer(Serializer):
 		return user_ids #UserSerializer(users, many=True).data
 
 	def get_datetime(self, obj):
-		return obj.datetime.isoformat()
+		return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S.%f+0100')
 
 
 	class Meta:
