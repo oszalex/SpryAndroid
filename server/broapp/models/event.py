@@ -2,8 +2,12 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from marshmallow import Serializer, fields
 
 import datetime as dt
+from dateutil import parser
 
-from . import db, TagSerializer, UserSerializer, ModelValidator
+from . import db, ModelValidator
+from tag import TagSerializer
+from user import UserSerializer
+
 
 event_tags = db.Table('event_tags',
 	    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -21,7 +25,8 @@ class Event(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     tags = db.relationship('Tag', secondary=event_tags,
         backref=db.backref('events', lazy='dynamic'))
-    participant_ids = db.relationship('Invitation')
+    participant_ids = db.relationship('Invitation',
+        backref=db.backref('events'))
 
 
 class EventFactory(object):
@@ -32,7 +37,7 @@ class EventFactory(object):
 
         event = Event(
             name=json_obj["name"],
-            datetime=dt.datetime.strptime(json_obj["datetime"],'%Y-%m-%dT%H:%M:%S.%fZ'),
+            datetime=parser.parse(json_obj["datetime"]),
             venue_id = json_obj["venue_id"],
             public = json_obj["public"],
             creator_id = json_obj["creator_id"]
@@ -42,7 +47,20 @@ class EventFactory(object):
 
 class EventSerializer(Serializer):
 	tags = fields.Nested(TagSerializer, many=True)
-	participant_ids = fields.Nested(UserSerializer, only='id', many=True)
+	#participant_ids = fields.Nested(UserSerializer, many=True)
+	participant_ids = fields.Method("get_participant_ids")
+	datetime = fields.Method("get_datetime")
+
+	def get_participant_ids(self, obj):
+		user_ids = []
+
+		for invitation in obj.participant_ids:
+			user_ids.append(invitation.user.id)
+		return user_ids #UserSerializer(users, many=True).data
+
+	def get_datetime(self, obj):
+		return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S.%f+0100')
+
 
 	class Meta:
 		fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids', 'public')

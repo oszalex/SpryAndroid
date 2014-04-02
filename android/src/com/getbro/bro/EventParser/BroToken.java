@@ -6,7 +6,7 @@ import java.util.Arrays;import java.util.List;
 
 public class BroToken {
 
-    private final char[] tokenIdentifier = {'@', '#', '+', '!' };
+    private final char[] tokenIdentifier = {'@', '#', '+', '!','_' };
     private ITokenResource tokenResource = null;
 
     public BroToken(ITokenResource tokenResource) {
@@ -28,7 +28,8 @@ public class BroToken {
         List<String> suggestions = null;
 
         switch  (identifier) {
-            case '@': suggestions = getPersonSuggestions(token); break;
+            //case '@': suggestions = getPersonSuggestions(token); break;
+            case '_': suggestions = getPersonSuggestions(token); break; // just for testing, @ some doesn't work in emulator
             case '#': suggestions = getLabelSuggestions(token); break;
             case '+': suggestions = getLocationSuggestions(token); break;
             case '!': suggestions = getTimeSuggestion(token); break;
