@@ -1,0 +1,56 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+
+
+			$.getJSON("http://bro.apiary.io/users", function(data){
+
+				var items = "bla";
+				benni = "benni";
+
+
+
+
+
+				function parseName(str_name){
+					parts = str_name.split(' ');
+
+					if(parts.length == 2){
+						return {
+							prename : parts[0],
+							nickname : null,
+							surname : parts[1]
+						};
+					} else {
+						return {
+							"prename" : parts[0],
+							"nickname" : parts[1].substring(1,parts[1].length - 1),
+							"surname" : parts[2]
+						}
+					}
+				}
+
+				$.each( data, function( key, val ) {
+					console.log(parseName(val.name));
+					var name = parseName(val.name);
+					
+					$("#content>ul").append("<li>" + key + " " + name.prename + " " + ((name.nickname)?name.nickname:"") + " " + name.surname + "</li>");
+
+
+				});
+
+				
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="content">
+		<ul></ul>
+	</div>
+</body>
+</html>
