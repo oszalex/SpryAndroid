@@ -1,5 +1,12 @@
 from flask.ext.script import Manager
-from broapp import app, db, User, Event, Tag
+
+from broapp import app
+from broapp.models import db
+from broapp.models.tag import Tag
+from broapp.models.user import User, UserSerializer
+from broapp.models.event import Event, EventSerializer, EventFactory
+from broapp.models.invitation import Invitation
+
 from random import shuffle
 
 import datetime
@@ -45,13 +52,15 @@ def seed():
 	users = [
 		["chris", "some@mail.com", "123", "male"],
 		["ommi", "ommi@gmail.com", "ommispw", "male"],
-		["david", "me@home.at", "somepw", "male"]
+		["david", "me@home.at", "somepw", "male"],
+		["raphi", "raphi011@gmail.com", "password", "male"]
+
 	]
 
 	events = [
 		["GreenSheep Energy Drinks Promo", 12321, True ],
 		["Ommis gebfeier", 123245, True],
-		["Test123", 0007, False]
+		["Test123", 7, False]
 	]
 
 	for t in tags:
@@ -74,9 +83,16 @@ def seed():
 			datetime=datetime.datetime.utcnow(), 
 			creator_id=random_db_entry(User).id
 			)
+
+		for person in random_users():
+			#event.participant_ids.append(p)
+
+			i = Invitation()
+			i.user = person
+			event.participant_ids.append(i)
+
 		event.tags.append(random_db_entry(Tag))
-		for p in random_users():
-			event.participant_ids.append(p)
+		
 		
 
 		db.session.add(event)

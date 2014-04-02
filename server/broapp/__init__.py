@@ -3,12 +3,12 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 
-from models import db, User, Event, Tag, UserSerializer, EventSerializer
-
-from jsonschema import validate
+from models import db
+from models.tag import Tag
+from models.user import User, UserSerializer
+from models.event import Event, EventSerializer, EventFactory
 
 import json
-import os
 
 app = Flask(__name__)
 
@@ -40,14 +40,6 @@ def verify_password(username, password):
 
 def errormsg(msg, code):
     return jsonify({"error": msg}), code
-
-
-
-def validate_json(scheme, input):
-    with open(os.path.join(os.path.dirname(__file__), 'schemes/%s.json' % scheme)) as data_file:    
-        data = json.load(data_file)
-
-        validate(input, data)
 
 
 
@@ -98,7 +90,7 @@ users
 @app.route("/users")
 @auth.login_required
 def get_users():
-    return jsonify({"users": UserSerializer(User.query.all(), many=True).data})
+    return jsonify({"data": UserSerializer(User.query.all(), many=True).data})
 
 
 @app.route("/users/<int:user_id>")
@@ -106,18 +98,24 @@ def get_user(user_id):
     user = User.query.get(user_id)
 
     if user is not None:
-        return jsonify({"user": UserSerializer(user).data})
+        return jsonify({"data": UserSerializer(user).data})
     else:
         return errormsg("There is no such a user for you, dear guest.", 404)
 
+@app.route("/users/<regex>")
+def get_regex_user(regex):
+    query = db.session.query(User).filter(User.username.like(regex + "%"))
 
+    results = query.all()
+    print results
+    return jsonify({"data": UserSerializer(results, many=True).data })
 
 @app.route("/users/me")
 @auth.login_required
 def get_current_user():
 
     if g.user is not None:
-        return jsonify({"user": UserSerializer(g.user).data})
+        return jsonify({"data": UserSerializer(g.user).data})
     else:
         return errormsg("You're not logged in, bro", 404)
 
@@ -139,23 +137,18 @@ def get_events():
     #Sort events
     events.sort(key=lambda x: x.datetime)
 
-    return jsonify({"events": EventSerializer(events, many=True).data})
+    #add attending state
+
+    return jsonify({ "data" : EventSerializer(events, many=True).data } )
 
 
 @app.route('/events', methods=["PUT", "POST"])
 def insert_event():
-    json_event = request.get_json(force=True)
-    #validate
-    validate_json('event', json_event)
+    event = EventFactory.fromJson(request.get_json(force=True))
 
-    event = Event(json_event)
-    
     db.session.add(event)
     
-    return jsonify({"event": EventSerializer(event).data})
-
-
-
+    return jsonify({"data": EventSerializer(event).data})
 
 
 
@@ -175,7 +168,7 @@ def get_event(event_id):
         if (event.public or
             (hasattr(g, 'user') and g.user is not None and g.user.id is event.creator_id) or
             (hasattr(g, 'user') and g.user is not None and g.user.id in event.participant_ids)):
-                return jsonify({"event": EventSerializer(event).data})
+                return jsonify({"data": EventSerializer(event).data})
         else:
             return errormsg("access forbidden", 403)
 
