@@ -46,8 +46,9 @@ class EventFactory(object):
 
 class EventSerializer(Serializer):
 	tags = fields.Nested(TagSerializer, many=True)
-	participant_ids = fields.Nested(UserSerializer, many=True)
+	#participant_ids = fields.Nested(UserSerializer, many=True)
 	participant_ids = fields.Method("get_participant_ids")
+	datetime = fields.Method("get_datetime")
 
 	def get_participant_ids(self, obj):
 		user_ids = []
@@ -55,6 +56,10 @@ class EventSerializer(Serializer):
 		for invitation in obj.participant_ids:
 			user_ids.append(invitation.user.id)
 		return user_ids #UserSerializer(users, many=True).data
+
+	def get_datetime(self, obj):
+		return obj.datetime.isoformat()
+
 
 	class Meta:
 		fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids', 'public')
