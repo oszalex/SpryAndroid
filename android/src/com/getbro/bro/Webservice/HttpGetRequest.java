@@ -2,10 +2,12 @@ package com.getbro.bro.Webservice;
 
 import com.getbro.bro.Json.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -31,20 +33,68 @@ import org.apache.http.params.HttpProtocolParams;
 public class HttpGetRequest {
 
     private String webServiceUrl;
+    private HttpClient client;
 
-    public HttpGetRequest(String webServiceUrl) {
+    public HttpGetRequest(String webServiceUrl, String userName, String password) {
         this.webServiceUrl = webServiceUrl;
+        this.client = GetClient(userName,password);
     }
 
-
-    public void foo() {
-
-
+    public User[] GetUsers() {
+        String json = GetJson("/users");
+        Data<User[]> data = GsonFactory().fromJson(json, new TypeToken<Data<User[]>>() {}.getType());
+        return data.data;
     }
 
-    public void bar() {
+    public User GetUser(int id) {
+        String json = GetJson("/users/" + id);
+        Data<User> data = GsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
+        return data.data;
+    }
+
+    public Event[] GetEvents() {
+        String json = GetJson("/events");
+        Data<Event[]> data = GsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
+        return data.data;
+    }
+
+    public Event GetEvent(int id) {
+        String json = GetJson("/events/" + id);
+        Data<Event> data = GsonFactory().fromJson(json, new TypeToken<Data<Event>>() {}.getType());
+        return data.data;
+    }
+
+    public Gson GsonFactory() {
+       return new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ").create();
+    }
+
+    public String GetJson(String url) {
+        String fullUrl = webServiceUrl + url;
+        HttpGet request = new HttpGet(fullUrl);
+        StringBuffer result = new StringBuffer();
+        String line = "";
+
+        try {
+            HttpResponse response = client.execute(request);
+            int responseCode = response.getStatusLine().getStatusCode();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            while ((line = rd.readLine()) != null)
+                result.append(line);
+        }
+        catch (Exception ex) {
+            java.lang.System.out.println(ex.getMessage());
+        }
+
+        return result.toString();
+    }
+
+    private HttpClient GetClient() {
+        return GetClient("","");
+    }
+
+    private HttpClient GetClient(String userName, String password) {
         DefaultHttpClient client = null;
-        String fullUrl = webServiceUrl + "/users/1";
 
         try {
 
@@ -75,47 +125,21 @@ public class HttpGetRequest {
             // Creating HTTP client
             client = new DefaultHttpClient(ccm, params);
 
-            // Registering user name and password for authentication
-//            client.getCredentialsProvider().setCredentials(
-//                   new AuthScope(null, -1),
-//                    new UsernamePasswordCredentials("raphi", "password"));
+            //Registering user name and password for authentication
+
+            if ("" != userName) {
+                client.getCredentialsProvider().setCredentials(
+                        new AuthScope(null, -1),
+                        new UsernamePasswordCredentials(userName, password));
+            }
+
 
         } catch (Exception e) {
             client = new DefaultHttpClient();
         }
 
-        try {
-            HttpGet request = new HttpGet(fullUrl);
-            //request.addHeader("Authorization", "Bearer RsT5OjbzRn430zqMLgV3Ia");
-
-            HttpResponse response = client.execute(request);
-            int responsecode = response.getStatusLine().getStatusCode();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-            StringBuffer result = new StringBuffer();
-            String line = "";
-
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-
-
-            Gson gson = new Gson();
-            Data<User> data = gson.fromJson(result.toString(), new TypeToken<Data<User>>(){}.getType());
-            User user = data.data;
-            String name = user.name;
-
-
-            //br = new BufferedReader(new StringReader(" [ { \"id\": 1, \"sex\": \"male\", \"username\": \"chris\" }, { \"id\": 2, \"sex\": \"male\", \"username\": \"ommi\" }, { \"id\": 3, \"sex\": \"male\", \"username\": \"david\" } ]"));
-            //User[] users = gson.fromJson(br, User[].class);
-            //name=users[0].username;
-        }
-        catch (Exception ex) {
-            java.lang.System.out.println(ex.getMessage());
-        }
-
+        return client;
     }
-
 }
 
 
