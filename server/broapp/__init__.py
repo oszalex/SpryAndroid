@@ -102,7 +102,13 @@ def get_user(user_id):
     else:
         return errormsg("There is no such a user for you, dear guest.", 404)
 
+@app.route("/users/<regex>")
+def get_regex_user(regex):
+    query = db.session.query(User).filter(User.username.like(regex + "%"))
 
+    results = query.all()
+    print results
+    return jsonify({"data": UserSerializer(results, many=True).data })
 
 @app.route("/users/me")
 @auth.login_required
