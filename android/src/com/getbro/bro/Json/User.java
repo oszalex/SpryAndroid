@@ -10,4 +10,10 @@ public class User  extends Item {
     @SerializedName("username")
     public String UserName;
 
+    @Override
+    public String toString() {
+        return UserName;
+    }
+
+
 }

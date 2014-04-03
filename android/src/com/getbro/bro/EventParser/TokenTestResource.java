@@ -46,12 +46,17 @@ public class TokenTestResource implements ITokenResource {
     }
 
     @Override
+    public List<String> getEventSuggestions(String token) {
+       return search(token);
+    }
+
+    @Override
     public List<String> getPersonSuggestions(String token) {
         return search(token);
     }
 
     @Override
-    public List<String> getLabelSuggestions(String token) {
+    public List<String> getTagSuggestions(String token) {
         return search(token);
     }
 
@@ -61,7 +66,7 @@ public class TokenTestResource implements ITokenResource {
     }
 
     @Override
-    public List<String> getTimeSuggestion(String token) {
+    public List<String> getTimeSuggestions(String token) {
         return search(token);
     }
 }
