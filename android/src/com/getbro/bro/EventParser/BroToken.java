@@ -25,13 +25,15 @@ public class BroToken {
             return null;
 
         char identifier = token.charAt(0);
+        token = token.substring(1);
         List<String> suggestions = null;
 
+
         switch  (identifier) {
-            //case '@': suggestions = getPersonSuggestions(token); break;
-            case '_': suggestions = getPersonSuggestions(token); break; // just for testing, @ some doesn't work in emulator
-            case '#': suggestions = getLabelSuggestions(token); break;
-            case '+': suggestions = getLocationSuggestions(token); break;
+            //case '@': suggestions =  getLocationSuggestions(token); break;
+            case '_': suggestions = getLocationSuggestions(token); break; // just for testing, @ some doesn't work in emulator
+            case '#': suggestions = getTagSuggestions(token); break;
+            case '+': suggestions = getPersonSuggestions(token); break;
             case '!': suggestions = getTimeSuggestion(token); break;
             default: throw new Exception("Invalid token identifier: '" + identifier + "'");
         }
@@ -43,8 +45,8 @@ public class BroToken {
         return tokenResource.getPersonSuggestions(token);
     }
 
-    private List<String> getLabelSuggestions(String token) {
-        return tokenResource.getLabelSuggestions(token);
+    private List<String> getTagSuggestions(String token) {
+        return tokenResource.getTagSuggestions(token);
     }
 
     private List<String> getLocationSuggestions(String token) {
@@ -52,6 +54,6 @@ public class BroToken {
     }
 
     private List<String> getTimeSuggestion(String token) {
-        return tokenResource.getTimeSuggestion(token);
+        return tokenResource.getTimeSuggestions(token);
     }
 }

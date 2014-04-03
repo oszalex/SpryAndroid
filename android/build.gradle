@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        maven { url 'http://clinker.47deg.com/nexus/content/groups/public' }
+    }
+
+    dependencies {
+        compile ('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
+            transitive = true
+        }
+    }
+}
+
+
+
+dependencies {
+
+    compile files('libs/android-support-v4.jar')
+    compile files('libs/gson-2.2.4.jar')
+    compile files('libs/osmdroid-android-4.0.jar')
+    compile files('libs/slf4j-android-1.5.8.jar')
+    compile project(":android")
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+}

@@ -40,7 +40,7 @@ public class HttpGetRequest {
         this.client = getClient(userName,password);
     }
 
-    public User[] getUsers() {
+    public User[] getAllUsers() {
         String json = getJson("/users");
         Data<User[]> data = gsonFactory().fromJson(json, new TypeToken<Data<User[]>>() {}.getType());
         return data.data;
@@ -52,7 +52,13 @@ public class HttpGetRequest {
         return data.data;
     }
 
-    public Event[] getEvents() {
+    public User[] matchUser(String match) {
+        String json = getJson("/users/"+match);
+        Data<User[]> data = gsonFactory().fromJson(json, new TypeToken<Data<User[]>>() {}.getType());
+        return data.data;
+    }
+
+    public Event[] getAllEvents() {
         String json = getJson("/events");
         Data<Event[]> data = gsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
         return data.data;

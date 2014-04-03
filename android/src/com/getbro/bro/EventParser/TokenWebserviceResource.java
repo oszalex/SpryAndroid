@@ -29,17 +29,16 @@ public class TokenWebserviceResource implements ITokenResource {
 
     @Override
     public List<String> getPersonSuggestions(String token) {
-        User[] users = request.getUsers();
+        User[] users = request.matchUser(token);
         ArrayList<String> userNames = new ArrayList<String>();
 
         for (User u : users)
-            userNames.add(u.UserName);
-
+            userNames.add("+" + u.UserName);
         return userNames;
     }
 
     @Override
-    public List<String> getLabelSuggestions(String token) {
+    public List<String> getTagSuggestions(String token) {
         return new ArrayList<String>();
     }
 
@@ -49,7 +48,17 @@ public class TokenWebserviceResource implements ITokenResource {
     }
 
     @Override
-    public List<String> getTimeSuggestion(String token) {
+    public List<String> getTimeSuggestions(String token) {
         return new ArrayList<String>();
+    }
+
+    @Override
+    public List<String> getEventSuggestions(String token)  {
+        Event[] events = request.getAllEvents();
+        ArrayList<String> eventNames = new ArrayList<String>();
+
+        for (Event e : events)
+            eventNames.add(e.Name);
+        return eventNames;
     }
 }

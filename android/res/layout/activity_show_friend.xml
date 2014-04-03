@@ -13,7 +13,7 @@
         android:layout_height="0dip"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dip"
-        android:contentDescription="@string/logo_description"
+        android:contentDescription="hallo"
         android:src="@drawable/buddy" />
     
   	   <TextView
