@@ -147,6 +147,7 @@ def insert_event():
     event = EventFactory.fromJson(request.get_json(force=True))
 
     db.session.add(event)
+    db.session.commit()
     
     return jsonify({"data": EventSerializer(event).data})
 

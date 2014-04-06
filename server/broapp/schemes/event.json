@@ -35,10 +35,18 @@
               ]
     },
     "venue_id": {
-      "description": "Age in years",
+      "description": "venuie id in foursquare database",
       "type": "integer",
       "minimum": 0
     },
+    "tags":{
+       "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+      },
     "public":{
       "type":"boolean"
     },
