@@ -47,6 +47,14 @@
             "minItems": 0,
             "uniqueItems": true
       },
+      "participant_ids":{
+       "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+      },
     "public":{
       "type":"boolean"
     },
@@ -56,5 +64,5 @@
       "minimum": 0
     }
   },
-  "required": ["name", "datetime", "venue_id", "creator_id"]
+  "required": ["name", "datetime", "venue_id", "creator_id", "participant_ids"]
 }

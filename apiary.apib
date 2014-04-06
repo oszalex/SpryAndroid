@@ -293,8 +293,7 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
               "public": true, 
               "tags": [
                 {
-                  "id": 3, 
-                  "name": "fancy"
+                  "fancy"
                 }
               ], 
               "venue_id": 12321
@@ -311,8 +310,7 @@ Paging: This resource optionally allows paging. Use offset and limit parameters 
               "public": true, 
               "tags": [
                 {
-                  "id": 1, 
-                  "name": "test"
+                  "test"
                 }
               ], 
               "venue_id": 123245
@@ -337,8 +335,7 @@ list all *public* events
               "public": true, 
               "tags": [
                 {
-                  "id": 3, 
-                  "name": "fancy"
+                  "fancy"
                 }
               ], 
               "venue_id": 12321
@@ -355,8 +352,7 @@ list all *public* events
               "public": true, 
               "tags": [
                 {
-                  "id": 1, 
-                  "name": "test"
+                  "test"
                 }
               ], 
               "venue_id": 123245
@@ -422,7 +418,7 @@ A single Event object with all its details.
     + Body
 
             {
-              "event": {
+              "data": {
                 "creator_id": 1, 
                 "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
                 "id": 1, 
@@ -431,8 +427,7 @@ A single Event object with all its details.
                 "public": true, 
                 "tags": [
                   {
-                    "id": 3, 
-                    "name": "fancy"
+                    "fancy"
                   }
                 ], 
                 "venue_id": 12321
@@ -481,4 +476,59 @@ A single Event object with all its details.
             "error": "There is no such an event for you, dear guest."
         }
 
+# Group Tags
+Tags related resources of the **BRO API**
+
+#### Tag Properties
+
+ * `id` (required, autoincrement, numeric)
+ * `name` (unique, required)
+
+ 
+## Tags Collection [/tags/{tag_name}]
+
+### List all Events tagged with `tag_name` [GET]
++ Request
+
+    + Header
+    
+            Authorization:Basic Y2hyaXM6MTIz
+    
++ Response 200 (application/json)
+
+        {
+          "data": [
+            {
+              "creator_id": 1, 
+              "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+              "id": 1, 
+              "name": "GreenSheep Energy Drinks Promo", 
+              "participant_ids": [], 
+              "public": true, 
+              "tags": [
+                {
+                  "tag_name"
+                }
+              ], 
+              "venue_id": 12321
+            }, 
+            {
+              "creator_id": 3, 
+              "datetime": "Fri, 28 Mar 2014 18:37:32 -0000", 
+              "id": 2, 
+              "name": "Ommis gebfeier", 
+              "participant_ids": [
+                3, 
+                2
+              ], 
+              "public": true, 
+              "tags": [
+                {
+                 "tag_name"
+                }
+              ], 
+              "venue_id": 123245
+            }
+          ]
+        }
 
