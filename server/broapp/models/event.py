@@ -6,7 +6,8 @@ from dateutil import parser
 
 from . import db, ModelValidator
 from tag import Tag, TagSerializer
-from user import UserSerializer
+from user import User, UserSerializer
+from invitation import Invitation
 
 
 event_tags = db.Table('event_tags',
@@ -49,8 +50,16 @@ class EventFactory(object):
             name =json_obj["name"],
             datetime=parser.parse(json_obj["datetime"]),
             venue_id = json_obj["venue_id"],
-            creator_id = json_obj["creator_id"]
+            creator_id = json_obj["creator_id"],
         )
+
+        #create invitations
+        for p in json_obj['participant_ids']:
+            user = User.query.get(p)
+            if user is not None:
+                i = Invitation()
+                i.user = user
+                event.participant_ids.append(i)
 
         if 'public' in json_obj:
             event.public = json_obj["public"]
