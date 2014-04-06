@@ -137,9 +137,19 @@ def get_events():
     #Sort events
     events.sort(key=lambda x: x.datetime)
 
-    #add attending state
+    serialized = EventSerializer(events, many=True).data
 
-    return jsonify({ "data" : EventSerializer(events, many=True).data } )
+    #add attending state
+    #if hasattr(g, 'user') and g.user is not None:
+    #    print "eingelogged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #    for e in events:
+    #        state = Invitation.query.filter_by(users_id=g.user.id, events_id=e.id).first()
+    #        print state
+    #        if state is not None:
+    #            serialized["status"] = state.attending
+
+
+    return jsonify({ "data" : serialized } )
 
 
 @app.route('/events', methods=["PUT", "POST"])
