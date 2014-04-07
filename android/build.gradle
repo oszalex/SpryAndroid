@@ -3,8 +3,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.7.3+'
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
 }
 
 repositories {
@@ -26,7 +30,6 @@ dependencies {
 	
 	compile ('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
         exclude module: 'appcompat-v7'
-
         transitive = true
     }
 }
@@ -39,21 +42,4 @@ android {
 	    minSdkVersion 10
 	    targetSdkVersion 19
 	}
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-
-        instrumentTest.setRoot('tests')
-
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
-    }
 }
