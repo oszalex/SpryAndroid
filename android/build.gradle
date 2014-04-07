@@ -20,9 +20,13 @@ dependencies {
 	compile 'com.google.code.gson:gson:2.2.+'
 	compile "org.osmdroid:osmdroid-android:4.+"
 	compile "com.google.android:support-v4:r7"
-	compile "com.android.support:appcompat-v7:18.0.+"
+	compile ("com.android.support:appcompat-v7:18.0.+") {
+        exclude module: 'support-v4'
+    }
 	
 	compile ('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
+        exclude module: 'appcompat-v7'
+
         transitive = true
     }
 }
