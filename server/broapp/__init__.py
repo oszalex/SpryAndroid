@@ -7,6 +7,7 @@ from models import db
 from models.tag import Tag
 from models.user import User, UserSerializer
 from models.event import Event, EventSerializer, EventFactory
+from models.invitation import Invitation
 
 import json
 
@@ -52,6 +53,12 @@ def hello():
 	return "Hello Bro!"
 
 
+@app.route("/version")
+def version():
+    import subprocess
+    return jsonify({"version": subprocess.check_output(["git", "describe", "--tag"])})
+
+
 '''
 Authentication Endpoints
 '''
@@ -65,6 +72,95 @@ def login():
 @auth.login_required
 def logout():
 	abort(401)
+
+
+
+
+
+'''
+suggest
+'''
+
+@app.route("/autocomplete/users/<regex>")
+def get_regex_user(regex):
+    query = db.session.query(User).filter(User.username.like(regex + "%"))
+    return jsonify({"data": UserSerializer(query.all(), many=True).data })
+
+
+@app.route("/autocomplete/tags/<regex>")
+def get_regex_tag(regex):
+    query = db.session.query(Tag).filter(Tag.name.like(regex + "%"))
+    return jsonify({"data": TagSerializer(query.all(), many=True).data })
+
+@app.route("/autocomplete/events/<regex>")
+def get_regex_event(regex):
+    query = db.session.query(Event).filter(Event.name.like(regex + "%"))
+    return jsonify({"data": EventSerializer(query.all(), many=True).data })
+
+
+'''
+My assets/data
+'''
+
+
+@app.route("/my/followers")
+@auth.login_required
+def get_my_followers():
+    return ""
+
+@app.route("/my/followings")
+@auth.login_required
+def get_my_followings():
+    return ""
+
+@app.route("/my/events")
+@auth.login_required
+def get_my_events():
+    events = Event.query.filter_by(public=True).all()
+
+    events.extend(Event.query.filter_by(public=False, creator_id=g.user.id).all())
+
+    #TODO all where user is participant
+
+    #Sort events
+    events.sort(key=lambda x: x.datetime)
+
+    serialized = EventSerializer(events, many=True).data
+
+    #for e in events:
+    #    state = Invitation.query.filter_by(users_id=g.user.id, events_id=e.id).first()
+    #    if state is not None:
+    #        serialized["status"] = state.attending
+
+    return jsonify({ "data" : serialized } )
+
+@app.route("/my/events/<int:event_id>")
+@auth.login_required
+def get_my_event(event_id):
+    event = Event.query.get(event_id)
+
+    if event is not None:
+
+        ##
+        # access allowed if:
+        #  - ) user is creator
+        #  - ) user is participant
+        #  - ) event is public
+        ##
+
+        if (event.public or
+            (hasattr(g, 'user') and g.user is not None and g.user.id is event.creator_id) or
+            (hasattr(g, 'user') and g.user is not None and g.user.id in event.participant_ids)):
+                return jsonify({"data": EventSerializer(event).data})
+        else:
+            return errormsg("access forbidden", 403)
+
+    else:
+        return errormsg("There is no such an event for you, dear guest.", 404)
+
+
+
+
 
 '''
 #<<NOT PART OF BETA-PHASE>>
@@ -94,6 +190,7 @@ def get_users():
 
 
 @app.route("/users/<int:user_id>")
+@auth.login_required
 def get_user(user_id):
     user = User.query.get(user_id)
 
@@ -102,13 +199,7 @@ def get_user(user_id):
     else:
         return errormsg("There is no such a user for you, dear guest.", 404)
 
-@app.route("/users/<regex>")
-def get_regex_user(regex):
-    query = db.session.query(User).filter(User.username.like(regex + "%"))
 
-    results = query.all()
-    print results
-    return jsonify({"data": UserSerializer(results, many=True).data })
 
 @app.route("/users/me")
 @auth.login_required
@@ -129,26 +220,7 @@ events
 @app.route("/events")
 def get_events():
     events = Event.query.filter_by(public=True).all()
-
-    if hasattr(g, 'user') and g.user is not None:
-        events.append(Event.query.filter_by(public=False, creator_id=g.user.id).all())
-        #TODO: add all, where g.user is participant
-
-    #Sort events
-    events.sort(key=lambda x: x.datetime)
-
     serialized = EventSerializer(events, many=True).data
-
-    #add attending state
-    #if hasattr(g, 'user') and g.user is not None:
-    #    print "eingelogged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    #    for e in events:
-    #        state = Invitation.query.filter_by(users_id=g.user.id, events_id=e.id).first()
-    #        print state
-    #        if state is not None:
-    #            serialized["status"] = state.attending
-
-
     return jsonify({ "data" : serialized } )
 
 
