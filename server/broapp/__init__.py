@@ -6,7 +6,7 @@ from passlib.apps import custom_app_context as pwd_context
 from models import db
 from models.tag import Tag
 from models.user import User, UserSerializer
-from models.event import Event, EventSerializer, EventFactory
+from models.event import Event, EventSerializer, EventStateSerializer, EventFactory
 from models.invitation import Invitation
 
 import json
@@ -102,7 +102,6 @@ def get_regex_event(regex):
 My assets/data
 '''
 
-
 @app.route("/my/followers")
 @auth.login_required
 def get_my_followers():
@@ -125,14 +124,16 @@ def get_my_events():
     #Sort events
     events.sort(key=lambda x: x.datetime)
 
-    serialized = EventSerializer(events, many=True).data
+    serialized = EventStateSerializer(events, many=True, context={'user': g.user}).data
 
     #for e in events:
-    #    state = Invitation.query.filter_by(users_id=g.user.id, events_id=e.id).first()
+    #    
     #    if state is not None:
     #        serialized["status"] = state.attending
 
     return jsonify({ "data" : serialized } )
+
+
 
 @app.route("/my/events/<int:event_id>")
 @auth.login_required

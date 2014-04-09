@@ -91,3 +91,25 @@ class EventSerializer(Serializer):
 
 	class Meta:
 		fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids', 'public')
+
+
+class EventStateSerializer(Serializer):
+    tags = fields.Nested(TagSerializer,only='name', many=True)
+    #participant_ids = fields.Nested(UserSerializer, many=True)
+    participant_ids = fields.Method("get_participant_ids")
+    datetime = fields.Method("get_datetime")
+    status = fields.Function(lambda event, ctx: Invitation.query.filter_by(users_id=ctx['user'].id, events_id=event.id).first().attending)
+
+    def get_participant_ids(self, obj):
+        user_ids = []
+
+        for invitation in obj.participant_ids:
+            user_ids.append(invitation.user.id)
+        return user_ids #UserSerializer(users, many=True).data
+
+    def get_datetime(self, obj):
+        return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S.%f+0100')
+
+
+    class Meta:
+        fields = ('id', 'name', 'venue_id', 'datetime', 'creator_id', 'tags', 'participant_ids', 'public', 'status')
