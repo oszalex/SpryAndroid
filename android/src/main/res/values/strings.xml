@@ -5,7 +5,6 @@
     <string name="webService">https://getbro.com:8080</string>
     <string name="action_settings">Settings</string>
 
-    
     <!-- Login Activity -->
     <string name="loginLogoDescription">Bro-Logo</string>
     <string name="loginTitle">bro</string>
@@ -14,16 +13,15 @@
     <string name="loginRegister">GetBro - Register now</string>
     <string name="loginEditUsername">username</string>
     <string name="loginEditPassword">password</string>
-    
-    
+
     <!-- Input Activity -->
     <string name="title_activity_input">Start your Bromance</string>
     <string name="hello_world">Hello world!</string>
     <string name="std_category">Categories</string>
     <string name="more">+</string>
-
     <string name="title_activity_show_friend">ShowFriendActivity</string>
     <string name="title_activity_friendlist">FriendlistActivity</string>
     <string name="title_activity_display_events">DisplayEventsActivity</string>
+    <string name="title_activity_profil">ProfilActivity</string>
 
 </resources>
