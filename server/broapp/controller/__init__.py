@@ -12,11 +12,16 @@
 '''
 
 from flask.ext.httpauth import HTTPBasicAuth
+from math import ceil
 
 auth = HTTPBasicAuth()
+
+EVENTS_PER_RESPONSE = 5
+USERS_PER_RESONSE = 4
+TAGS_PER_RESPONSE = 8
 
 def errormsg(msg, code):
     return jsonify({"error": msg}), code
 
 
-__all__ = ["autocomplete", "info", "events", "users", "memberarea"]
+__all__ = ["autocomplete", "info", "events", "users", "memberarea", "authentication"]

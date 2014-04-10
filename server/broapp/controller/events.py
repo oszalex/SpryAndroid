@@ -13,15 +13,14 @@
 
 from flask import Blueprint, jsonify
 from ..models import Event, EventSerializer, EventStateSerializer, EventFactory
-from . import auth, errormsg
+from . import auth, errormsg, EVENTS_PER_RESPONSE
 
 events = Blueprint('events', __name__)
 
-
-@events.route("/")
-@auth.login_required
-def get_events():
-    events = Event.query.filter_by(public=True).all()
+@events.route("/", defaults={'page_num': 1})
+@events.route("/<int:page_num>")
+def get_events(page_num):
+    events = Event.query.filter_by(public=True).paginate(page_num, EVENTS_PER_RESPONSE).items
     serialized = EventSerializer(events, many=True).data
     return jsonify({ "data" : serialized } )
 
@@ -58,6 +57,7 @@ def get_event(event_id):
 
     else:
         return errormsg("There is no such an event for you, dear guest.", 404)
+
 
 
 @events.route("/<int:event_id>", methods=['DELETE'])

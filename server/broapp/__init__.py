@@ -32,15 +32,6 @@ with app.app_context():
         db.create_all()
         g.user = None
 
-
-
-# register controller
-app.register_blueprint(autocomplete.autocomplete, url_prefix='/ac')
-app.register_blueprint(info.info, url_prefix='/info')
-app.register_blueprint(events.events, url_prefix='/events')
-app.register_blueprint(users.users, url_prefix='/users')
-app.register_blueprint(memberarea.mybro, url_prefix='/my')
-
 @auth.verify_password
 def verify_password(username, password):
     user = User.query.filter_by(username = username).first()
@@ -53,36 +44,10 @@ def verify_password(username, password):
     g.user = user
     return True
 
-'''
-Authentication Endpoints
-'''
-
-@app.route("/login")
-@auth.login_required
-def login():
-    return "Hello %s!" % g.user.username
-
-@app.route("/logout")
-@auth.login_required
-def logout():
-	abort(401)
-
-'''
-#<<NOT PART OF BETA-PHASE>>
-@app.route('/register', methods = ['POST'])
-def new_user():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    if username is None or password is None:
-        abort(400) # missing arguments
-    if User.query.filter_by(username = username).first() is not None:
-        abort(400) # existing user
-    user = User(username = username)
-    user.hash_password(password)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
-'''
-
-
-
+# register controller
+app.register_blueprint(autocomplete.autocomplete, url_prefix='/ac')
+app.register_blueprint(info.info, url_prefix='/info')
+app.register_blueprint(events.events, url_prefix='/events')
+app.register_blueprint(users.users, url_prefix='/users')
+app.register_blueprint(memberarea.mybro, url_prefix='/my')
+app.register_blueprint(authentication.broauth, url_prefix='/auth')
