@@ -18,9 +18,12 @@ public class NewEventActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newevent);
 
+        HttpGetRequest httpRequest = (HttpGetRequest)getApplication();
+
+
         final MultiAutoCompleteTextView textView = (MultiAutoCompleteTextView)findViewById(R.id.text);
 
-        AutoCompleteAdapter adapter = new AutoCompleteAdapter(context,android.R.layout.simple_list_item_1,new TokenWebserviceResource(getResources().getString(R.string.webService),"raphi","password"));
+        AutoCompleteAdapter adapter = new AutoCompleteAdapter(context,android.R.layout.simple_list_item_1,new TokenWebserviceResource(httpRequest));
         textView.setAdapter(adapter);
         textView.setTokenizer(new WhitespaceTokenizer());
 

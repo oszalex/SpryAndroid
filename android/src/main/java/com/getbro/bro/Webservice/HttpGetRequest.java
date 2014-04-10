@@ -1,5 +1,6 @@
 package com.getbro.bro.Webservice;
 
+import android.app.Application;
 import com.getbro.bro.Json.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,12 +31,18 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
-public class HttpGetRequest {
+public class HttpGetRequest extends Application {
 
     private String webServiceUrl;
     private HttpClient client;
 
+    public HttpGetRequest() { }
+
     public HttpGetRequest(String webServiceUrl, String userName, String password) {
+        configureClient(webServiceUrl,userName,password);
+    }
+
+    public void configureClient(String webServiceUrl, String userName, String password) {
         this.webServiceUrl = webServiceUrl;
         this.client = getClient(userName,password);
     }

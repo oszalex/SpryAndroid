@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import com.getbro.bro.EventParser.TokenWebserviceResource;
 import com.getbro.bro.Webservice.HttpGetRequest;
+import org.apache.http.client.methods.HttpGet;
 
 public class MainActivity extends Activity {
 
@@ -29,7 +31,14 @@ public class MainActivity extends Activity {
 
 	/** Called when the user clicks the login button */
 	public void login(View view) {
+        EditText mUsername = (EditText)findViewById(R.id.login_username);
+        EditText mPassword = (EditText)findViewById(R.id.login_password);
 
+        String username = mUsername.getText().toString();
+        String password = mPassword.getText().toString();
+
+        HttpGetRequest httpRequest = (HttpGetRequest)getApplication();
+      //  httpRequest.configureClient(getResources().getString(R.string.webService),username,password);
 
         Intent intent = new Intent(this,NewEventActivity.class);
         startActivity(intent);

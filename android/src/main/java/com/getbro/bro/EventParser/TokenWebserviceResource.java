@@ -19,17 +19,15 @@ import java.util.List;
 
 public class TokenWebserviceResource implements ITokenResource {
 
-    private String webServiceUrl;
-    private HttpGetRequest request;
+    private HttpGetRequest httpRequest;
 
-    public TokenWebserviceResource(String webServiceUrl, String userName, String password) {
-        this.webServiceUrl = webServiceUrl;
-        this.request = new HttpGetRequest(webServiceUrl,userName,password);
+    public TokenWebserviceResource(HttpGetRequest httpRequest) {
+        this.httpRequest = httpRequest;
     }
 
     @Override
     public List<String> getPersonSuggestions(String token) {
-        User[] users = request.matchUser(token);
+        User[] users = httpRequest.matchUser(token);
         ArrayList<String> userNames = new ArrayList<String>();
 
         for (User u : users)
@@ -54,7 +52,7 @@ public class TokenWebserviceResource implements ITokenResource {
 
     @Override
     public List<String> getEventSuggestions(String token)  {
-        Event[] events = request.getAllEvents();
+        Event[] events = httpRequest.getAllEvents();
         ArrayList<String> eventNames = new ArrayList<String>();
 
         for (Event e : events)
