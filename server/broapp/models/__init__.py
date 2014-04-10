@@ -1,3 +1,16 @@
+'''
+             _   ____  _____   ____   
+            | | |  _ \|  __ \ / __ \  
+   __ _  ___| |_| |_) | |__) | |  | | 
+  / _` |/ _ \ __|  _ <|  _  /| |  | | 
+ | (_| |  __/ |_| |_) | | \ \| |__| | 
+  \__, |\___|\__|____/|_|  \_\\____(_)
+   __/ |                              
+  |___/                                
+
+
+'''
+
 from flask.ext.sqlalchemy import SQLAlchemy
 from jsonschema import validate
 import os
@@ -18,7 +31,7 @@ class ModelValidator(object):
 
 from user import User, UserSerializer
 from tag import Tag, TagSerializer
-from event import Event, EventSerializer, EventFactory
+from event import Event, EventSerializer, EventFactory, EventStateSerializer
 from invitation import Invitation
 
 __all__ = ["event", "user", "tag", "invitation"]
