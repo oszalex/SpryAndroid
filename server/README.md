@@ -1,5 +1,11 @@
 # README
 
+## TODO
+
+ + Pagination
+ + Exceptions/Errordecorator from flask
+ + Unittests/Mockups
+
 ## Install & Run
 
 create a virtual environment

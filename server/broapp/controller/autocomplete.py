@@ -14,14 +14,17 @@
 from flask import Blueprint, jsonify
 from .. import db
 from ..models import User, UserSerializer, Tag, TagSerializer, Event, EventSerializer
+from . import USERS_PER_RESONSE
+from flask.ext.sqlalchemy import BaseQuery 
 
 autocomplete = Blueprint('autocomplete', __name__)
 
-
-@autocomplete.route("/users/<regex>")
-def get_regex_user(regex):
+@autocomplete.route("/users/<regex>", defaults={'page_num': 1})
+@autocomplete.route("/users/<regex>/<int:page_num>")
+def get_regex_user(regex, page_num):
     query = db.session.query(User).filter(User.username.like(regex + "%"))
-    return jsonify({"data": UserSerializer(query.all(), many=True).data })
+    items = qery.paginate(page_num, USERS_PER_RESONSE).items
+    return jsonify({"data": UserSerializer(items, many=True).data })
 
 
 @autocomplete.route("/tags/<regex>")
