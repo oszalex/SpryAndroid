@@ -11,6 +11,8 @@ from models.invitation import Invitation
 
 import json
 
+from controller import *
+
 app = Flask(__name__)
 
 db.init_app(app)
@@ -25,6 +27,17 @@ with app.app_context():
         # is while within this block. Therefore, you can now run........
         db.create_all()
         g.user = None
+
+
+
+
+
+
+# register controller
+
+app.register_blueprint(autocomplete.autocomplete, url_prefix='/ac')
+app.register_blueprint(info.info, url_prefix='/info')
+
 
 @auth.verify_password
 def verify_password(username, password):
@@ -43,20 +56,6 @@ def errormsg(msg, code):
     return jsonify({"error": msg}), code
 
 
-
-'''
-Endpoints
-'''
-
-@app.route("/")
-def hello():
-	return "Hello Bro!"
-
-
-@app.route("/version")
-def version():
-    import subprocess
-    return jsonify({"version": subprocess.check_output(["git", "describe", "--tag"])})
 
 
 '''
@@ -77,25 +76,6 @@ def logout():
 
 
 
-'''
-suggest
-'''
-
-@app.route("/autocomplete/users/<regex>")
-def get_regex_user(regex):
-    query = db.session.query(User).filter(User.username.like(regex + "%"))
-    return jsonify({"data": UserSerializer(query.all(), many=True).data })
-
-
-@app.route("/autocomplete/tags/<regex>")
-def get_regex_tag(regex):
-    query = db.session.query(Tag).filter(Tag.name.like(regex + "%"))
-    return jsonify({"data": TagSerializer(query.all(), many=True).data })
-
-@app.route("/autocomplete/events/<regex>")
-def get_regex_event(regex):
-    query = db.session.query(Event).filter(Event.name.like(regex + "%"))
-    return jsonify({"data": EventSerializer(query.all(), many=True).data })
 
 
 '''
