@@ -11,7 +11,7 @@
 
 '''
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, g
 from ..models import User, UserSerializer
 from . import auth, errormsg
 
@@ -38,8 +38,4 @@ def get_user(user_id):
 @users.route("/me")
 @auth.login_required
 def get_current_user():
-
-    if g.user is not None:
-        return jsonify({"data": UserSerializer(g.user).data})
-    else:
-        return errormsg("You're not logged in, bro", 404)
+  return jsonify({"data": UserSerializer(g.user).data})

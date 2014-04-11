@@ -36,11 +36,15 @@ with app.app_context():
 def verify_password(username, password):
     user = User.query.filter_by(username = username).first()
 
+    if user is None:
+      app.logger.warning('user %s not found' % (username))
+      return False
+
     if not user or not user.check_password(password):
-        app.logger.warning('password %s is invalid for user %s' % (password, user.username))
+        app.logger.warning('password %s is invalid for user %s' % (password, username))
         return False
 
-    app.logger.debug('user %s: sucessfully logged in' % (user.username))
+    app.logger.debug('user %s: sucessfully logged in' % (username))
     g.user = user
     return True
 
