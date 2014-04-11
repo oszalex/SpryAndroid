@@ -24,7 +24,7 @@ class BaseTestCase(TestCase):
 
     def test_login(self):
         response = self.client.get("/users/me", 
-        	headers={'Authorization': 'Basic ' + base64.b64encode(b'chris:12312312a').decode('utf-8').strip('\r\n')} )
+        	headers={'Authorization': 'Basic Y2hyaXM6MTIz'} )
         self.assert200(response)
 
     def test_login_required(self):
