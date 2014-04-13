@@ -1,2 +1,2 @@
 #!/bin/sh
-python -m broapp.tests.test
+nosetests -v
