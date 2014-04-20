@@ -33,7 +33,7 @@ event_tags = db.Table('event_tags',
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.String(100))
     datetime = db.Column(db.DateTime)
     venue_id = db.Column(db.Integer)
     public = db.Column(db.Boolean,unique=False, default=False)
