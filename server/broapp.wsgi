@@ -1,4 +1,7 @@
+#!/usr/bin/python
 import sys
-sys.path.insert(0, '/var/www/server')
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/bro/server/")
 
 from broapp import app as application
