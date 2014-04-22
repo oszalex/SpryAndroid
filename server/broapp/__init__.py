@@ -17,7 +17,6 @@ from flask import Flask, abort, request, jsonify, g, url_for
 from models import db, User
 from controller import auth
 from controller import *
-from path import LOGGING_DIR
 import logging
 
 app = Flask(__name__)
