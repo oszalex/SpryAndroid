@@ -13,7 +13,6 @@
 
 
 from flask import Flask, abort, request, jsonify, g, url_for
-import json
 
 from models import db, User
 from controller import auth
@@ -47,6 +46,12 @@ def verify_password(username, password):
     app.logger.debug('user %s: sucessfully logged in' % (username))
     g.user = user
     return True
+
+
+
+@app.route('/')
+def hello_bro():
+  return jsonify({"data": "Hello Bro!" })
 
 # register controller
 app.register_blueprint(autocomplete.autocomplete, url_prefix='/ac')
