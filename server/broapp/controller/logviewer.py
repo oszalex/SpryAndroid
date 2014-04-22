@@ -11,17 +11,15 @@
 
 '''
 
-from flask.ext.httpauth import HTTPBasicAuth
-from math import ceil
+from flask import Blueprint, g, Response
+from .. import auth
 
-auth = HTTPBasicAuth()
+logger = Blueprint('logviewer', __name__)
 
-EVENTS_PER_RESPONSE = 5
-USERS_PER_RESONSE = 4
-TAGS_PER_RESPONSE = 8
+@logger.route("/")
+@auth.login_required
+def login():
+	f = open("/tmp/broapp.log", "r")
+	#f = open(g.LOGGING_DIR + "/../logs/broapp.log", "r")
+	return Response(f.read() , mimetype="text/plain;charset=UTF-8")
 
-def errormsg(msg, code):
-    return jsonify({"error": msg}), code
-
-
-__all__ = ["autocomplete", "info", "events", "users", "memberarea", "authentication", "logviewer"]
