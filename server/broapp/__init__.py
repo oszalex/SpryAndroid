@@ -44,7 +44,6 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
-        g.LOGGING_DIR = LOGGING_DIR
         db.create_all()
         g.user = None
 
