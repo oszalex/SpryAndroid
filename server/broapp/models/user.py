@@ -28,7 +28,7 @@ class User(db.Model):
     email = db.Column(db.String(32), index=True, nullable=False)
     sex = db.Column(db.Enum('male', 'female'))
     salt = db.Column(db.String(6), nullable=False)
-    password = db.Column(db.String(64), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
 
     def __init__(self, username, email, sex, password):
         self.username = username
@@ -37,7 +37,7 @@ class User(db.Model):
         self.salt = self.salt_generator()
         self.set_password(password)
 
-    def salt_generator(self, size=6, chars=string.printable):
+    def salt_generator(self, size=6, chars=string.digits+string.letters):
         return ''.join(random.choice(chars) for _ in range(size))
 
     def set_password(self, password):

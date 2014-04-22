@@ -12,7 +12,7 @@
 '''
 
 import os
-from flask import Blueprint, jsonify, g
+from flask import Blueprint, jsonify, g, abort
 from .. import auth
 
 broauth = Blueprint('authentication', __name__)

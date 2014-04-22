@@ -38,9 +38,12 @@ def reset():
 
 @manager.command
 def clean_db():
+
+	db.engine.execute("SET foreign_key_checks = 0");
 	#delete entries
-	User.query.delete()
 	Event.query.delete()
+	Tag.query.delete()
+	User.query.delete()
 
 	#delete tables
 	for tbl in reversed(db.MetaData().sorted_tables):
