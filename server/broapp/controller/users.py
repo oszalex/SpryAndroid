@@ -13,15 +13,16 @@
 
 from flask import Blueprint, jsonify, g
 from ..models import User, UserSerializer
-from . import auth, errormsg
+from . import auth, errormsg, USERS_PER_RESONSE
 
 users = Blueprint('users', __name__)
 
-@users.route("/")
-@auth.login_required
-def get_users():
-    return jsonify({"data": UserSerializer(User.query.all(), many=True).data})
-
+@users.route("/", defaults={'page_num': 1})
+@users.route("/<int:page_num>")
+def get_users(page_num):
+    users = User.query.paginate(page_num, USERS_PER_RESONSE).items
+    serialized = UserSerializer(users, many=True).data
+    return jsonify({ "data" : serialized } )
 
 @users.route("/<int:user_id>")
 @auth.login_required

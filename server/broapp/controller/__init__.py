@@ -12,11 +12,12 @@
 '''
 
 from flask.ext.httpauth import HTTPBasicAuth
+from flask import jsonify
 from math import ceil
 
 auth = HTTPBasicAuth()
 
-EVENTS_PER_RESPONSE = 5
+EVENTS_PER_RESPONSE = 10
 USERS_PER_RESONSE = 4
 TAGS_PER_RESPONSE = 8
 

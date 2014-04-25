@@ -35,7 +35,7 @@ def insert_event():
     return jsonify({"data": EventSerializer(event).data})
 
 
-@events.route("/<int:event_id>")
+@events.route("/id/<int:event_id>")
 def get_event(event_id):
     event = Event.query.get(event_id)
 
@@ -60,7 +60,7 @@ def get_event(event_id):
 
 
 
-@events.route("/<int:event_id>", methods=['DELETE'])
+@events.route("/id/<int:event_id>", methods=['DELETE'])
 @auth.login_required
 def remove_event(event_id):
     event = Event.query.get(event_id)
