@@ -1,16 +1,202 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.getbro.bro.ProfilActivity">
+    android:background="@color/profil_background_top"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/profil_fullname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="John Doe"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
+
+        <ImageView
+            android:id="@+id/profil_image"
+            android:layout_below="@+id/profil_fullname"
+            android:layout_centerHorizontal="true"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/profilImagedescription"
+            />
+
+        <TableLayout
+            android:id="@+id/profil_numbers"
+            android:stretchColumns="0, 1,2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profil_image">
+            <TableRow>
+                <TextView
+                    android:id="@+id/profil_follower"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:id="@+id/profil_events"
+                    android:text="4"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:id="@+id/profil_follow"
+                    android:text="91"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </TableRow>
+        </TableLayout>
+
+        <TableLayout
+            android:stretchColumns="0, 1,2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profil_numbers">
+            <TableRow>
+                <TextView
+                    android:text="@string/profilFollower"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+                </TextView>
+                <TextView
+                    android:text="@string/profilEvents"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+                </TextView>
+                <TextView
+                    android:text="@string/profilFollow"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+                </TextView>
+            </TableRow>
+        </TableLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:paddingTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/background_light">
+
+        <TableLayout
+            android:stretchColumns="0, 1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TableRow
+                android:layout_width="fill_parent">
+
+                <TextView
+                    android:textColor="@color/profil_data_description"
+                    android:text="@string/profilUsername"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/profil_username"
+                    android:text="johnny"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left">
+                </TextView>
+
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:textColor="@color/profil_data_description"
+                    android:text="@string/profilSex"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/profil_sex"
+                    android:text="male"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left">
+                </TextView>
+            </TableRow>
+            <TableRow>
+
+                <TextView
+                    android:textColor="@color/profil_data_description"
+                    android:text="@string/profilAge"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/profil_age"
+                    android:text="22"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left">
+                </TextView>
+
+            </TableRow>
+            </TableLayout>
+
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@android:color/background_light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event 1"
+            android:textSize="40sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event 2"
+            android:textSize="40sp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

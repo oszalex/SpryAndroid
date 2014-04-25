@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
         HttpGetRequest httpRequest = (HttpGetRequest)getApplication();
       //  httpRequest.configureClient(getResources().getString(R.string.webService),username,password);
 
-        Intent intent = new Intent(this,NewEventActivity.class);
+        Intent intent = new Intent(this,ProfilActivity.class);
         startActivity(intent);
 
 //		/**
