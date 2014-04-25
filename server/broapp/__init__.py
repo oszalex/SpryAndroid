@@ -17,8 +17,24 @@ from flask import Flask, abort, request, jsonify, g, url_for
 from models import db, User
 from controller import auth
 from controller import *
+import logging
 
 app = Flask(__name__)
+
+# setup logging
+    
+file_handler = logging.FileHandler("/tmp/broapp.log")
+file_handler.setLevel(logging.DEBUG)
+app.logger.addHandler(file_handler)
+
+file_handler.setFormatter(logging.Formatter(
+    '%(asctime)s %(levelname)s: %(message)s '
+    '[in %(pathname)s:%(lineno)d]'
+))
+
+app.logger.warning("getBro started")
+
+# setup database
 
 db.init_app(app)
 app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
@@ -60,3 +76,4 @@ app.register_blueprint(events.events, url_prefix='/events')
 app.register_blueprint(users.users, url_prefix='/users')
 app.register_blueprint(memberarea.mybro, url_prefix='/my')
 app.register_blueprint(authentication.broauth, url_prefix='/auth')
+app.register_blueprint(logviewer.logger, url_prefix='/logs')

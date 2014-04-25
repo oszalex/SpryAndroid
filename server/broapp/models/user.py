@@ -24,7 +24,7 @@ import random
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), index=True, nullable=False)
+    username = db.Column(db.String(32), index=True, nullable=False, unique=True)
     email = db.Column(db.String(32), index=True, nullable=False)
     sex = db.Column(db.Enum('male', 'female'))
     salt = db.Column(db.String(6), nullable=False)

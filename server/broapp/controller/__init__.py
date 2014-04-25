@@ -25,4 +25,4 @@ def errormsg(msg, code):
     return jsonify({"error": msg}), code
 
 
-__all__ = ["autocomplete", "info", "events", "users", "memberarea", "authentication"]
+__all__ = ["autocomplete", "info", "events", "users", "memberarea", "authentication", "logviewer"]
