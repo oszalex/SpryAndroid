@@ -13,11 +13,13 @@
 
 from flask import Blueprint, g, Response
 from .. import auth
+from documentation import auto
 
 logger = Blueprint('logviewer', __name__)
 
 @logger.route("/")
 @auth.login_required
+@auto.doc("public")
 def login():
 	f = open("/tmp/broapp.log", "r")
 	#f = open(g.LOGGING_DIR + "/../logs/broapp.log", "r")

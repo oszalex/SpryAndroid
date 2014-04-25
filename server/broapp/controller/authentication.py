@@ -14,16 +14,19 @@
 import os
 from flask import Blueprint, jsonify, g, abort
 from .. import auth
+from documentation import auto
 
 broauth = Blueprint('authentication', __name__)
 
 @broauth.route("/login")
 @auth.login_required
+@auto.doc("public")
 def login():
     return "Hello %s!" % g.user.username
 
 @broauth.route("/logout")
 @auth.login_required
+@auto.doc("public")
 def logout():
 	abort(401)
 

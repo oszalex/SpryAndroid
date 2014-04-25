@@ -14,6 +14,7 @@
 from flask import Blueprint, jsonify
 from . import auth
 from ..models import Event, EventSerializer, EventStateSerializer
+from documentation import auto
 
 mybro = Blueprint('mybro', __name__)
 
@@ -21,16 +22,19 @@ mybro = Blueprint('mybro', __name__)
 
 @mybro.route("/followers")
 @auth.login_required
+@auto.doc("public")
 def get_my_followers():
     return ""
 
 @mybro.route("/followings")
 @auth.login_required
+@auto.doc("public")
 def get_my_followings():
     return ""
 
 @mybro.route("/events")
 @auth.login_required
+@auto.doc("public")
 def get_my_events():
     events = Event.query.filter_by(public=True).all()
 
@@ -54,6 +58,7 @@ def get_my_events():
 
 @mybro.route("/events/<int:event_id>")
 @auth.login_required
+@auto.doc("public")
 def get_my_event(event_id):
     event = Event.query.get(event_id)
 

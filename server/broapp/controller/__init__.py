@@ -15,6 +15,8 @@ from flask.ext.httpauth import HTTPBasicAuth
 from flask import jsonify
 from math import ceil
 
+from documentation import auto
+
 auth = HTTPBasicAuth()
 
 EVENTS_PER_RESPONSE = 10
@@ -25,4 +27,4 @@ def errormsg(msg, code):
     return jsonify({"error": msg}), code
 
 
-__all__ = ["autocomplete", "info", "events", "users", "memberarea", "authentication", "logviewer"]
+__all__ = ["autocomplete", "info", "events", "users", "memberarea", "authentication", "logviewer", "documentation"]

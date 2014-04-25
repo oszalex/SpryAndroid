@@ -13,15 +13,19 @@
 
 from flask import Blueprint, jsonify
 import subprocess
+from documentation import auto
 
 info = Blueprint('info', __name__)
 
 @info.route("/")
+@auto.doc("public")
 def hello():
 	return "Hello Bro!"
 
 
 @info.route("/version")
+@auto.doc("public")
 def version():
-    return jsonify({"version": subprocess.check_output(["git", "describe", "--tag"])})
+	"""Returns the current API version"""
+	return jsonify({"version": subprocess.check_output(["git", "describe", "--tag"])})
 

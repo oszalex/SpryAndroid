@@ -13,13 +13,16 @@
 
 
 from flask import Flask, abort, request, jsonify, g, url_for
+from flask.ext.autodoc import Autodoc
 
 from models import db, User
-from controller import auth
+from controller import auth, auto
 from controller import *
 import logging
 
 app = Flask(__name__)
+
+auto.init_app(app)
 
 # setup logging
     
@@ -77,3 +80,4 @@ app.register_blueprint(users.users, url_prefix='/users')
 app.register_blueprint(memberarea.mybro, url_prefix='/my')
 app.register_blueprint(authentication.broauth, url_prefix='/auth')
 app.register_blueprint(logviewer.logger, url_prefix='/logs')
+app.register_blueprint(documentation.docs, url_prefix='/documentation')

@@ -14,11 +14,13 @@
 from flask import Blueprint, jsonify
 from . import auth
 from ..models import Tag, EventSerializer
+from documentation import auto
 
 tags = Blueprint('tags', __name__)
 
 
 @tags.route("/<tag_name>")
+@auto.doc("public")
 def get_events_from_tag(tag_name):
     tag = Tag.query.filter_by(name=tag_name).first()
 
