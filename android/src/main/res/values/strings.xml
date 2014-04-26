@@ -22,6 +22,16 @@
     <string name="title_activity_show_friend">ShowFriendActivity</string>
     <string name="title_activity_friendlist">FriendlistActivity</string>
     <string name="title_activity_display_events">DisplayEventsActivity</string>
-    <string name="title_activity_profil">ProfilActivity</string>
+
+
+    <!-- Profil Activity -->
+    <string name="title_activity_profil">Profil</string>
+    <string name="profilFollower">follower</string>
+    <string name="profilFollow">follow</string>
+    <string name="profilEvents">events</string>
+    <string name="profilUsername">username: </string>
+    <string name="profilSex">sex: </string>
+    <string name="profilAge">age: </string>
+    <string name="profilImagedescription">This is the profile Image</string>
 
 </resources>

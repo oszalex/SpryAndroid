@@ -1,6 +1,6 @@
 package com.getbro.bro;
 
-
+/*
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +29,6 @@ import org.osmdroid.views.overlay.MyLocationOverlay;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -38,27 +37,30 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
+*/
+
+import android.app.Activity;
 
 public class InputActivity extends Activity {
 
+/*
 	private MapView myOpenMapView;
 	private MapController myMapController;
-	private MyLocationOverlay mMyLocationOverlay;
 
 	private Spinner catSpinner;
 	private List<String> catList = new ArrayList<String>();
 
 	private MyLocationOverlay myLocationOverlay = null;
 	MyItemizedOverlay myItemizedOverlay = null;
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_input);
 
-	@SuppressWarnings("deprecation")
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_input);
+    //Prepare Map
 
-		/************** Prepare Map **********************/
-		final MapView mapView = (MapView) findViewById(R.id.map);
+        final MapView mapView = (MapView) findViewById(R.id.map);
 		mapView.setBuiltInZoomControls(true);
 
 		Drawable marker = getResources().getDrawable(
@@ -97,11 +99,12 @@ public class InputActivity extends Activity {
 		// Loads the categories from the server
 		new LoadCategories()
 				.execute("http://bro.apiary.io/categories?offset=1&limit=3");
-		
+
 		// Fill Autocomplete for categories
 		//setSearchContext(catList);
 
-	}
+
+    }
 
 	private void setSearchContext(List<String> searchItems) {
 		AutoCompleteTextView input_search = (AutoCompleteTextView) findViewById(R.id.input_search);
@@ -110,7 +113,9 @@ public class InputActivity extends Activity {
 		input_search.setAdapter(adapter);
 	}
 
-	// TODO Nur mal irgendwas...auslesen muss mans anders
+
+    // TODO Nur mal irgendwas...auslesen muss mans anders
+
 	public void selectCategorie(View view){
 		AutoCompleteTextView input_search = (AutoCompleteTextView) findViewById(R.id.input_search);
 		input_search.setVisibility(View.VISIBLE);
@@ -118,7 +123,8 @@ public class InputActivity extends Activity {
 		input_search.requestFocus();
 	}
 
-	@Override
+
+    @Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
@@ -144,10 +150,12 @@ public class InputActivity extends Activity {
 	}
 
 	public void showFriend(View view) {
-		/** Intent provides runtime bindings between components. */
-		Intent intent = new Intent(this, DisplayEventsActivity.class);
-		startActivity(intent);
-	}
+
+        //Intent provides runtime bindings between components
+
+        Intent intent = new Intent(this, DisplayEventsActivity.class);
+        startActivity(intent);
+    }
 
 	private static String getCategories(String url) {
 		InputStream inputStream = null;
@@ -186,23 +194,25 @@ public class InputActivity extends Activity {
 
 	}
 
-	public void showFriendlist(View view) {
-		/** Intent provides runtime bindings between components. */
-		Intent intent = new Intent(this, FriendlistActivity.class);
-		startActivity(intent);
+    public void showFriendlist(View view) {
 
-	}
 
-	// TODO Nur mal irgendwas...auslesen muss mans anders
-	public void selectDateAndTime(View view) {
-		showTimePickerDialog();
-		showDatePickerDialog();
-	}
+       //Intent provides runtime bindings between components
 
-	public void showTimePickerDialog() {
-		DialogFragment timePickerFragment = new TimePickerFragment();
-		timePickerFragment.show(getFragmentManager(), "timePicker");
-	}
+        	Intent intent = new Intent(this, FriendlistActivity.class);
+        	startActivity(intent);
+    }
+
+    //TODO Nur mal irgendwas...auslesen muss mans anders
+    public void selectDateAndTime(View view) {
+        showTimePickerDialog();
+        showDatePickerDialog();
+    }
+
+    public void showTimePickerDialog() {
+        DialogFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.show(getFragmentManager(), "timePicker");
+    }
 
 	public void showDatePickerDialog() {
 		DialogFragment datePickerFragment = new DatePickerFragment();
@@ -245,5 +255,8 @@ public class InputActivity extends Activity {
 			}
 
 		}
+
 	}
+	*/
+
 }
