@@ -24,7 +24,7 @@ dependencies {
 	compile 'com.google.code.gson:gson:2.2.+'
 	compile "org.osmdroid:osmdroid-android:4.+"
 	compile "com.google.android:support-v4:r7"
-	compile ("com.android.support:appcompat-v7:18.0.+") {
+	compile ("com.android.support:appcompat-v7:19.0.+") {
         exclude module: 'support-v4'
     }
 	
@@ -37,6 +37,11 @@ dependencies {
 android {
     compileSdkVersion 19 
     buildToolsVersion "19.0.3"
+
+    lintOptions {
+        abortOnError false
+    }
+
 
     defaultConfig {
 	    minSdkVersion 11
