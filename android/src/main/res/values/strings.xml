@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Bro</string>
-    <string name="webService">https://getbro.com:8080</string>
+    <string name="webService">https://api.getbro.com</string>
     <string name="action_settings">Settings</string>
 
     <!-- Login Activity -->
