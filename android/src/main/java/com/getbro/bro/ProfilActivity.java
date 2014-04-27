@@ -1,5 +1,7 @@
 package com.getbro.bro;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +17,9 @@ import android.graphics.Bitmap.Config;
 import android.graphics.PorterDuff.Mode;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class ProfilActivity extends Activity {
@@ -30,7 +34,10 @@ public class ProfilActivity extends Activity {
         Bitmap bitmapNew = getRoundedCornerBitmap(bitmap, 40);
         image.setImageBitmap(bitmapNew);
 
-
+        //change font
+        TextView tv = (TextView) findViewById(R.id.profil_fullname);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/MavenProLight-100.otf");
+        tv.setTypeface(tf);
     }
 
     @Override
@@ -40,6 +47,7 @@ public class ProfilActivity extends Activity {
         getMenuInflater().inflate(R.menu.profil, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
