@@ -33,9 +33,10 @@
     <string name="profilAge">age: </string>
     <string name="profilImagedescription">This is the profile Image</string>
 
-    <string-array name="planets_array">
-        <item>Events</item>
+    <string-array name="drawer_items">
+        <item>Profile</item>
         <item>Friends</item>
+        <item>Events</item>
         <item>add Event</item>
     </string-array>
 
