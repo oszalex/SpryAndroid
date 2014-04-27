@@ -16,13 +16,12 @@
 
     <!-- Input Activity -->
     <string name="title_activity_input">Start your Bromance</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Login</string>
     <string name="std_category">Categories</string>
     <string name="more">+</string>
     <string name="title_activity_show_friend">ShowFriendActivity</string>
     <string name="title_activity_friendlist">FriendlistActivity</string>
     <string name="title_activity_display_events">DisplayEventsActivity</string>
-
 
     <!-- Profil Activity -->
     <string name="title_activity_profil">Profil</string>
@@ -34,11 +33,12 @@
     <string name="profilAge">age: </string>
     <string name="profilImagedescription">This is the profile Image</string>
 
-
     <string-array name="planets_array">
         <item>Events</item>
         <item>Friends</item>
         <item>add Event</item>
     </string-array>
+
+    <string name="title_activity_login">LoginActivity</string>
 
 </resources>
