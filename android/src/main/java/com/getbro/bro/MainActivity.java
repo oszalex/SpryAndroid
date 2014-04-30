@@ -2,6 +2,7 @@ package com.getbro.bro;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         /** init sidebar **/
         mPlanetTitles = getResources().getStringArray(R.array.drawer_items);
