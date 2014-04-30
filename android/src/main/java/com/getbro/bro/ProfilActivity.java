@@ -1,9 +1,9 @@
 package com.getbro.bro;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.app.Activity;
 import android.view.MenuItem;
@@ -16,8 +16,6 @@ import android.graphics.RectF;
 import android.graphics.Bitmap.Config;
 import android.graphics.PorterDuff.Mode;
 
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,15 +27,17 @@ public class ProfilActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
 
+
+        //change font
+        TextView tv = (TextView) findViewById(R.id.profil_fullname);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "MavenProLight.ttf");
+        tv.setTypeface(tf);
+
         ImageView image = (ImageView)findViewById(R.id.profil_image);
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
         Bitmap bitmapNew = getRoundedCornerBitmap(bitmap, 40);
         image.setImageBitmap(bitmapNew);
 
-        //change font
-        TextView tv = (TextView) findViewById(R.id.profil_fullname);
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/MavenProLight-100.otf");
-        tv.setTypeface(tf);
     }
 
     @Override
