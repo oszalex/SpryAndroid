@@ -33,12 +33,18 @@
     <string name="profilAge">age: </string>
     <string name="profilImagedescription">This is the profile Image</string>
 
+    <!-- Navigation Drawer-->
     <string-array name="drawer_items">
         <item>Profile</item>
         <item>Friends</item>
         <item>Events</item>
         <item>add Event</item>
     </string-array>
+
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_close">close drawer</string>
+    
+    
 
     <string name="title_activity_login">LoginActivity</string>
 

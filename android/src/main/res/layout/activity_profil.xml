@@ -5,100 +5,125 @@
     android:orientation="vertical"
     android:layout_gravity="center_horizontal">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/profil_fullname"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:text="John Doe"
             android:textColor="@android:color/white"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:layout_weight="3"/>
 
         <ImageView
             android:id="@+id/profil_image"
-            android:layout_below="@+id/profil_fullname"
-            android:layout_centerHorizontal="true"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher"
             android:contentDescription="@string/profilImagedescription"
+            android:layout_weight="8"
             />
 
-        <TableLayout
+        <LinearLayout
             android:id="@+id/profil_numbers"
-            android:stretchColumns="0, 1,2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profil_image">
-            <TableRow>
-                <TextView
-                    android:id="@+id/profil_follower"
-                    android:text="12"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp"
-                    android:gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/profil_events"
-                    android:text="4"
-                    android:textSize="30sp"
-                    android:textColor="@android:color/white"
-                    android:gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/profil_follow"
-                    android:text="91"
-                    android:textSize="30sp"
-                    android:textColor="@android:color/white"
-                    android:gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-            </TableRow>
-        </TableLayout>
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
-        <TableLayout
-            android:stretchColumns="0, 1,2"
+            <TextView
+                android:id="@+id/profil_follower"
+                android:text="12"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:id="@+id/profil_events"
+                android:text="4"
+                android:textSize="30sp"
+                android:textColor="@android:color/white"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:id="@+id/profil_follow"
+                android:text="91"
+                android:textSize="30sp"
+                android:textColor="@android:color/white"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profil_numbers">
-            <TableRow>
-                <TextView
-                    android:text="@string/profilFollower"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal">
-                </TextView>
-                <TextView
-                    android:text="@string/profilEvents"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal">
-                </TextView>
-                <TextView
-                    android:text="@string/profilFollow"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal">
-                </TextView>
-            </TableRow>
-        </TableLayout>
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="@string/profilFollower"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:text="@string/profilEvents"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:text="@string/profilFollow"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <RelativeLayout
         android:paddingTop="20dp"
