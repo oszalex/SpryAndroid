@@ -7,6 +7,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +17,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.getbro.bro.Webservice.HttpGetRequest;
 
 
 public class MainActivity extends Activity {
@@ -159,8 +165,14 @@ public class MainActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
+            View v = inflater.inflate(R.layout.activity_profil, container, false);
 
-            return inflater.inflate(R.layout.activity_profil, container, false);
+            TextView tv = (TextView) v.findViewById(R.id.profil_fullname);
+            Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "MavenProLight.ttf");
+
+            tv.setTypeface(font);
+
+            return v;
 
         }
     }
@@ -172,8 +184,20 @@ public class MainActivity extends Activity {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
 
-            return inflater.inflate(R.layout.activity_display_events, container, false);
+            View v = inflater.inflate(R.layout.activity_display_events, container, false);
 
+
+            HttpGetRequest httpRequest = (HttpGetRequest) getActivity().getApplicationContext();
+
+
+            //createData();
+
+            ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
+
+            //Log.d("Event list", httpRequest.getAllEvents().toString());
+            //listView.setAdapter(adapter);
+
+            return v;
         }
     }
 
