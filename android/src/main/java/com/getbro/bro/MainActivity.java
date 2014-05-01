@@ -18,6 +18,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.getbro.bro.Json.Event;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
 
@@ -47,6 +48,14 @@ public class MainActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         selectItem(2);
+
+
+        //configure webserver connection
+        //FIX
+        Log.i("BROapp", "configure server connection");
+        HttpGetRequest httpRequest = (HttpGetRequest)getApplication();
+        httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
+
 	}
 
 	@Override
@@ -136,9 +145,19 @@ public class MainActivity extends Activity {
             //createData();
 
             ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
+            try{
 
-            Log.d("Event list", httpRequest.getAllEvents().toString());
-            //listView.setAdapter(adapter);
+                if(httpRequest == null)
+                    Log.w("MMM", "httpRequest null!");
+
+                Event events[] = httpRequest.getAllEvents();
+
+                Log.d("MMM", events.toString());
+                //listView.setAdapter(adapter);
+            } catch (NullPointerException e){
+                Log.w("MMM", "could not fetch events from server");
+            }
+
 
             return v;
         }
