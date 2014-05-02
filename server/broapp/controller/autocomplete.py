@@ -24,6 +24,7 @@ autocomplete = Blueprint('autocomplete', __name__)
 @autocomplete.route("/users/<regex>/<int:page_num>")
 @auto.doc("public")
 def get_regex_user(regex, page_num):
+    ''' find users with a name like <regex> '''
     query = db.session.query(User).filter(User.username.like(regex + "%"))
     items = qery.paginate(page_num, USERS_PER_RESONSE).items
     return jsonify({"data": UserSerializer(items, many=True).data })
@@ -32,11 +33,13 @@ def get_regex_user(regex, page_num):
 @autocomplete.route("/tags/<regex>")
 @auto.doc("public")
 def get_regex_tag(regex):
+    ''' find tags with a name like <regex> '''
     query = db.session.query(Tag).filter(Tag.name.like(regex + "%"))
     return jsonify({"data": TagSerializer(query.all(), many=True).data })
 
 @autocomplete.route("/events/<regex>")
 @auto.doc("public")
 def get_regex_event(regex):
+    ''' find events with a name like <regex> '''
     query = db.session.query(Event).filter(Event.name.like(regex + "%"))
     return jsonify({"data": EventSerializer(query.all(), many=True).data })
