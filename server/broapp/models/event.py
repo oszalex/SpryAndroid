@@ -25,8 +25,8 @@ from invitation import Invitation
 
 
 event_tags = db.Table('event_tags',
-	    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
-	    db.Column('event_id', db.Integer, db.ForeignKey('events.id'))
+	    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id', ondelete="CASCADE")),
+	    db.Column('event_id', db.Integer, db.ForeignKey('events.id', ondelete="CASCADE"))
 	)
 
 
@@ -37,9 +37,9 @@ class Event(db.Model):
     datetime = db.Column(db.DateTime)
     venue_id = db.Column(db.Integer)
     public = db.Column(db.Boolean,unique=False, default=False)
-    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
     tags = db.relationship('Tag', secondary=event_tags,
-        backref=db.backref('events', lazy='dynamic'))
+        backref=db.backref('events', lazy='dynamic'), passive_deletes=True)
     participant_ids = db.relationship('Invitation',
         backref=db.backref('events'))
 
