@@ -100,7 +100,7 @@ class EventSerializer(Serializer):
 		return user_ids #UserSerializer(users, many=True).data
 
 	def get_datetime(self, obj):
-		return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S.%f+0100')
+		return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S+0100')
 
 
 	class Meta:
@@ -122,7 +122,7 @@ class EventStateSerializer(Serializer):
         return user_ids #UserSerializer(users, many=True).data
 
     def get_datetime(self, obj):
-        return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S.%f+0100')
+        return obj.datetime.__format__('%Y-%m-%dT%H:%M:%S+0100')
 
 
     class Meta:
