@@ -10,7 +10,7 @@
 
 
 '''
-__version__ = '0.4'
+__version__ = 'sprint-0.3alpha'
 
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask.ext.autodoc import Autodoc
