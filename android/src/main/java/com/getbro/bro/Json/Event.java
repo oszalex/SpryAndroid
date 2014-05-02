@@ -15,14 +15,14 @@ public class Event extends Item {
     @SerializedName("name")
     public String Name;
 
- //   @SerializedName("participant_ids")
- //   public int[] Participants;
+    @SerializedName("participant_ids")
+    public int[] Participants;
 
     @SerializedName("public")
     public boolean IsPublic;
 
     @SerializedName("tags")
-    public Tag[] Tags;
+    public String[] Tags;
 
     @SerializedName("venue_id")
     public int VenueId;

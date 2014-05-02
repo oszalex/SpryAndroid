@@ -82,11 +82,8 @@ public class HttpGetRequest extends Application {
     }
 
     public Gson gsonFactory() {
-        return new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ").create();
-       // 2014-04-02T10:14:21.409802
-       // return new GsonBuilder().setDateFormat("yyyy-MM-ddTHH:mm:ssZZZZZ").create();
+       return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").create();
     }
-
     public String getJson(String url) {
         String fullUrl = webServiceUrl + url;
         HttpGet request = new HttpGet(fullUrl);

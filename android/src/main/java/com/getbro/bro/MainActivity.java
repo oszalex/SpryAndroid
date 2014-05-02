@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.getbro.bro.Json.Event;
 import com.getbro.bro.Webservice.HttpGetRequest;
+import org.apache.http.client.methods.HttpGet;
 
 
 public class MainActivity extends Activity {
@@ -32,6 +34,8 @@ public class MainActivity extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+
+    private HttpGetRequest httpRequest;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +93,7 @@ public class MainActivity extends Activity {
         //configure webserver connection
         //FIX
         Log.i("BROapp", "configure server connection");
-        HttpGetRequest httpRequest = (HttpGetRequest)getApplication();
+        httpRequest = (HttpGetRequest)getApplication();
         httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
 
 	}
@@ -153,11 +157,11 @@ public class MainActivity extends Activity {
             case 1:
                 return new FriendListFragment();
             case 2:
-                return new EventListFragment();
+                return new EventListFragment(httpRequest);
             case 3:
                 return new NewEventFragment();
             default:
-                return new EventListFragment();
+                return new EventListFragment(httpRequest);
         }
     }
 
@@ -188,38 +192,41 @@ public class MainActivity extends Activity {
 
     public class EventListFragment extends Fragment {
 
+        private HttpGetRequest httpRequest;
+
+        public EventListFragment(HttpGetRequest httpRequest) {
+            this.httpRequest = httpRequest;
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
 
             View v = inflater.inflate(R.layout.activity_display_events, container, false);
-
-
-            HttpGetRequest httpRequest = (HttpGetRequest) getActivity().getApplicationContext();
-
-
-            //createData();
-
             ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
-            try{
 
-                if(httpRequest == null)
-                    Log.w("MMM", "httpRequest null!");
-
-                Event events[] = httpRequest.getAllEvents();
-
-                Log.d("MMM", events.toString());
-                //listView.setAdapter(adapter);
-            } catch (NullPointerException e){
-                Log.w("MMM", "could not fetch events from server");
-            }
-
-            //Log.d("Event list", httpRequest.getAllEvents().toString());
-            //listView.setAdapter(adapter);
-
+            new DownloadEventTask().execute();
 
             return v;
+        }
+
+        private class DownloadEventTask extends AsyncTask<Void,Void, Event[]> {
+
+            protected Event[] doInBackground(Void... params) {
+
+                try{
+                    return httpRequest.getAllEvents();
+
+                } catch (NullPointerException e){
+                    Log.w("MMM", "could not fetch events from server");
+                    return null;
+                }
+            }
+
+            protected void onPostExecute(Event[] result) {
+
+            }
         }
     }
 
