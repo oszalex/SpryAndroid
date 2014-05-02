@@ -10,7 +10,7 @@
 
 
 '''
-
+__version__ = 'sprint-0.3alpha'
 
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask.ext.autodoc import Autodoc
@@ -72,12 +72,19 @@ def verify_password(username, password):
 def hello_bro():
   return jsonify({"data": "Hello Bro!" })
 
+@app.route("/version")
+@auto.doc("public")
+def version():
+  """Returns the current API version"""
+  return jsonify({"version": __version__})
+
 # register controller
 app.register_blueprint(autocomplete.autocomplete, url_prefix='/ac')
-app.register_blueprint(info.info, url_prefix='/info')
 app.register_blueprint(events.events, url_prefix='/events')
 app.register_blueprint(users.users, url_prefix='/users')
 app.register_blueprint(memberarea.mybro, url_prefix='/my')
 app.register_blueprint(authentication.broauth, url_prefix='/auth')
 app.register_blueprint(logviewer.logger, url_prefix='/logs')
 app.register_blueprint(documentation.docs, url_prefix='/documentation')
+
+

@@ -20,4 +20,5 @@ auto = Autodoc()
 
 @docs.route('/')
 def documentation():
+    ''' The newest BRO API backend endpoint documentation '''
     return auto.html()
