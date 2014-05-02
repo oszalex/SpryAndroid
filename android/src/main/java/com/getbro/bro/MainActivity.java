@@ -157,11 +157,11 @@ public class MainActivity extends Activity {
             case 1:
                 return new FriendListFragment();
             case 2:
-                return new EventListFragment(httpRequest);
+                return new EventListFragment();
             case 3:
                 return new NewEventFragment();
             default:
-                return new EventListFragment(httpRequest);
+                return new EventListFragment();
         }
     }
 
@@ -192,11 +192,6 @@ public class MainActivity extends Activity {
 
     public class EventListFragment extends Fragment {
 
-        private HttpGetRequest httpRequest;
-
-        public EventListFragment(HttpGetRequest httpRequest) {
-            this.httpRequest = httpRequest;
-        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -204,19 +199,25 @@ public class MainActivity extends Activity {
             // Inflate the layout for this fragment
 
             View v = inflater.inflate(R.layout.activity_display_events, container, false);
-            ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
+            //ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
 
-            new DownloadEventTask().execute();
+            new DownloadEventTask(this.getActivity()).execute();
 
             return v;
         }
 
         private class DownloadEventTask extends AsyncTask<Void,Void, Event[]> {
+            Activity activity;
+
+            DownloadEventTask(Activity activity) {
+                this.activity = activity;
+            }
 
             protected Event[] doInBackground(Void... params) {
 
-                try{
-                    return httpRequest.getAllEvents();
+                try {
+                    Event[] events = httpRequest.getAllEvents();
+                    return events;
 
                 } catch (NullPointerException e){
                     Log.w("MMM", "could not fetch events from server");
@@ -225,7 +226,9 @@ public class MainActivity extends Activity {
             }
 
             protected void onPostExecute(Event[] result) {
-
+                EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
+                ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.events_listview);
+                listView.setAdapter(eventsAdapter);
             }
         }
     }
