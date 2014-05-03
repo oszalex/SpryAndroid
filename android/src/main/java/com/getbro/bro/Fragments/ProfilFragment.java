@@ -19,14 +19,8 @@ public class ProfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.activity_profil, container, false);
 
-        TextView tv = (TextView) v.findViewById(R.id.profil_fullname);
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "MavenProLight.ttf");
-
-        tv.setTypeface(font);
-
-        return v;
+        return inflater.inflate(R.layout.activity_profil, container, false);
 
     }
 }

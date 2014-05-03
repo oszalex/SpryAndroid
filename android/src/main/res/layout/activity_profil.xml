@@ -12,7 +12,7 @@
         android:layout_weight="2"
         android:orientation="vertical">
 
-        <TextView
+        <com.getbro.bro.UIComponents.CustomTextView
             android:id="@+id/profil_fullname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:orientation="horizontal"
             android:layout_weight="1">
 
-            <TextView
+            <com.getbro.bro.UIComponents.CustomTextView
                 android:id="@+id/profil_follower"
                 android:text="12"
                 android:textColor="@android:color/white"
@@ -47,9 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-            </TextView>
+            </com.getbro.bro.UIComponents.CustomTextView>
 
-            <TextView
+            <com.getbro.bro.UIComponents.CustomTextView
                 android:id="@+id/profil_events"
                 android:text="4"
                 android:textSize="30sp"
@@ -58,9 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-            </TextView>
+            </com.getbro.bro.UIComponents.CustomTextView>
 
-            <TextView
+            <com.getbro.bro.UIComponents.CustomTextView
                 android:id="@+id/profil_follow"
                 android:text="91"
                 android:textSize="30sp"
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-            </TextView>
+            </com.getbro.bro.UIComponents.CustomTextView>
 
         </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:orientation="horizontal"
             android:layout_weight="1">
 
-            <TextView
+            <com.getbro.bro.UIComponents.CustomTextView
                 android:text="@string/profilFollower"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
@@ -87,9 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1">
-            </TextView>
+            </com.getbro.bro.UIComponents.CustomTextView>
 
-            <TextView
+            <com.getbro.bro.UIComponents.CustomTextView
                 android:text="@string/profilEvents"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
@@ -97,9 +97,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1">
-            </TextView>
+            </com.getbro.bro.UIComponents.CustomTextView>
 
-            <TextView
+            <com.getbro.bro.UIComponents.CustomTextView
                 android:text="@string/profilFollow"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
@@ -107,20 +107,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1">
-            </TextView>
+            </com.getbro.bro.UIComponents.CustomTextView>
 
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -150,7 +141,7 @@
 
                 <TextView
                     android:id="@+id/profil_username"
-                    android:text="johnny"
+                    android:text=" johnny"
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -170,7 +161,7 @@
 
                 <TextView
                     android:id="@+id/profil_sex"
-                    android:text="male"
+                    android:text=" male"
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,7 +181,7 @@
 
                 <TextView
                     android:id="@+id/profil_age"
-                    android:text="22"
+                    android:text=" 22"
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
