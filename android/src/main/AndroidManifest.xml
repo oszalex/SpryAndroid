@@ -31,23 +31,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.getbro.bro.ShowFriendActivity"
-            android:label="@string/title_activity_show_friend" >
-        </activity>
-        <activity
-            android:name="com.getbro.bro.FriendlistActivity"
-            android:label="@string/title_activity_friendlist" >
-        </activity>
-        <activity
-            android:name="com.getbro.bro.DisplayEventsActivity"
-            android:label="@string/title_activity_display_events" >
-        </activity>
-        <activity android:name="com.getbro.bro.NewEventActivity" />
-        <activity
-            android:name="com.getbro.bro.ProfilActivity"
-            android:label="@string/title_activity_profil" >
-        </activity>
-        <activity
             android:name="com.getbro.bro.LoginActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar"
             android:label="@string/title_activity_login" >

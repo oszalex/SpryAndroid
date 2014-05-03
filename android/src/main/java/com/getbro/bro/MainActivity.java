@@ -2,6 +2,7 @@ package com.getbro.bro;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -27,7 +28,6 @@ import com.getbro.bro.Json.User;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class MainActivity extends Activity {
@@ -84,14 +84,17 @@ public class MainActivity extends Activity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 
-
-
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         getActionBar().setIcon(R.drawable.ic_drawer);
         getActionBar().setHomeButtonEnabled(true);
         selectItem(2);
+
+
+        //TEST LOGIN
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
 
         //configure webserver connection

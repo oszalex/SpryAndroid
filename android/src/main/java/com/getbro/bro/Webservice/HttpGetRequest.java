@@ -162,6 +162,23 @@ public class HttpGetRequest extends Application {
 
         return client;
     }
+
+    public boolean checkLogin() {
+        String fullUrl = webServiceUrl + "/auth/login";
+        HttpGet request = new HttpGet(fullUrl);
+
+        int responseCode = 501;
+
+        try {
+            HttpResponse response = client.execute(request);
+            responseCode = response.getStatusLine().getStatusCode();
+        }
+        catch (Exception ex) {
+            Log.e("HTTPRequest", ex.toString());
+        }
+
+        return (responseCode == 200);
+    }
 }
 
 
