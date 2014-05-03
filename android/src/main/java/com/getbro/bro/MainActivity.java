@@ -23,7 +23,11 @@ import com.getbro.bro.Fragments.FriendListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
 import com.getbro.bro.Json.Event;
+import com.getbro.bro.Json.User;
 import com.getbro.bro.Webservice.HttpGetRequest;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MainActivity extends Activity {
@@ -35,6 +39,7 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
 
     private HttpGetRequest httpRequest;
+    private ArrayList<User> users;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,9 @@ public class MainActivity extends Activity {
         //FIX
         httpRequest = (HttpGetRequest)getApplication();
         httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
+
+
+        new DownloadFriendsTask(this).execute();
 
 	}
 
@@ -153,7 +161,7 @@ public class MainActivity extends Activity {
             case 0:
                 return new ProfilFragment();
             case 1:
-                return new FriendListFragment();
+                return new FriendListFragment(users);
             case 2:
                 return new EventListFragment();
             case 3:
@@ -208,6 +216,39 @@ public class MainActivity extends Activity {
                 EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
                 ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.events_listview);
                 listView.setAdapter(eventsAdapter);
+            }
+        }
+    }
+
+
+
+    private class DownloadFriendsTask extends AsyncTask<Void,Void, String[]> {
+        Activity activity;
+
+        DownloadFriendsTask(Activity activity) {
+            this.activity = activity;
+        }
+
+        protected String[] doInBackground(Void... params) {
+            String[] users = null;
+
+            try {
+                users = httpRequest.getFriends();
+                return users;
+
+            } catch (NullPointerException e){
+                Log.w("MMM", "could not fetch events from server");
+            }
+
+            return users;
+        }
+
+        protected void onPostExecute(String[] result) {
+
+            MainActivity.this.users = new ArrayList<User>();
+
+            for(int i=0; i < result.length; i++){
+                MainActivity.this.users.add(new User("male",result[i], null));
             }
         }
     }

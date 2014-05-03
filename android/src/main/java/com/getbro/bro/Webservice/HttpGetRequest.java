@@ -55,6 +55,12 @@ public class HttpGetRequest extends Application {
         return data.data;
     }
 
+    public String[] getFriends() {
+        String json = getJson("/users/me");
+        Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
+        return data.data.Followed;
+    }
+
     public User getUser(int id) {
         String json = getJson("/users/" + id);
         Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
