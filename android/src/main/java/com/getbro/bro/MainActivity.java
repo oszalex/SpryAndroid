@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
             case 2:
                 return new EventListFragment();
             case 3:
-                return new NewEventFragment();
+                return new NewEventFragment(httpRequest);
             default:
                 return new EventListFragment();
         }
