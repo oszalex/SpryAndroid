@@ -74,25 +74,25 @@ class User(db.Model):
 
 class UserSerializer(Serializer):
   #followed = fields.Nested('self',  many=True)
-  followed = fields.Method("get_followed_ids")
+  followed = fields.Method("get_followed_usernames")
 
-  followers = fields.Method("get_follower_ids")
+  followers = fields.Method("get_follower_usernames")
 
-  def get_follower_ids(self, obj):
-    user_ids = []
+  def get_follower_usernames(self, obj):
+    user_usernames = []
 
     for f in obj.followers:
       user_ids.append(f.id)
 
-    return user_ids
+    return user_usernames
 
-  def get_followed_ids(self, obj):
-    user_ids = []
+  def get_followed_usernames(self, obj):
+    user_usernames = []
 
     for f in obj.followed:
-      user_ids.append(f.id)
+      user_ids.append(f.username)
       
-    return user_ids
+    return user_usernames
 
 
     
