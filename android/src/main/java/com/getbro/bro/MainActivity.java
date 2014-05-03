@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,11 +19,11 @@ import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.TextView;
-
+import com.getbro.bro.Fragments.FriendListFragment;
+import com.getbro.bro.Fragments.NewEventFragment;
+import com.getbro.bro.Fragments.ProfilFragment;
 import com.getbro.bro.Json.Event;
 import com.getbro.bro.Webservice.HttpGetRequest;
-import org.apache.http.client.methods.HttpGet;
 
 
 public class MainActivity extends Activity {
@@ -92,7 +91,6 @@ public class MainActivity extends Activity {
 
         //configure webserver connection
         //FIX
-        Log.i("BROapp", "configure server connection");
         httpRequest = (HttpGetRequest)getApplication();
         httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
 
@@ -172,26 +170,7 @@ public class MainActivity extends Activity {
     }
 
 
-    public class ProfilFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            View v = inflater.inflate(R.layout.activity_profil, container, false);
-
-            TextView tv = (TextView) v.findViewById(R.id.profil_fullname);
-            Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "MavenProLight.ttf");
-
-            tv.setTypeface(font);
-
-            return v;
-
-        }
-    }
-
     public class EventListFragment extends Fragment {
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -233,27 +212,5 @@ public class MainActivity extends Activity {
         }
     }
 
-    public class NewEventFragment extends Fragment {
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-
-            return inflater.inflate(R.layout.activity_newevent, container, false);
-
-        }
-    }
-
-    public class FriendListFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-
-            return inflater.inflate(R.layout.activity_friendlist, container, false);
-
-        }
-    }
 }
