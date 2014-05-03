@@ -82,7 +82,7 @@ class UserSerializer(Serializer):
     user_usernames = []
 
     for f in obj.followers:
-      user_usernames.append(f.id)
+      user_usernames.append(f.username)
 
     return user_usernames
 
