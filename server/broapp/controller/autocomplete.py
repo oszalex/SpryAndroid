@@ -27,7 +27,7 @@ def get_regex_user(regex, page_num):
     ''' find users with a name like <regex> '''
     query = db.session.query(User).filter(User.username.like(regex + "%"))
     #items = query.paginate(page_num, USERS_PER_RESONSE).items
-    items.all()
+    items = query.all()
     return jsonify({"data": UserSerializer(items, many=True).data })
 
 
