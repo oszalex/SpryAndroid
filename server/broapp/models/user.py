@@ -21,6 +21,11 @@ import hashlib
 import string
 import random
 
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('users.id'))
+)
+
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +34,12 @@ class User(db.Model):
     sex = db.Column(db.Enum('male', 'female'))
     salt = db.Column(db.String(6), nullable=False)
     password = db.Column(db.String(128), nullable=False)
+    followed = db.relationship('User', 
+        secondary = followers, 
+        primaryjoin = (followers.c.follower_id == id), 
+        secondaryjoin = (followers.c.followed_id == id), 
+        backref = db.backref('followers', lazy = 'dynamic'), 
+        lazy = 'dynamic')
 
     def __init__(self, username, email, sex, password):
         self.username = username
@@ -47,8 +58,46 @@ class User(db.Model):
         calc = hashlib.sha512(password + self.salt).hexdigest()
         return (calc == self.password)
 
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+            return self
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+            return self
+
+    def is_following(self, user):
+        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
 
 class UserSerializer(Serializer):
+  #followed = fields.Nested('self',  many=True)
+  followed = fields.Method("get_followed_ids")
 
-    class Meta:
-        fields = ('id', 'username', 'sex')
+  followers = fields.Method("get_follower_ids")
+
+  def get_follower_ids(self, obj):
+    user_ids = []
+
+    for f in obj.followers:
+      user_ids.append(f.id)
+
+    return user_ids
+
+  def get_followed_ids(self, obj):
+    user_ids = []
+
+    for f in obj.followed:
+      user_ids.append(f.id)
+      
+    return user_ids
+
+
+    
+  class Meta:  
+    fields = ('id', 'username', 'sex', 'followers', 'followed')
+
+
+

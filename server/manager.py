@@ -81,6 +81,11 @@ def seed():
 	#add users
 	db.session.commit()
 
+	for person in random_users():
+		for to_follow in random_users():
+			person.follow(to_follow)
+	db.session.commit()
+
 	for e in events:
 		event = Event(
 			name=e[0], 
