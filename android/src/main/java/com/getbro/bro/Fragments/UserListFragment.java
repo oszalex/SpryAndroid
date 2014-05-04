@@ -1,6 +1,7 @@
 package com.getbro.bro.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,12 @@ public class UserListFragment extends Fragment {
                 Log.d(TAG, "user: " + u.toString());
 
                 //load new ProfileFragment
+                ProfilFragment details = new ProfilFragment(u);
 
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frame, details);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
