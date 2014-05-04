@@ -24,6 +24,7 @@ dependencies {
 	compile 'com.google.code.gson:gson:2.2.+'
 	compile "org.osmdroid:osmdroid-android:4.+"
     compile 'com.android.support:support-v4:19.1.+'
+    compile 'com.j256.ormlite:ormlite-android:4.45'
 	//compile "com.google.android:support-v4:r7"
 	compile ("com.android.support:appcompat-v7:19.0.+") {
         exclude module: 'support-v4'
