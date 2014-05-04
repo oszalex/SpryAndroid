@@ -14,6 +14,9 @@ public class User extends Item {
     @SerializedName("sex")
     public String Sex;
 
+    @SerializedName("id")
+    public Long Id;
+
     @SerializedName("username")
     public String UserName;
 

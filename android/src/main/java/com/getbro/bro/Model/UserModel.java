@@ -21,4 +21,29 @@ public class UserModel extends SugarRecord<UserModel> {
         this.followed = followed;
         this.follower = follower;
     }
+
+    public static UserModel fromUser(Context ctx, User user){
+        UserModel u = new UserModel(
+                ctx,
+                user.Sex,
+                user.UserName,
+                user.Followed,
+                user.Follower
+        );
+
+        u.save();
+
+        return u;
+    }
+
+    public static UserModel updateOrInsert (Context ctx, User user){
+        if (user == null) return null;
+
+        UserModel u = UserModel.findById(UserModel.class, user.Id);
+
+        if(null == u)
+            u = UserModel.fromUser(ctx, user);
+
+        return u;
+    }
 }
