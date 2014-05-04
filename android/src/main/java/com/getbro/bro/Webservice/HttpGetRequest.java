@@ -70,6 +70,12 @@ public class HttpGetRequest extends Application {
         return data.data;
     }
 
+    public User getOwnUserElement() {
+        String json = getJson("/users/me");
+        Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
+        return data.data;
+    }
+
     public User[] matchUser(String match) {
         String url = match.isEmpty() ? "/users/" : ("/ac/users/" + match);
         String json = getJson(url);

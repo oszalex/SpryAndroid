@@ -23,8 +23,7 @@ public class UserItemAdapter extends ArrayAdapter<User> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+    public View getView(int position, View v, ViewGroup parent) {
         if (v == null) {
             LayoutInflater vi = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.profillistitem, null);
@@ -37,6 +36,8 @@ public class UserItemAdapter extends ArrayAdapter<User> {
             if (username != null) {
                 username.setText(user.UserName);
             }
+
+            v.setTag(R.id.list_item, user);
         }
         return v;
     }

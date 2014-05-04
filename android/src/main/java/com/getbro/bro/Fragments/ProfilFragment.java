@@ -1,26 +1,37 @@
 package com.getbro.bro.Fragments;
 
 import android.app.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
+import com.getbro.bro.Json.User;
 import com.getbro.bro.R;
+import com.getbro.bro.UIComponents.CustomTextView;
 
 /**
  * Created by chris on 03/05/14.
  */
 public class ProfilFragment extends Fragment {
+    private User user;
+
+    public ProfilFragment(User u){
+        this.user = u;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.activity_profil, container, false);
+        View v =  inflater.inflate(R.layout.userprofile, container, false);
 
+        //populate view
+        CustomTextView full_name = (CustomTextView) v.findViewById(R.id.profil_fullname);
+        full_name.setText(user.UserName);
+
+        return v;
     }
 }

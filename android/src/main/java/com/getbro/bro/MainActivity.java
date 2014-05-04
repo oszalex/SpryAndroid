@@ -20,7 +20,7 @@ import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-import com.getbro.bro.Fragments.FriendListFragment;
+import com.getbro.bro.Fragments.UserListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
 import com.getbro.bro.Json.Event;
@@ -41,6 +41,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 
     private HttpGetRequest httpRequest;
     private ArrayList<User> users;
+    private User me;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +109,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
-
+        new DownloadUserProfile(this).execute();
         new DownloadFriendsTask(this).execute();
 
 	}
@@ -178,9 +179,9 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private Fragment getFragment(int i){
         switch(i){
             case 0:
-                return new ProfilFragment();
+                return new ProfilFragment(me);
             case 1:
-                return new FriendListFragment(users);
+                return new UserListFragment(users);
             case 2:
                 return new EventListFragment();
             case 3:
@@ -269,6 +270,33 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
             for(int i=0; i < result.length; i++){
                 MainActivity.this.users.add(new User("male",result[i], null));
             }
+        }
+    }
+
+
+    private class DownloadUserProfile extends AsyncTask<Void,Void, User> {
+        Activity activity;
+
+        DownloadUserProfile(Activity activity) {
+            this.activity = activity;
+        }
+
+        protected User doInBackground(Void... params) {
+            User me = null;
+
+            try {
+                me = httpRequest.getOwnUserElement();
+                return me;
+
+            } catch (NullPointerException e){
+                Log.w("MMM", "could not fetch userprofile from server");
+            }
+
+            return me;
+        }
+
+        protected void onPostExecute(User me) {
+            MainActivity.this.me = me;
         }
     }
 
