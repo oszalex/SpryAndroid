@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.getbro.bro.Json.Event;
 import com.getbro.bro.Json.User;
+import com.getbro.bro.Model.EventModel;
 import com.getbro.bro.Model.UserModel;
 
 /**
@@ -28,15 +29,12 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         Log.d("Login", "some background work");
 
         //fetch events
-        //events
         Event events[] = httpRequest.getAllEvents();
 
-        //for(Event e: events){
-        //    if (EventModel.findById(Book.class, 1);)
-        //}
+        for(Event e: events)
+            EventModel.updateOrInsert(delegate.getApplicationContext(), e);
 
-        //fetch own user object
-        //users/me
+        //fetch own user object (users/me)
         User me = httpRequest.getOwnUserElement();
         UserModel.updateOrInsert(delegate.getApplicationContext(), me);
 

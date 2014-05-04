@@ -7,7 +7,7 @@ import java.util.Date;
 public class Event extends Item {
 
     @SerializedName("creator_id")
-    public int CreatorId;
+    public Long CreatorId;
 
     @SerializedName("datetime")
     public Date DateTime;
@@ -16,7 +16,7 @@ public class Event extends Item {
     public String Name;
 
     @SerializedName("participant_ids")
-    public int[] Participants;
+    public Long[] Participants;
 
     @SerializedName("public")
     public boolean IsPublic;
@@ -25,5 +25,5 @@ public class Event extends Item {
     public String[] Tags;
 
     @SerializedName("venue_id")
-    public int VenueId;
+    public Long VenueId;
 }

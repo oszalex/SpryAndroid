@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName;
 public abstract class Item {
 
     @SerializedName("Id")
-    public int Id;
+    public Long Id;
 }
