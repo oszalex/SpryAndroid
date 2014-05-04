@@ -1,12 +1,13 @@
 package com.getbro.bro.Webservice;
 
-import android.app.Application;
 import android.util.Log;
 
 import com.getbro.bro.Json.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.orm.SugarApp;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -33,7 +34,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
-public class HttpGetRequest extends Application {
+public class HttpGetRequest extends SugarApp {
 
     private String webServiceUrl;
     private HttpClient client;
@@ -58,13 +59,13 @@ public class HttpGetRequest extends Application {
         return data.data;
     }
 
-    public String[] getFriends() {
+    public int[] getFriends() {
         String json = getJson("/users/me");
         Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
         return data.data.Followed;
     }
 
-    public User getUser(int id) {
+    public User getUser(long id) {
         String json = getJson("/users/" + id);
         Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
         return data.data;

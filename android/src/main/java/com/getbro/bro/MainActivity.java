@@ -109,8 +109,8 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
-        new DownloadUserProfile(this).execute();
-        new DownloadFriendsTask(this).execute();
+        //new DownloadUserProfile(this).execute();
+        //new DownloadFriendsTask(this).execute();
 
 	}
 
@@ -241,7 +241,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     }
 
 
-
+/*
     private class DownloadFriendsTask extends AsyncTask<Void,Void, String[]> {
         Activity activity;
 
@@ -300,5 +300,5 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         }
     }
 
-
+*/
 }
