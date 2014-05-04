@@ -24,7 +24,8 @@
         android:hint="@string/loginEditUsername"
         android:inputType="textEmailAddress"
         android:textColorHint="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:autoText="false" />
 
     <EditText
         android:id="@+id/login_password"

@@ -48,6 +48,9 @@ public class HttpGetRequest extends Application {
         this.webServiceUrl = webServiceUrl;
         this.client = getClient(userName,password);
     }
+    public void configureClient(String userName, String password) {
+        this.client = getClient(userName,password);
+    }
 
     public User[] getAllUsers() {
         String json = getJson("/users");
@@ -179,6 +182,10 @@ public class HttpGetRequest extends Application {
         }
 
         return (responseCode == 200);
+    }
+
+    public void setHost(String host) {
+        this.webServiceUrl = host;
     }
 }
 

@@ -1,23 +1,27 @@
 package com.getbro.bro;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.getbro.bro.Json.User;
+import com.getbro.bro.Webservice.AsyncLoginCheck;
+import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
-import java.util.ArrayList;
 
-
-public class LoginActivity extends Activity {
-    private HttpGetRequest httpRequest;
+public class LoginActivity extends Activity implements AsyncLoginResponse{
+    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String LOGIN_PREFS = "LoginCredentials";
+    SharedPreferences settings;
+    private String username;
+    private String password;
+    public HttpGetRequest httpRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,30 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         httpRequest = (HttpGetRequest)getApplication();
+
+
+        //TODO: check credentials if stored
+        //TODO: getPreferences instead of SHaredPreferences for performance
+
+        settings = getSharedPreferences(LOGIN_PREFS, 0);
+
+        username = settings.getString("username", null);
+        password = settings.getString("password", null);
+
+        if(username != null && password != null){
+            Log.d(TAG, "Settings found. will test it now");
+            checkLogin();
+        }else {
+            Log.d(TAG, "no suitable credentials found");
+        }
+
+    }
+
+    public void checkLogin(){
+        //deactivate elements
+        enableDisableViewGroup((ViewGroup)getWindow().getDecorView().getRootView(), false);
+
+        new AsyncLoginCheck(this, username, password).execute();
     }
 
 
@@ -47,6 +75,17 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+            view.setEnabled(enabled);
+            if (view instanceof ViewGroup) {
+                enableDisableViewGroup((ViewGroup) view, enabled);
+            }
+        }
+    }
+
 
 
     public void login(View view) {
@@ -54,49 +93,36 @@ public class LoginActivity extends Activity {
      EditText mUsername = (EditText)findViewById(R.id.login_username);
      EditText mPassword = (EditText)findViewById(R.id.login_password);
 
-     String username = mUsername.getText().toString();
-     String password = mPassword.getText().toString();
+     username = mUsername.getText().toString();
+     password = mPassword.getText().toString();
 
-     new LoginCheck(this, username, password).execute();
-
+     checkLogin();
     }
 
 
 
-    private class LoginCheck extends AsyncTask<Void,Void, Boolean> {
-        private String username;
-        private String password;
-        Activity activity;
-
-        LoginCheck(Activity activity, String username, String password) {
-
-            Log.d("Login", "new LoginCheck");
-
-            this.activity = activity;
-            this.username = username;
-            this.password = password;
-        }
-
-        private boolean checkCredentials(){
-            httpRequest.configureClient(getResources().getString(R.string.webService), username, password);
-
-            Log.d("Login", "Check credentials");
-
-            return httpRequest.checkLogin();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Log.d("Login", "some background work");
-            return checkCredentials();
-        }
-
-        protected void onPostExecute(Boolean result) {
-            Log.d("Login", "Resultat ist da!");
-            if(result)
-                activity.finish();
-
-        }
+    @Override
+    public HttpGetRequest getHTTPRequest() {
+        return httpRequest;
     }
 
+    @Override
+    public void onLoginCheckFinish(Boolean output) {
+        if(output){
+            Log.d(TAG, "store credentials");
+            SharedPreferences.Editor editor = settings.edit();
+
+            editor.putString("username", username);
+            editor.putString("password", password);
+
+            editor.commit();
+
+            this.finish();
+        }else {
+            enableDisableViewGroup((ViewGroup)getWindow().getDecorView().getRootView(), true);
+        }
+
+
+        //TODO: else print error.
+    }
 }

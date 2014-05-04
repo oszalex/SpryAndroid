@@ -25,12 +25,13 @@ import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
 import com.getbro.bro.Json.Event;
 import com.getbro.bro.Json.User;
+import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements AsyncLoginResponse {
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -93,14 +94,19 @@ public class MainActivity extends Activity {
 
 
         //TEST LOGIN
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+
 
 
         //configure webserver connection
         //FIX
         httpRequest = (HttpGetRequest)getApplication();
+        httpRequest.setHost(getResources().getString(R.string.webService));
         httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
+
+
+        //if not logged in
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
 
         new DownloadFriendsTask(this).execute();
@@ -134,6 +140,16 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
+    @Override
+    public HttpGetRequest getHTTPRequest() {
+        return httpRequest;
+    }
+
+    @Override
+    public void onLoginCheckFinish(Boolean output) {
+
+    }
 
 
     public class DrawerItemClickListener implements ListView.OnItemClickListener {
