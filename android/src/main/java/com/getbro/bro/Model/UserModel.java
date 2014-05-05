@@ -14,6 +14,10 @@ public class UserModel extends SugarRecord<UserModel> {
     public int followed[]; //ids of followed
     public int follower[]; //ids of follower
 
+    public UserModel(Context ctx){
+        super(ctx);
+    }
+
     public UserModel(Context ctx, String Sex, String UserName, int followed[], int follower[]){
         super(ctx);
         this.Sex = Sex;

@@ -23,6 +23,10 @@ public class EventModel extends SugarRecord<EventModel> {
     public String[] Tags;
     public Long VenueId;
 
+    public EventModel(Context ctx){
+        super(ctx);
+    }
+
     public EventModel(Context ctx, Long CreatorId, Date DateTime, String Name, Long[] Participants,
              boolean IsPublic, String[] Tags, Long VenueId){
         super(ctx);
