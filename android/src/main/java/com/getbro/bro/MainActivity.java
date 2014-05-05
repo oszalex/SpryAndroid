@@ -26,6 +26,7 @@ import com.getbro.bro.Fragments.ProfilFragment;
 import com.getbro.bro.Json.Event;
 import com.getbro.bro.Json.User;
 import com.getbro.bro.Webservice.AsyncLoginResponse;
+import com.getbro.bro.Webservice.DatabaseSync;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
 import java.util.ArrayList;
@@ -104,10 +105,12 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         httpRequest.setHost(getResources().getString(R.string.webService));
         httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
 
+        new DatabaseSync(this).execute();
+
 
         //if not logged in
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, LoginActivity.class);
+        //startActivity(intent);
 
         //new DownloadUserProfile(this).execute();
         //new DownloadFriendsTask(this).execute();
