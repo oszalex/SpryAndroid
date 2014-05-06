@@ -20,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+
+import com.getbro.bro.Fragments.EventListFragment;
 import com.getbro.bro.Fragments.UserListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
@@ -200,7 +202,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         getActionBar().setTitle(title);
     }
 
-
+/*
     public class EventListFragment extends Fragment {
 
         @Override
@@ -243,7 +245,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         }
     }
 
-
+*/
 /*
     private class DownloadFriendsTask extends AsyncTask<Void,Void, String[]> {
         Activity activity;

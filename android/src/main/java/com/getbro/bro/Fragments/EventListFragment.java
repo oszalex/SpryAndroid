@@ -12,17 +12,19 @@ import android.widget.ExpandableListView;
 
 import com.getbro.bro.EventsExpandableListAdapter;
 import com.getbro.bro.Json.Event;
+import com.getbro.bro.Model.EventModel;
 import com.getbro.bro.R;
 import com.getbro.bro.Webservice.HttpGetRequest;
+
+import java.util.List;
 
 /**
  * Created by chris on 03/05/14.
  */
 public class EventListFragment extends Fragment {
-    private HttpGetRequest httpRequest;
 
-    public EventListFragment(HttpGetRequest httpRequest){
-        this.httpRequest = httpRequest;
+    public EventListFragment(){
+
     }
 
 
@@ -34,34 +36,20 @@ public class EventListFragment extends Fragment {
         View v = inflater.inflate(R.layout.activity_display_events, container, false);
         //ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
 
-        new DownloadEventTask(this.getActivity()).execute();
+        Activity activity = this.getActivity();
+
+        List<EventModel> events = EventModel.listAll(EventModel.class);
+        EventModel[] result = events.toArray(new EventModel[events.size()]) ;
+        EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
+
+
+        ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
+        listView.setAdapter(eventsAdapter);
+
+
+
 
         return v;
     }
 
-    private class DownloadEventTask extends AsyncTask<Void,Void, Event[]> {
-        Activity activity;
-
-        DownloadEventTask(Activity activity) {
-            this.activity = activity;
-        }
-
-        protected Event[] doInBackground(Void... params) {
-
-            try {
-                Event[] events = httpRequest.getAllEvents();
-                return events;
-
-            } catch (NullPointerException e){
-                Log.w("MMM", "could not fetch events from server");
-                return null;
-            }
-        }
-
-        protected void onPostExecute(Event[] result) {
-            EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
-            ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.events_listview);
-            listView.setAdapter(eventsAdapter);
-        }
-    }
 }

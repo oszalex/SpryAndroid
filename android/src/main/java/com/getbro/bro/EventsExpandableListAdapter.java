@@ -11,17 +11,18 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.getbro.bro.Json.Event;
+import com.getbro.bro.Model.EventModel;
 
 public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private final SparseArray<Event> events;
+    private final SparseArray<EventModel> events;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public EventsExpandableListAdapter(Activity act, Event[] eventArray) {
+    public EventsExpandableListAdapter(Activity act, EventModel[] eventArray) {
 
         activity = act;
-        this.events = new SparseArray<Event>();
+        this.events = new SparseArray<EventModel>();
         inflater = act.getLayoutInflater();
 
         for (int i = 0; i < eventArray.length; i++)
@@ -38,7 +39,7 @@ public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int eventPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        Event event = (Event)getGroup(eventPosition);
+        EventModel event = (EventModel)getGroup(eventPosition);
 
         if (convertView == null)
             convertView = inflater.inflate(R.layout.listrow_details, null);
@@ -100,7 +101,7 @@ public class EventsExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_group, null);
         }
-        Event event = (Event)getGroup(eventPosition);
+        EventModel event = (EventModel)getGroup(eventPosition);
         ((CheckedTextView) convertView).setText(event.Name);
         ((CheckedTextView) convertView).setChecked(isExpanded);
         return convertView;
