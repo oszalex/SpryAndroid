@@ -27,6 +27,7 @@ import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
 import com.getbro.bro.Json.Event;
 import com.getbro.bro.Json.User;
+import com.getbro.bro.Model.UserModel;
 import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.DatabaseSync;
 import com.getbro.bro.Webservice.HttpGetRequest;
@@ -181,9 +182,9 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private Fragment getFragment(int i){
         switch(i){
             case 0:
-                return new ProfilFragment(me);
+                return new ProfilFragment(UserModel.listAll(UserModel.class).get(0));
             case 1:
-                return new UserListFragment(users);
+                return new UserListFragment(UserModel.listAll(UserModel.class));
             case 2:
                 return new EventListFragment();
             case 3:

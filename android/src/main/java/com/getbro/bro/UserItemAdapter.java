@@ -8,16 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.getbro.bro.Json.User;
+import com.getbro.bro.Model.UserModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chris on 03/05/14.
  */
-public class UserItemAdapter extends ArrayAdapter<User> {
-    private ArrayList<User> users;
+public class UserItemAdapter extends ArrayAdapter<UserModel> {
+    private List<UserModel> users;
 
-    public UserItemAdapter(Context context, int textViewResourceId, ArrayList<User> users) {
+    public UserItemAdapter(Context context, int textViewResourceId, List<UserModel> users) {
         super(context, textViewResourceId, users);
         this.users = users;
     }
@@ -29,7 +31,7 @@ public class UserItemAdapter extends ArrayAdapter<User> {
             v = vi.inflate(R.layout.profillistitem, null);
         }
 
-        User user = users.get(position);
+        UserModel user = users.get(position);
         if (user != null) {
             TextView username = (TextView) v.findViewById(R.id.username);
 
