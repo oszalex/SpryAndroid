@@ -114,9 +114,6 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         //Intent intent = new Intent(this, LoginActivity.class);
         //startActivity(intent);
 
-        //new DownloadUserProfile(this).execute();
-        //new DownloadFriendsTask(this).execute();
-
 	}
 
 
@@ -202,108 +199,4 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         getActionBar().setTitle(title);
     }
 
-/*
-    public class EventListFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-
-            View v = inflater.inflate(R.layout.activity_display_events, container, false);
-            //ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
-
-            new DownloadEventTask(this.getActivity()).execute();
-
-            return v;
-        }
-
-        private class DownloadEventTask extends AsyncTask<Void,Void, Event[]> {
-            Activity activity;
-
-            DownloadEventTask(Activity activity) {
-                this.activity = activity;
-            }
-
-            protected Event[] doInBackground(Void... params) {
-
-                try {
-                    Event[] events = httpRequest.getAllEvents();
-                    return events;
-
-                } catch (NullPointerException e){
-                    Log.w("MMM", "could not fetch events from server");
-                    return null;
-                }
-            }
-
-            protected void onPostExecute(Event[] result) {
-                EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
-                ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.events_listview);
-                listView.setAdapter(eventsAdapter);
-            }
-        }
-    }
-
-*/
-/*
-    private class DownloadFriendsTask extends AsyncTask<Void,Void, String[]> {
-        Activity activity;
-
-        DownloadFriendsTask(Activity activity) {
-            this.activity = activity;
-        }
-
-        protected String[] doInBackground(Void... params) {
-            String[] users = null;
-
-            try {
-                users = httpRequest.getFriends();
-                return users;
-
-            } catch (NullPointerException e){
-                Log.w("MMM", "could not fetch events from server");
-            }
-
-            return users;
-        }
-
-        protected void onPostExecute(String[] result) {
-
-            MainActivity.this.users = new ArrayList<User>();
-
-            for(int i=0; i < result.length; i++){
-                MainActivity.this.users.add(new User("male",result[i], null));
-            }
-        }
-    }
-
-
-    private class DownloadUserProfile extends AsyncTask<Void,Void, User> {
-        Activity activity;
-
-        DownloadUserProfile(Activity activity) {
-            this.activity = activity;
-        }
-
-        protected User doInBackground(Void... params) {
-            User me = null;
-
-            try {
-                me = httpRequest.getOwnUserElement();
-                return me;
-
-            } catch (NullPointerException e){
-                Log.w("MMM", "could not fetch userprofile from server");
-            }
-
-            return me;
-        }
-
-        protected void onPostExecute(User me) {
-            MainActivity.this.me = me;
-        }
-    }
-
-*/
 }
