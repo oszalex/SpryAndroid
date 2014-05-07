@@ -1,5 +1,6 @@
 package com.getbro.bro.Data;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -20,34 +21,42 @@ public class Event implements Serializable {
 
     @SerializedName("id")
     @DatabaseField
+    @Expose
     public long RemoteId;
 
     @SerializedName("datetime")
     @DatabaseField
+    @Expose
     public Date DateTime;
 
     @SerializedName("name")
     @DatabaseField
+    @Expose
     public String Name;
 
     @SerializedName("participant_ids")
     @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @Expose
     public long[] Participants;
 
     @SerializedName("public")
     @DatabaseField
+    @Expose
     public Boolean IsPublic;
 
     @SerializedName("tags")
     @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @Expose
     public String[] Tags;
 
     @SerializedName("venue_id")
     @DatabaseField
+    @Expose
     public long VenueId;
 
     @SerializedName("creator_id")
     @DatabaseField
+    @Expose
     public long CreatorId;
 
     public Event(){}

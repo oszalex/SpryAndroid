@@ -1,5 +1,6 @@
 package com.getbro.bro.Data;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -19,22 +20,27 @@ public class User implements Serializable {
 
     @SerializedName("id")
     @DatabaseField
+    @Expose
     public long RemoteId;
 
     @SerializedName("sex")
     @DatabaseField
+    @Expose
     public String Sex;
 
     @SerializedName("username")
     @DatabaseField
+    @Expose
     public String UserName;
 
     @SerializedName("followed")
     @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @Expose
     public long[] Followed; //ids of followed
 
     @SerializedName("follower")
     @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @Expose
     public long[] Follower; //ids of follower
 
     public User(){}
