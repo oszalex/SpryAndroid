@@ -22,6 +22,7 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         Log.d(TAG, "sync database");
 
         this.delegate = callback;
+
         httpRequest = HttpGetRequest.getHttpGetRequest();
 
         assertNotNull("httpRequest cannot be null", httpRequest);
@@ -48,6 +49,8 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         //fetch own user object (users/me)
         try {
             User me = httpRequest.getOwnUserElement();
+
+            Log.d(TAG, "users: " + me);
             User.updateOrInsert(delegate.getApplicationContext(), me);
         } catch(NullPointerException e){
             Log.w(TAG, "cannot update current user information! (NullPointer)");
