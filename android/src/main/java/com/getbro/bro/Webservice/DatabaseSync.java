@@ -38,8 +38,8 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
 
             Log.d(TAG, "received following events: " + events);
 
-            for (Event e : events)
-                Event.updateOrInsert(delegate.getApplicationContext(), e);
+            //for (Event e : events)
+            //    Event.updateOrInsert(delegate.getApplicationContext(), e);
         } catch (NullPointerException e){
             Log.w(TAG, "cannot update event list! (NullPointer)");
         }
@@ -51,7 +51,7 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
             User me = httpRequest.getOwnUserElement();
 
             Log.d(TAG, "users: " + me);
-            User.updateOrInsert(delegate.getApplicationContext(), me);
+            //User.updateOrInsert(delegate.getApplicationContext(), me);
         } catch(NullPointerException e){
             Log.w(TAG, "cannot update current user information! (NullPointer)");
         }

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ListView;
 
+import com.getbro.bro.Data.DatabaseManager;
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Fragments.EventListFragment;
 import com.getbro.bro.Fragments.UserListFragment;
@@ -25,6 +26,9 @@ import com.getbro.bro.Data.User;
 import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.DatabaseSync;
 import com.getbro.bro.Webservice.HttpGetRequest;
+
+import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends Activity implements AsyncLoginResponse {
@@ -42,6 +46,29 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+        //init database
+        DatabaseManager.init(this);
+
+        //add event and dummyuser
+
+        DatabaseManager.getInstance().addUser(
+                new User(
+                        "male",
+                        "male",
+                        new long[0],
+                        new long[0]
+                ));
+        DatabaseManager.getInstance().addEvent(
+                new Event(
+                        2313,
+                        new Date(),
+                        "test event",
+                        new long[0],
+                        true,
+                        new String[0],
+                        2323
+                ));
 
         mTitle = mDrawerTitle = this.getTitle();
 
@@ -92,9 +119,10 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         //TEST LOGIN
 
         //INFO
-        Log.i(TAG, "DB has: " + User.listAll(User.class).size() + " and " + Event.listAll(Event.class).size() + " events");
+        //Log.i(TAG, "DB has: " + User.listAll(User.class).size() + " and " + Event.listAll(Event.class).size() + " events");
+        final List<Event> events = DatabaseManager.getInstance().getAllEvents();
 
-
+        Log.i(TAG, "DB events: " + events);
 
         //configure webserver connection
         //FIX
@@ -176,15 +204,15 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private Fragment getFragment(int i){
         switch(i){
             case 0:
-                return new ProfilFragment(User.listAll(User.class).get(0));
+                return new ProfilFragment(new User("male","username", new long[0], new long[0]));
             case 1:
-                return new UserListFragment(User.listAll(User.class));
+                return new UserListFragment(DatabaseManager.getInstance().getAllUsers());
             case 2:
-                return new EventListFragment();
+                return new EventListFragment(DatabaseManager.getInstance().getAllEvents());
             case 3:
                 return new NewEventFragment(httpRequest);
             default:
-                return new EventListFragment();
+                return new EventListFragment(DatabaseManager.getInstance().getAllEvents());
         }
     }
 

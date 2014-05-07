@@ -1,51 +1,48 @@
 package com.getbro.bro.Data;
 
-import android.content.Context;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import java.io.Serializable;
 
 /**
  * Created by chris on 04/05/14.
  */
-public class User extends SugarRecord<User> {
 
-    @SerializedName("Id")
-    public Long Id;
+@DatabaseTable
+public class User implements Serializable {
+
+    @DatabaseField(generatedId=true)
+    private int id;
+
+    @SerializedName("id")
+    @DatabaseField
+    public long RemoteId;
 
     @SerializedName("sex")
+    @DatabaseField
     public String Sex;
 
     @SerializedName("username")
+    @DatabaseField
     public String UserName;
 
     @SerializedName("followed")
-    public Long[] Followed; //ids of followed
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    public long[] Followed; //ids of followed
 
     @SerializedName("follower")
-    public Long[] Follower; //ids of follower
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    public long[] Follower; //ids of follower
 
-    public User(Context ctx){
-        super(ctx);
-    }
+    public User(){}
 
-    public User(Context ctx, String Sex, String UserName, Long followed[], Long follower[]){
-        super(ctx);
+    public User(String Sex, String UserName, long followed[], long follower[]){
         this.Sex = Sex;
         this.UserName = UserName;
         this.Followed = followed;
         this.Follower = follower;
-    }
-
-    public static User updateOrInsert (Context ctx, User user){
-        if (user == null) return null;
-
-        User u = User.findById(User.class, user.Id);
-
-        if(null == u)
-            u = user;
-
-        u.save();
-
-        return u;
     }
 }

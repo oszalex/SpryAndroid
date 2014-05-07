@@ -11,7 +11,7 @@ public class UserProxy {
 
     public static User getUser(AsyncLoginResponse ac, long id){
 
-        User u = User.findById(User.class, id);
+        User u = null; // User.findById(User.class, id);
 
         //try to find it on the internet
         if(u == null){
@@ -20,7 +20,7 @@ public class UserProxy {
             HttpGetRequest server = ac.getHTTPRequest();
             u = server.getUser(id);
 
-            u.save();
+            //u.save();
 
         }
 

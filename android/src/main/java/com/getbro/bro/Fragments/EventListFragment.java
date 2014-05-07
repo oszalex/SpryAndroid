@@ -6,21 +6,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 
 import com.getbro.bro.EventsExpandableListAdapter;
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by chris on 03/05/14.
  */
 public class EventListFragment extends Fragment {
+    List<Event> events;
 
-    public EventListFragment(){
-
+    public EventListFragment(List<Event> events){
+        this.events = events;
     }
 
 
@@ -34,10 +37,8 @@ public class EventListFragment extends Fragment {
 
         Activity activity = this.getActivity();
 
-        List<Event> events = Event.listAll(Event.class);
         Event[] result = events.toArray(new Event[events.size()]) ;
         EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
-
 
         ExpandableListView listView = (ExpandableListView) v.findViewById(R.id.events_listview);
         listView.setAdapter(eventsAdapter);

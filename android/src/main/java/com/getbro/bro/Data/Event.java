@@ -1,49 +1,59 @@
 package com.getbro.bro.Data;
 
-import android.content.Context;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by chris on 04/05/14.
  */
 
+@DatabaseTable
+public class Event implements Serializable {
 
-public class Event extends SugarRecord<Event> {
+    @DatabaseField(generatedId=true)
+    private int id;
 
     @SerializedName("id")
-    public Long Id;
+    @DatabaseField
+    public long RemoteId;
 
     @SerializedName("datetime")
+    @DatabaseField
     public Date DateTime;
 
     @SerializedName("name")
+    @DatabaseField
     public String Name;
 
     @SerializedName("participant_ids")
-    public Long[] Participants;
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    public long[] Participants;
 
     @SerializedName("public")
+    @DatabaseField
     public Boolean IsPublic;
 
     @SerializedName("tags")
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     public String[] Tags;
 
     @SerializedName("venue_id")
-    public Long VenueId;
+    @DatabaseField
+    public long VenueId;
 
     @SerializedName("creator_id")
-    public Long CreatorId;
+    @DatabaseField
+    public long CreatorId;
 
-    public Event(Context ctx){
-        super(ctx);
-    }
+    public Event(){}
 
-    public Event(Context ctx, Long CreatorId, Date DateTime, String Name, Long[] Participants,
-                 boolean IsPublic, String[] Tags, Long VenueId){
-        super(ctx);
+    public Event(long CreatorId, Date DateTime, String Name, long[] Participants,
+                 boolean IsPublic, String[] Tags, long VenueId){
         this.CreatorId = CreatorId;
         this.DateTime = DateTime;
         this.Name = Name;
@@ -53,14 +63,4 @@ public class Event extends SugarRecord<Event> {
         this.VenueId = VenueId;
     }
 
-    public static Event updateOrInsert (Context ctx, Event event){
-        if (event == null) return null;
-
-        Event e = Event.findById(Event.class, event.Id);
-
-        if(null == e)
-            event.save();
-
-        return e;
-    }
 }

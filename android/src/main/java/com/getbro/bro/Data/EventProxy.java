@@ -11,7 +11,7 @@ public class EventProxy {
 
     public static Event getUser(AsyncLoginResponse ac, long id){
 
-        Event e = Event.findById(Event.class, id);
+        Event e = null; //Event.findById(Event.class, id);
 
         //try to find it on the internet
         if(e == null){
@@ -20,7 +20,7 @@ public class EventProxy {
             HttpGetRequest server = ac.getHTTPRequest();
             e = server.getEvent(id);
 
-            e.save();
+            //e.save();
 
         }
 
