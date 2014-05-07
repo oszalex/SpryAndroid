@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ListView;
 
+import com.getbro.bro.Data.Event;
 import com.getbro.bro.Fragments.EventListFragment;
 import com.getbro.bro.Fragments.UserListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
@@ -26,6 +28,7 @@ import com.getbro.bro.Webservice.HttpGetRequest;
 
 
 public class MainActivity extends Activity implements AsyncLoginResponse {
+    private final String TAG = MainActivity.class.getSimpleName();
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -87,6 +90,9 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 
 
         //TEST LOGIN
+
+        //INFO
+        Log.i(TAG, "DB has: " + User.listAll(User.class).size() + " and " + Event.listAll(Event.class).size() + " events");
 
 
 

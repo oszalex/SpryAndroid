@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Data.User;
+import com.getbro.bro.R;
 
 import static junit.framework.Assert.assertNotNull;
 
@@ -21,7 +22,7 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         Log.d(TAG, "sync database");
 
         this.delegate = callback;
-        httpRequest = callback.getHTTPRequest();
+        httpRequest = HttpGetRequest.getHttpGetRequest();
 
         assertNotNull("httpRequest cannot be null", httpRequest);
     }
@@ -30,15 +31,19 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         //fetch events
+        Event events[] = {};
         try {
-            Event events[] = httpRequest.getAllEvents();
+            events = httpRequest.getAllEvents();
+
+            Log.d(TAG, "received following events: " + events);
 
             for (Event e : events)
                 Event.updateOrInsert(delegate.getApplicationContext(), e);
-
         } catch (NullPointerException e){
             Log.w(TAG, "cannot update event list! (NullPointer)");
         }
+
+
 
         //fetch own user object (users/me)
         try {

@@ -35,9 +35,22 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 public class HttpGetRequest extends SugarApp {
-
+    private final String TAG = HttpGetRequest.class.getSimpleName();
     private String webServiceUrl;
     private HttpClient client;
+
+    private static HttpGetRequest instance;
+
+    public void onCreate()
+    {
+        super.onCreate();
+        instance = this;
+    }
+
+    public static HttpGetRequest getHttpGetRequest() {
+        return instance;
+    }
+
 
     public HttpGetRequest() { }
 
@@ -88,7 +101,8 @@ public class HttpGetRequest extends SugarApp {
         String json = getJson("/events");
         Data<Event[]> data = gsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
 
-        Log.d("HTTP Request", data.toString());
+        Log.d(TAG, "events: " + data.data.toString());
+
         return data.data;
     }
 
