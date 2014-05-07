@@ -2,19 +2,15 @@ package com.getbro.bro.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.getbro.bro.EventsExpandableListAdapter;
-import com.getbro.bro.Json.Event;
-import com.getbro.bro.Model.EventModel;
+import com.getbro.bro.Data.Event;
 import com.getbro.bro.R;
-import com.getbro.bro.Webservice.HttpGetRequest;
 
 import java.util.List;
 
@@ -38,8 +34,8 @@ public class EventListFragment extends Fragment {
 
         Activity activity = this.getActivity();
 
-        List<EventModel> events = EventModel.listAll(EventModel.class);
-        EventModel[] result = events.toArray(new EventModel[events.size()]) ;
+        List<Event> events = Event.listAll(Event.class);
+        Event[] result = events.toArray(new Event[events.size()]) ;
         EventsExpandableListAdapter eventsAdapter = new EventsExpandableListAdapter(activity,result);
 
 

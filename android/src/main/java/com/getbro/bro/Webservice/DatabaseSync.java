@@ -3,11 +3,8 @@ package com.getbro.bro.Webservice;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.getbro.bro.Json.Event;
-import com.getbro.bro.Json.User;
-import com.getbro.bro.Model.EventModel;
-import com.getbro.bro.Model.UserModel;
-import com.orm.Database;
+import com.getbro.bro.Data.Event;
+import com.getbro.bro.Data.User;
 
 import static junit.framework.Assert.assertNotNull;
 
@@ -37,7 +34,7 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
             Event events[] = httpRequest.getAllEvents();
 
             for (Event e : events)
-                EventModel.updateOrInsert(delegate.getApplicationContext(), e);
+                Event.updateOrInsert(delegate.getApplicationContext(), e);
 
         } catch (NullPointerException e){
             Log.w(TAG, "cannot update event list! (NullPointer)");
@@ -46,7 +43,7 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         //fetch own user object (users/me)
         try {
             User me = httpRequest.getOwnUserElement();
-            UserModel.updateOrInsert(delegate.getApplicationContext(), me);
+            User.updateOrInsert(delegate.getApplicationContext(), me);
         } catch(NullPointerException e){
             Log.w(TAG, "cannot update current user information! (NullPointer)");
         }

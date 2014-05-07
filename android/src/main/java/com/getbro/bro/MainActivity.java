@@ -2,37 +2,27 @@ package com.getbro.bro;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.getbro.bro.Fragments.EventListFragment;
 import com.getbro.bro.Fragments.UserListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
-import com.getbro.bro.Json.Event;
-import com.getbro.bro.Json.User;
-import com.getbro.bro.Model.UserModel;
+import com.getbro.bro.Data.User;
 import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.DatabaseSync;
 import com.getbro.bro.Webservice.HttpGetRequest;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends Activity implements AsyncLoginResponse {
@@ -44,8 +34,6 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private CharSequence mTitle;
 
     private HttpGetRequest httpRequest;
-    private ArrayList<User> users;
-    private User me;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -182,9 +170,9 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private Fragment getFragment(int i){
         switch(i){
             case 0:
-                return new ProfilFragment(UserModel.listAll(UserModel.class).get(0));
+                return new ProfilFragment(User.listAll(User.class).get(0));
             case 1:
-                return new UserListFragment(UserModel.listAll(UserModel.class));
+                return new UserListFragment(User.listAll(User.class));
             case 2:
                 return new EventListFragment();
             case 3:

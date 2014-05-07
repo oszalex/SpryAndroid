@@ -2,7 +2,9 @@ package com.getbro.bro.Webservice;
 
 import android.util.Log;
 
-import com.getbro.bro.Json.*;
+import com.getbro.bro.Data.*;
+import com.getbro.bro.Data.Event;
+import com.getbro.bro.Data.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -16,9 +18,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.security.KeyStore;
 
 
@@ -59,7 +59,7 @@ public class HttpGetRequest extends SugarApp {
         return data.data;
     }
 
-    public int[] getFriends() {
+    public Long[] getFriends() {
         String json = getJson("/users/me");
         Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
         return data.data.Followed;
@@ -92,7 +92,7 @@ public class HttpGetRequest extends SugarApp {
         return data.data;
     }
 
-    public Event getEvent(int id) {
+    public Event getEvent(long id) {
         String json = getJson("/events/" + id);
         Data<Event> data = gsonFactory().fromJson(json, new TypeToken<Data<Event>>() {}.getType());
         return data.data;

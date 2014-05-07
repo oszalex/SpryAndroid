@@ -10,12 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.getbro.bro.Json.User;
-import com.getbro.bro.Model.UserModel;
+import com.getbro.bro.Data.User;
 import com.getbro.bro.R;
 import com.getbro.bro.UserItemAdapter;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,9 +20,9 @@ import java.util.List;
  */
 public class UserListFragment extends Fragment {
     private final String TAG = UserListFragment.class.getSimpleName();
-    private List<UserModel> users;
+    private List<User> users;
 
-    public UserListFragment(List<UserModel> users){
+    public UserListFragment(List<User> users){
         this.users = users;
     }
 
@@ -43,7 +40,7 @@ public class UserListFragment extends Fragment {
             @Override public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
             {
                 Log.d(TAG, "received user selection: " + arg1.toString() + " " + position);
-                UserModel u = (UserModel)arg1.getTag(R.id.list_item);
+                User u = (User)arg1.getTag(R.id.list_item);
 
                 Log.d(TAG, "user: " + u.toString());
 

@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import com.getbro.bro.Json.User;
-import com.getbro.bro.Model.UserModel;
+import com.getbro.bro.Data.User;
 import com.getbro.bro.R;
 import com.getbro.bro.UIComponents.CustomTextView;
 
@@ -16,9 +14,9 @@ import com.getbro.bro.UIComponents.CustomTextView;
  * Created by chris on 03/05/14.
  */
 public class ProfilFragment extends Fragment {
-    private UserModel user;
+    private User user;
 
-    public ProfilFragment(UserModel u){
+    public ProfilFragment(User u){
         this.user = u;
     }
 
