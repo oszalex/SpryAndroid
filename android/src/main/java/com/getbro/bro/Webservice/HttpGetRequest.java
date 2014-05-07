@@ -99,7 +99,7 @@ public class HttpGetRequest extends SugarApp {
     }
 
     public Gson gsonFactory() {
-       return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").create();
+       return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").create();
     }
     public String getJson(String url) {
         String fullUrl = webServiceUrl + url;
