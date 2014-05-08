@@ -1,14 +1,12 @@
 package com.getbro.bro.Data;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
-import com.getbro.bro.Data.User;
-import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
-/**
- * Created by chris on 04/05/14.
- */
+import java.util.concurrent.ExecutionException;
+
 public class UserProxy {
     private static final String TAG = UserProxy.class.getSimpleName();
 
@@ -21,10 +19,25 @@ public class UserProxy {
         if(u == null){
             Log.d(TAG, "use inet connection to fetch user");
 
-            HttpGetRequest server = HttpGetRequest.getHttpGetRequest();
-            u = server.getUser(id);
+            try {
+                u = new AsyncTask<Long,Void, User>(){
+
+                    @Override
+                    protected User doInBackground(Long... ids) {
+                        HttpGetRequest server = HttpGetRequest.getHttpGetRequest();
+                        return server.getUser(ids[0]);
+                    }
+                }.execute(id).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
 
             if(u != null) DatabaseManager.getInstance().addUser(u);
+        }else {
+            Log.d(TAG, "found user within database!");
         }
 
         return u;
