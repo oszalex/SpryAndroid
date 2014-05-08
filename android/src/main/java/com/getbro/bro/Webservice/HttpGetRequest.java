@@ -64,10 +64,12 @@ public class HttpGetRequest extends Application {
     }
 
     public void configureClient(String webServiceUrl, String userName, String password) {
+        Log.d(TAG, "configured Client: " + userName + "/" + password);
         this.webServiceUrl = webServiceUrl;
         this.client = getClient(userName,password);
     }
     public void configureClient(String userName, String password) {
+        Log.d(TAG, "configured Client: " + userName + "/" + password);
         this.client = getClient(userName,password);
     }
 
@@ -136,7 +138,7 @@ public class HttpGetRequest extends Application {
             Log.e(TAG, "could not get JSON: " + ex.getMessage());
         }
 
-        Log.d(TAG, result.toString());
+        Log.d(TAG, "result: " + result.toString());
 
         return result.toString();
     }
@@ -193,11 +195,9 @@ public class HttpGetRequest extends Application {
         return client;
     }
 
-    public boolean checkLogin(UserAccount account) {
+    public boolean checkLogin() {
         String fullUrl = webServiceUrl + "/auth/login";
         HttpGet request = new HttpGet(fullUrl);
-        String line = "";
-        StringBuffer result = new StringBuffer();
 
         int responseCode = 501;
 
@@ -209,8 +209,12 @@ public class HttpGetRequest extends Application {
             Log.e("HTTPRequest", ex.toString());
         }
 
+        Log.d(TAG, "checklogin returned: " + responseCode);
+
         return (responseCode == 200);
     }
+
+
 
     public void setHost(String host) {
         this.webServiceUrl = host;

@@ -41,7 +41,7 @@ public class LoginActivity extends Activity{
                     HttpGetRequest hr = HttpGetRequest.getHttpGetRequest();
                     hr.configureClient(uc.username, uc.password);
 
-                    return hr.checkLogin(uc);
+                    return hr.checkLogin();
                 }
 
                 @Override
@@ -84,13 +84,13 @@ public class LoginActivity extends Activity{
         UserAccount uc = new UserAccount(username, password);
 
         if(checkLogin(uc)){
-            //right credentials
+            Log.d(TAG, "user logged in. close loginform");
             AuthManager.setAccout(uc);
 
             this.finish();
 
         }else {
-            //wrong credentials
+            Log.d(TAG, "wrong credentials");
 
             enableDisableViewGroup((ViewGroup)getWindow().getDecorView().getRootView(), true);
         }

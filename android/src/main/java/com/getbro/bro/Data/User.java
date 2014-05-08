@@ -50,4 +50,12 @@ public class User implements Serializable {
         this.Followed = followed;
         this.Follower = follower;
     }
+
+    public int numOfFollowers(){
+        return (Follower == null) ? 0 : Follower.length;
+    }
+
+    public int numOfFollowed(){
+        return (Follower == null) ? 0 : Follower.length;
+    }
 }

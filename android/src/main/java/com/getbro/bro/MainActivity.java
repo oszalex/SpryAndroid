@@ -99,23 +99,24 @@ public class MainActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
         selectItem(2);
 
-        UserAccount creds = AuthManager.getAccount();
+        UserAccount ac = AuthManager.getAccount();
 
-        if(creds == null){
-            //if not logged in, show loginform
+        if(null == ac){
+            Log.d(TAG, "not logged in, show loginform");
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+
+            /** start activity blocking **/
+            startActivityForResult(intent,0);
 
         }else {
+            Log.d(TAG, "UserAccount found!");
             httpRequest.configureClient(
-                    getResources().getString(R.string.webService),
-                    creds.getUsername(),
-                    creds.getPassword()
+                    ac.getUsername(),
+                    ac.getPassword()
             );
         }
 
-        Log.d(TAG, "new you are logged in, bro! (" + creds.getId() + ")");
-
+        Log.d(TAG, "fetch own user object");
         new AsyncTask<Void, Void, Void>(){
 
             @Override
@@ -185,9 +186,9 @@ public class MainActivity extends Activity {
     private Fragment getFragment(int i){
         switch(i){
             case 0:
-                return new ProfilFragment(UserProxy.getUser(41));
+                return new ProfilFragment(me);
             case 1:
-                return new UserListFragment(DatabaseManager.getInstance().getAllUsers());
+                return new UserListFragment(UserProxy.getUsers(me.Follower));
             case 2:
                 return new EventListFragment(DatabaseManager.getInstance().getAllEvents());
             case 3:

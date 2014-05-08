@@ -2,13 +2,15 @@ package com.getbro.bro.Auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 public class AuthManager {
+    private static final String TAG = AuthManager.class.getSimpleName();
     private static final String LOGIN_PREFS = "LoginCredentials";
     private static AuthManager am;
     private static SharedPreferences settings;
-    private static UserAccount creds;
+    private static UserAccount creds = null;
     private static boolean init = false;
 
     private AuthManager(Context ctx){
@@ -20,10 +22,10 @@ public class AuthManager {
         String password = settings.getString("password", null);
         Long id = settings.getLong("id", 0);
 
-        if(username == null || password == null)
-            creds = null;
-
-        creds = new UserAccount(username, password);
+        if(username != null && password != null){
+            creds = new UserAccount(username, password);
+            Log.d(TAG, "existing account found: " + creds);
+        }
     }
 
     public static AuthManager init(Context ctx){
@@ -33,6 +35,7 @@ public class AuthManager {
     }
 
     public static UserAccount getAccount(){
+        Log.d(TAG, "fetch UserAccount");
         return creds;
     }
 

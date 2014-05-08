@@ -156,7 +156,7 @@
 
                 <TextView
                     android:id="@+id/profil_username"
-                    android:text=" johnny"
+                    android:text=" "
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
 
                 <TextView
                     android:id="@+id/profil_sex"
-                    android:text=" male"
+                    android:text=" "
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
 
                 <TextView
                     android:id="@+id/profil_age"
-                    android:text=" 22"
+                    android:text=" "
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

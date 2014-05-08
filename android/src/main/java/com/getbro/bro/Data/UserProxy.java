@@ -5,6 +5,11 @@ import android.util.Log;
 
 import com.getbro.bro.Webservice.HttpGetRequest;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutionException;
 
 public class UserProxy {
@@ -41,5 +46,18 @@ public class UserProxy {
         }
 
         return u;
+    }
+
+
+
+    public static List<User> getUsers(long ids[]){
+        ArrayList<User> users = new ArrayList<User>();
+
+        if (ids == null) return users;
+
+        for(long id: ids)
+            users.add(getUser(id));
+
+        return users;
     }
 }
