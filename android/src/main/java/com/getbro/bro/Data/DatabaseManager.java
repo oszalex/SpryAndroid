@@ -82,6 +82,19 @@ public class DatabaseManager {
         }
     }
 
+
+    public void addOrUpdateEvent(Event e){
+        if (getEvent(e.RemoteId) == null){
+            addEvent(e);
+        }else {
+            try {
+                getHelper().getEventDao().update(e);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
     public void updateUser(User user) {
         try {
             getHelper().getUserDao().update(user);
@@ -103,6 +116,8 @@ public class DatabaseManager {
 
         return u.get(0);
     }
+
+
 
     public Event getEvent(long id){
         List<Event> event = null;

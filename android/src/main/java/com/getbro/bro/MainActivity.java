@@ -127,7 +127,7 @@ public class MainActivity extends Activity {
                 return null;
             }
         }.execute();
-        //new DatabaseSync().execute();
+        new DatabaseSync().execute();
 
 	}
 

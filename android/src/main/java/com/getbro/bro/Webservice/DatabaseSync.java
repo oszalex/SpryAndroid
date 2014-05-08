@@ -3,6 +3,7 @@ package com.getbro.bro.Webservice;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.getbro.bro.Data.DatabaseManager;
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Data.User;
 
@@ -30,8 +31,12 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
 
             Log.d(TAG, "received following events: " + events);
 
-            //for (Event e : events)
-            //    Event.updateOrInsert(delegate.getApplicationContext(), e);
+            if (events != null){
+                Log.d(TAG, "fetched " + events.length + " events");
+                for (Event e : events)
+                    DatabaseManager.getInstance().addOrUpdateEvent(e);
+            }
+
         } catch (NullPointerException e){
             Log.w(TAG, "cannot update event list! (NullPointer)");
         }
