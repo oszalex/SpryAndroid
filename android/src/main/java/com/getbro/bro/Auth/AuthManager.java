@@ -8,7 +8,7 @@ public class AuthManager {
     private static final String LOGIN_PREFS = "LoginCredentials";
     private static AuthManager am;
     private static SharedPreferences settings;
-    private static UserCredentials creds;
+    private static UserAccount creds;
     private static boolean init = false;
 
     private AuthManager(Context ctx){
@@ -18,11 +18,12 @@ public class AuthManager {
 
         String username = settings.getString("username", null);
         String password = settings.getString("password", null);
+        Long id = settings.getLong("id", 0);
 
         if(username == null || password == null)
             creds = null;
 
-        creds = new UserCredentials(username, password);
+        creds = new UserAccount(username, password);
     }
 
     public static AuthManager init(Context ctx){
@@ -31,19 +32,30 @@ public class AuthManager {
         return am;
     }
 
-    public static UserCredentials getAccount(){
+    public static UserAccount getAccount(){
         return creds;
     }
 
-    public static void setAccout(UserCredentials uc){
+    public static void setAccout(UserAccount uc){
         SharedPreferences.Editor editor = settings.edit();
 
         editor.putString("username", uc.getUsername());
         editor.putString("password", uc.getPassword());
 
+        if(uc.getId() != null)
+            editor.putLong("id", uc.getId());
+
         editor.commit();
 
         creds = uc;
+    }
+
+    public static void setID(long id){
+        SharedPreferences.Editor editor = settings.edit();
+
+        editor.putLong("id", id);
+
+        editor.commit();
     }
 
 

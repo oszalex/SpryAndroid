@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.getbro.bro.Auth.AuthManager;
-import com.getbro.bro.Auth.UserCredentials;
+import com.getbro.bro.Auth.UserAccount;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
 import java.util.concurrent.ExecutionException;
@@ -27,25 +27,25 @@ public class LoginActivity extends Activity{
         setContentView(R.layout.activity_login);
     }
 
-    public Boolean checkLogin(UserCredentials credentials){
+    public Boolean checkLogin(UserAccount credentials){
         // deactivate elements
         enableDisableViewGroup((ViewGroup)getWindow().getDecorView().getRootView(), false);
 
         // check credentials
         try {
-            return new AsyncTask<UserCredentials,Void, Boolean>() {
+            return new AsyncTask<UserAccount,Void, Boolean>() {
 
-                private boolean checkCredentials(UserCredentials uc){
+                private boolean checkCredentials(UserAccount uc){
                     Log.d("Login", "Check credentials");
 
                     HttpGetRequest hr = HttpGetRequest.getHttpGetRequest();
                     hr.configureClient(uc.username, uc.password);
 
-                    return hr.checkLogin();
+                    return hr.checkLogin(uc);
                 }
 
                 @Override
-                protected Boolean doInBackground(UserCredentials... params) {
+                protected Boolean doInBackground(UserAccount... params) {
                     Log.d("Login", "some background work");
                     return checkCredentials(params[0]);
                 }
@@ -81,7 +81,7 @@ public class LoginActivity extends Activity{
         username = mUsername.getText().toString();
         password = mPassword.getText().toString();
 
-        UserCredentials uc = new UserCredentials(username, password);
+        UserAccount uc = new UserAccount(username, password);
 
         if(checkLogin(uc)){
             //right credentials

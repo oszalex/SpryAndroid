@@ -1,8 +1,11 @@
 package com.getbro.bro.Webservice;
 
+import android.accounts.AccountManager;
 import android.app.Application;
 import android.util.Log;
 
+import com.getbro.bro.Auth.AuthManager;
+import com.getbro.bro.Auth.UserAccount;
 import com.getbro.bro.Data.*;
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Data.User;
@@ -133,6 +136,8 @@ public class HttpGetRequest extends Application {
             Log.e(TAG, "could not get JSON: " + ex.getMessage());
         }
 
+        Log.d(TAG, result.toString());
+
         return result.toString();
     }
 
@@ -188,9 +193,11 @@ public class HttpGetRequest extends Application {
         return client;
     }
 
-    public boolean checkLogin() {
+    public boolean checkLogin(UserAccount account) {
         String fullUrl = webServiceUrl + "/auth/login";
         HttpGet request = new HttpGet(fullUrl);
+        String line = "";
+        StringBuffer result = new StringBuffer();
 
         int responseCode = 501;
 

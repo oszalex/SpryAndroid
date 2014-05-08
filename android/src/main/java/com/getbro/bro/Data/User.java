@@ -43,7 +43,6 @@ public class User implements Serializable {
     @Expose
     public long[] Follower; //ids of follower
 
-    public User(){}
 
     public User(String Sex, String UserName, long followed[], long follower[]){
         this.Sex = Sex;

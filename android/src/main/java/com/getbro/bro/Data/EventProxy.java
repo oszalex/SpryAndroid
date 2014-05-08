@@ -3,7 +3,6 @@ package com.getbro.bro.Data;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
 import java.util.concurrent.ExecutionException;

@@ -1,12 +1,11 @@
 package com.getbro.bro;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -20,24 +19,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ListView;
 
 import com.getbro.bro.Auth.AuthManager;
-import com.getbro.bro.Auth.UserCredentials;
+import com.getbro.bro.Auth.UserAccount;
 import com.getbro.bro.Data.DatabaseManager;
-import com.getbro.bro.Data.Event;
+import com.getbro.bro.Data.User;
 import com.getbro.bro.Data.UserProxy;
 import com.getbro.bro.Fragments.EventListFragment;
 import com.getbro.bro.Fragments.UserListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
 import com.getbro.bro.Fragments.ProfilFragment;
-import com.getbro.bro.Data.User;
-import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.DatabaseSync;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
-import java.util.Date;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends Activity implements AsyncLoginResponse {
+public class MainActivity extends Activity {
     private final String TAG = MainActivity.class.getSimpleName();
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
@@ -45,6 +41,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private User me;
 
     private HttpGetRequest httpRequest;
 
@@ -61,27 +58,6 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         httpRequest = (HttpGetRequest)getApplication();
         httpRequest.setHost(getResources().getString(R.string.webService));
 
-        //add event and dummyuser
-
-        /*
-        DatabaseManager.getInstance().addUser(
-                new User(
-                        "male",
-                        "male",
-                        new long[0],
-                        new long[0]
-                ));
-        DatabaseManager.getInstance().addEvent(
-                new Event(
-                        2313,
-                        new Date(),
-                        "test event",
-                        new long[0],
-                        true,
-                        new String[0],
-                        2323
-                ));
-                */
 
         mTitle = mDrawerTitle = this.getTitle();
 
@@ -114,22 +90,16 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
             }
         };
 
-        // Set the adapter for the list view
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mPlanetTitles));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+                R.layout.drawer_list_item, mPlanetTitles)); // Set the adapter for the list view
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener()); // Set the list's click listener
+        mDrawerLayout.setDrawerListener(mDrawerToggle); // Set the drawer toggle as the DrawerListener
 
         getActionBar().setIcon(R.drawable.ic_drawer);
         getActionBar().setHomeButtonEnabled(true);
         selectItem(2);
 
-
-        UserCredentials creds = AuthManager.getAccount();
+        UserAccount creds = AuthManager.getAccount();
 
         if(creds == null){
             //if not logged in, show loginform
@@ -144,11 +114,19 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
             );
         }
 
+        Log.d(TAG, "new you are logged in, bro! (" + creds.getId() + ")");
 
-        //new DatabaseSync(this).execute();
+        new AsyncTask<Void, Void, Void>(){
 
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                me = HttpGetRequest.getHttpGetRequest().getOwnUserElement();
 
+                return null;
+            }
+        }.execute();
+        //new DatabaseSync().execute();
 
 	}
 
@@ -179,16 +157,6 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
-    @Override
-    public HttpGetRequest getHTTPRequest() {
-        return httpRequest;
-    }
-
-    @Override
-    public void onLoginCheckFinish(Boolean output) {
-
-    }
 
 
     public class DrawerItemClickListener implements ListView.OnItemClickListener {

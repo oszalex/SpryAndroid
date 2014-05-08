@@ -5,23 +5,15 @@ import android.util.Log;
 
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Data.User;
-import com.getbro.bro.R;
 
 import static junit.framework.Assert.assertNotNull;
 
-/**
- * Created by chris on 04/05/14.
- */
-
 public class DatabaseSync extends AsyncTask<Void, Void, Void> {
     private final String TAG = DatabaseSync.class.getSimpleName();
-    private AsyncLoginResponse delegate = null;
     private HttpGetRequest httpRequest;
 
-    public DatabaseSync(AsyncLoginResponse callback) {
+    public DatabaseSync() {
         Log.d(TAG, "sync database");
-
-        this.delegate = callback;
 
         httpRequest = HttpGetRequest.getHttpGetRequest();
 
@@ -45,7 +37,6 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         }
 
 
-
         //fetch own user object (users/me)
         try {
             User me = httpRequest.getOwnUserElement();
@@ -62,9 +53,4 @@ public class DatabaseSync extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    protected void onPostExecute(Void result) {
-        Log.d(TAG, "Resultat ist da!");
-
-        delegate.onLoginCheckFinish(true);
-    }
 }
