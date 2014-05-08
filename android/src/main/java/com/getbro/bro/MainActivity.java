@@ -1,7 +1,10 @@
 package com.getbro.bro;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ListView;
 
+import com.getbro.bro.Auth.AuthManager;
+import com.getbro.bro.Auth.UserCredentials;
 import com.getbro.bro.Data.DatabaseManager;
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Data.UserProxy;
@@ -50,6 +55,11 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 
         //init database
         DatabaseManager.init(this);
+        //init authentication
+        AuthManager.init(getApplicationContext());
+        //init webconnection
+        httpRequest = (HttpGetRequest)getApplication();
+        httpRequest.setHost(getResources().getString(R.string.webService));
 
         //add event and dummyuser
 
@@ -119,20 +129,26 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
         selectItem(2);
 
 
-        //TEST LOGIN
+        UserCredentials creds = AuthManager.getAccount();
 
-        //configure webserver connection
-        //FIX
-        httpRequest = (HttpGetRequest)getApplication();
-        httpRequest.setHost(getResources().getString(R.string.webService));
-        httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
+        if(creds == null){
+            //if not logged in, show loginform
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+
+        }else {
+            httpRequest.configureClient(
+                    getResources().getString(R.string.webService),
+                    creds.getUsername(),
+                    creds.getPassword()
+            );
+        }
+
 
         //new DatabaseSync(this).execute();
 
 
-        //if not logged in
-        //Intent intent = new Intent(this, LoginActivity.class);
-        //startActivity(intent);
+
 
 	}
 

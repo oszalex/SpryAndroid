@@ -37,7 +37,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 public class HttpGetRequest extends Application {
-    private final String TAG = HttpGetRequest.class.getSimpleName();
+    private static final String TAG = HttpGetRequest.class.getSimpleName();
     private String webServiceUrl;
     private HttpClient client;
 
