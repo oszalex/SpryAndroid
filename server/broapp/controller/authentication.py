@@ -24,7 +24,7 @@ auth = HTTPBasicAuth()
 @auth.login_required
 @auto.doc("public")
 def login():
-    return g.user.id
+  return "Hello %s!" % g.user.username
 
 @broauth.route("/logout")
 @auth.login_required
