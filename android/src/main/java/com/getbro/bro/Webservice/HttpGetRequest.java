@@ -20,6 +20,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.security.KeyStore;
+import java.util.Calendar;
+import java.util.Date;
 
 
 import org.apache.http.HttpVersion;
@@ -100,9 +102,6 @@ public class HttpGetRequest extends Application {
     public Event[] getAllEvents() {
         String json = getJson("/events");
         Data<Event[]> data = gsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
-
-        Log.d(TAG, "events: " + data.data.toString());
-
         return data.data;
     }
 
