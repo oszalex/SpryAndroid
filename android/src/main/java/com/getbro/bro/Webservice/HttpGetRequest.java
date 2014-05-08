@@ -81,7 +81,7 @@ public class HttpGetRequest extends Application {
     }
 
     public User getUser(long id) {
-        String json = getJson("/users/" + id);
+        String json = getJson("/users/id/" + id);
         Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
         return data.data;
     }
@@ -106,7 +106,7 @@ public class HttpGetRequest extends Application {
     }
 
     public Event getEvent(long id) {
-        String json = getJson("/events/" + id);
+        String json = getJson("/events/id/" + id);
         Data<Event> data = gsonFactory().fromJson(json, new TypeToken<Data<Event>>() {}.getType());
         return data.data;
     }
@@ -121,6 +121,7 @@ public class HttpGetRequest extends Application {
         String line = "";
 
         try {
+            Log.d(TAG, "getJSON: " + fullUrl);
             HttpResponse response = client.execute(request);
             int responseCode = response.getStatusLine().getStatusCode();
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -129,7 +130,7 @@ public class HttpGetRequest extends Application {
                 result.append(line);
         }
         catch (Exception ex) {
-            java.lang.System.out.println(ex.getMessage());
+            Log.e(TAG, "could not get JSON: " + ex.getMessage());
         }
 
         return result.toString();

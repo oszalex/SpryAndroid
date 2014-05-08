@@ -1,5 +1,7 @@
 package com.getbro.bro.Data;
 
+import android.util.Log;
+
 import com.getbro.bro.Data.User;
 import com.getbro.bro.Webservice.AsyncLoginResponse;
 import com.getbro.bro.Webservice.HttpGetRequest;
@@ -8,20 +10,21 @@ import com.getbro.bro.Webservice.HttpGetRequest;
  * Created by chris on 04/05/14.
  */
 public class UserProxy {
+    private static final String TAG = UserProxy.class.getSimpleName();
 
-    public static User getUser(AsyncLoginResponse ac, long id){
+    public static User getUser(long id){
+        Log.d(TAG, "try to fetch user: " + id);
 
-        User u = null; // User.findById(User.class, id);
+        User u = DatabaseManager.getInstance().getUser(id);
 
         //try to find it on the internet
         if(u == null){
-            //TODO: exceptionhandling no inet connection
+            Log.d(TAG, "use inet connection to fetch user");
 
-            HttpGetRequest server = ac.getHTTPRequest();
+            HttpGetRequest server = HttpGetRequest.getHttpGetRequest();
             u = server.getUser(id);
 
-            //u.save();
-
+            if(u != null) DatabaseManager.getInstance().addUser(u);
         }
 
         return u;

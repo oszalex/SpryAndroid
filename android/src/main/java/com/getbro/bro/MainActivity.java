@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import com.getbro.bro.Data.DatabaseManager;
 import com.getbro.bro.Data.Event;
+import com.getbro.bro.Data.UserProxy;
 import com.getbro.bro.Fragments.EventListFragment;
 import com.getbro.bro.Fragments.UserListFragment;
 import com.getbro.bro.Fragments.NewEventFragment;
@@ -52,6 +53,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 
         //add event and dummyuser
 
+        /*
         DatabaseManager.getInstance().addUser(
                 new User(
                         "male",
@@ -69,6 +71,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
                         new String[0],
                         2323
                 ));
+                */
 
         mTitle = mDrawerTitle = this.getTitle();
 
@@ -118,19 +121,13 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
 
         //TEST LOGIN
 
-        //INFO
-        //Log.i(TAG, "DB has: " + User.listAll(User.class).size() + " and " + Event.listAll(Event.class).size() + " events");
-        final List<Event> events = DatabaseManager.getInstance().getAllEvents();
-
-        Log.i(TAG, "DB events: " + events);
-
         //configure webserver connection
         //FIX
         httpRequest = (HttpGetRequest)getApplication();
         httpRequest.setHost(getResources().getString(R.string.webService));
         httpRequest.configureClient(getResources().getString(R.string.webService),"chris","123");
 
-        new DatabaseSync(this).execute();
+        //new DatabaseSync(this).execute();
 
 
         //if not logged in
@@ -204,7 +201,7 @@ public class MainActivity extends Activity implements AsyncLoginResponse {
     private Fragment getFragment(int i){
         switch(i){
             case 0:
-                return new ProfilFragment(new User("male","username", new long[0], new long[0]));
+                return new ProfilFragment(UserProxy.getUser(41));
             case 1:
                 return new UserListFragment(DatabaseManager.getInstance().getAllUsers());
             case 2:

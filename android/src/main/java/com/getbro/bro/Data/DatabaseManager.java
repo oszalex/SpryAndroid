@@ -89,4 +89,32 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
+    public User getUser(long id){
+        List<User> u = null;
+        try {
+            u = getHelper().getUserDao().queryBuilder().where().eq("RemoteId", id).query();
+
+            if(u.isEmpty()) return null;
+        } catch (SQLException e){
+            Log.w(TAG, "SQLException on user query: " + e.getMessage());
+            return null;
+        }
+
+        return u.get(0);
+    }
+
+    public Event getEvent(long id){
+        List<Event> event = null;
+        try {
+            event = getHelper().getEventDao().queryBuilder().where().eq("RemoteId", id).query();
+
+            if(event.isEmpty()) return null;
+        } catch (SQLException e){
+            Log.w(TAG, "SQLException on user query: " + e.getMessage());
+            return null;
+        }
+
+        return event.get(0);
+    }
 }
