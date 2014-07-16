@@ -25,7 +25,8 @@
         android:inputType="textEmailAddress"
         android:textColorHint="@android:color/white"
         android:textSize="16sp"
-        android:autoText="false" />
+        android:autoText="false"
+        android:text="chris" />
 
     <EditText
         android:id="@+id/login_password"
@@ -40,7 +41,8 @@
         android:hint="@string/loginEditPassword"
         android:inputType="textPassword"
         android:textColorHint="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:text="123" />
 
     <Button
         android:layout_width="wrap_content"

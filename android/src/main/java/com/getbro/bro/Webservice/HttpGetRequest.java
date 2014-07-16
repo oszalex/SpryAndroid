@@ -1,8 +1,11 @@
 package com.getbro.bro.Webservice;
 
+import android.accounts.AccountManager;
 import android.app.Application;
 import android.util.Log;
 
+import com.getbro.bro.Auth.AuthManager;
+import com.getbro.bro.Auth.UserAccount;
 import com.getbro.bro.Data.*;
 import com.getbro.bro.Data.Event;
 import com.getbro.bro.Data.User;
@@ -20,6 +23,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.security.KeyStore;
+import java.util.Calendar;
+import java.util.Date;
 
 
 import org.apache.http.HttpVersion;
@@ -35,7 +40,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 public class HttpGetRequest extends Application {
-    private final String TAG = HttpGetRequest.class.getSimpleName();
+    private static final String TAG = HttpGetRequest.class.getSimpleName();
     private String webServiceUrl;
     private HttpClient client;
 
@@ -59,10 +64,12 @@ public class HttpGetRequest extends Application {
     }
 
     public void configureClient(String webServiceUrl, String userName, String password) {
+        Log.d(TAG, "configured Client: " + userName + "/" + password);
         this.webServiceUrl = webServiceUrl;
         this.client = getClient(userName,password);
     }
     public void configureClient(String userName, String password) {
+        Log.d(TAG, "configured Client: " + userName + "/" + password);
         this.client = getClient(userName,password);
     }
 
@@ -79,7 +86,7 @@ public class HttpGetRequest extends Application {
     }
 
     public User getUser(long id) {
-        String json = getJson("/users/" + id);
+        String json = getJson("/users/id/" + id);
         Data<User> data = gsonFactory().fromJson(json, new TypeToken<Data<User>>() {}.getType());
         return data.data;
     }
@@ -100,14 +107,11 @@ public class HttpGetRequest extends Application {
     public Event[] getAllEvents() {
         String json = getJson("/events");
         Data<Event[]> data = gsonFactory().fromJson(json, new TypeToken<Data<Event[]>>() {}.getType());
-
-        Log.d(TAG, "events: " + data.data.toString());
-
         return data.data;
     }
 
     public Event getEvent(long id) {
-        String json = getJson("/events/" + id);
+        String json = getJson("/events/id/" + id);
         Data<Event> data = gsonFactory().fromJson(json, new TypeToken<Data<Event>>() {}.getType());
         return data.data;
     }
@@ -122,6 +126,7 @@ public class HttpGetRequest extends Application {
         String line = "";
 
         try {
+            Log.d(TAG, "getJSON: " + fullUrl);
             HttpResponse response = client.execute(request);
             int responseCode = response.getStatusLine().getStatusCode();
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -130,8 +135,10 @@ public class HttpGetRequest extends Application {
                 result.append(line);
         }
         catch (Exception ex) {
-            java.lang.System.out.println(ex.getMessage());
+            Log.e(TAG, "could not get JSON: " + ex.getMessage());
         }
+
+        Log.d(TAG, "result: " + result.toString());
 
         return result.toString();
     }
@@ -202,8 +209,12 @@ public class HttpGetRequest extends Application {
             Log.e("HTTPRequest", ex.toString());
         }
 
+        Log.d(TAG, "checklogin returned: " + responseCode);
+
         return (responseCode == 200);
     }
+
+
 
     public void setHost(String host) {
         this.webServiceUrl = host;

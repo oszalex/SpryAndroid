@@ -43,12 +43,19 @@ public class User implements Serializable {
     @Expose
     public long[] Follower; //ids of follower
 
-    public User(){}
 
     public User(String Sex, String UserName, long followed[], long follower[]){
         this.Sex = Sex;
         this.UserName = UserName;
         this.Followed = followed;
         this.Follower = follower;
+    }
+
+    public int numOfFollowers(){
+        return (Follower == null) ? 0 : Follower.length;
+    }
+
+    public int numOfFollowed(){
+        return (Follower == null) ? 0 : Follower.length;
     }
 }

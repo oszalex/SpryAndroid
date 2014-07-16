@@ -13,16 +13,18 @@
 
 import os
 from flask import Blueprint, jsonify, g, abort
-from .. import auth
 from documentation import auto
+from flask.ext.httpauth import HTTPBasicAuth
 
 broauth = Blueprint('authentication', __name__)
+
+auth = HTTPBasicAuth()
 
 @broauth.route("/login")
 @auth.login_required
 @auto.doc("public")
 def login():
-    return "Hello %s!" % g.user.username
+  return "Hello %s!" % g.user.username
 
 @broauth.route("/logout")
 @auth.login_required

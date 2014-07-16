@@ -1,81 +1,67 @@
 package com.getbro.bro;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.getbro.bro.Webservice.AsyncLoginCheck;
-import com.getbro.bro.Webservice.AsyncLoginResponse;
+import com.getbro.bro.Auth.AuthManager;
+import com.getbro.bro.Auth.UserAccount;
 import com.getbro.bro.Webservice.HttpGetRequest;
 
+import java.util.concurrent.ExecutionException;
 
-public class LoginActivity extends Activity implements AsyncLoginResponse{
+
+public class LoginActivity extends Activity{
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private static final String LOGIN_PREFS = "LoginCredentials";
-    SharedPreferences settings;
     private String username;
     private String password;
-    public HttpGetRequest httpRequest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        httpRequest = (HttpGetRequest)getApplication();
-
-
-        //TODO: check credentials if stored
-        //TODO: getPreferences instead of SHaredPreferences for performance
-
-        settings = getSharedPreferences(LOGIN_PREFS, 0);
-
-        username = settings.getString("username", null);
-        password = settings.getString("password", null);
-
-        if(username != null && password != null){
-            Log.d(TAG, "Settings found. will test it now");
-            checkLogin();
-        }else {
-            Log.d(TAG, "no suitable credentials found");
-        }
-
     }
 
-    public void checkLogin(){
-        //deactivate elements
+    public Boolean checkLogin(UserAccount credentials){
+        // deactivate elements
         enableDisableViewGroup((ViewGroup)getWindow().getDecorView().getRootView(), false);
 
-        new AsyncLoginCheck(this, username, password).execute();
-    }
+        // check credentials
+        try {
+            return new AsyncTask<UserAccount,Void, Boolean>() {
 
+                private boolean checkCredentials(UserAccount uc){
+                    Log.d("Login", "Check credentials");
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
+                    HttpGetRequest hr = HttpGetRequest.getHttpGetRequest();
+                    hr.configureClient(uc.username, uc.password);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+                    return hr.checkLogin();
+                }
+
+                @Override
+                protected Boolean doInBackground(UserAccount... params) {
+                    Log.d("Login", "some background work");
+                    return checkCredentials(params[0]);
+                }
+
+            }.execute(credentials).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-        return super.onOptionsItemSelected(item);
+
+        return false;
     }
 
-    public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
+
+    private static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
         int childCount = viewGroup.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = viewGroup.getChildAt(i);
@@ -87,42 +73,30 @@ public class LoginActivity extends Activity implements AsyncLoginResponse{
     }
 
 
-
     public void login(View view) {
-     HttpGetRequest httpRequest = (HttpGetRequest)getApplication();
-     EditText mUsername = (EditText)findViewById(R.id.login_username);
-     EditText mPassword = (EditText)findViewById(R.id.login_password);
 
-     username = mUsername.getText().toString();
-     password = mPassword.getText().toString();
+        EditText mUsername = (EditText)findViewById(R.id.login_username);
+        EditText mPassword = (EditText)findViewById(R.id.login_password);
 
-     checkLogin();
-    }
+        username = mUsername.getText().toString();
+        password = mPassword.getText().toString();
 
+        UserAccount uc = new UserAccount(username, password);
 
-
-    @Override
-    public HttpGetRequest getHTTPRequest() {
-        return httpRequest;
-    }
-
-    @Override
-    public void onLoginCheckFinish(Boolean output) {
-        if(output){
-            Log.d(TAG, "store credentials");
-            SharedPreferences.Editor editor = settings.edit();
-
-            editor.putString("username", username);
-            editor.putString("password", password);
-
-            editor.commit();
+        if(checkLogin(uc)){
+            Log.d(TAG, "user logged in. close loginform");
+            AuthManager.setAccout(uc);
 
             this.finish();
+
         }else {
+            Log.d(TAG, "wrong credentials");
+
             enableDisableViewGroup((ViewGroup)getWindow().getDecorView().getRootView(), true);
         }
 
 
-        //TODO: else print error.
     }
+
+
 }

@@ -1,29 +1,63 @@
 package com.getbro.bro.Data;
 
-import com.getbro.bro.Data.User;
-import com.getbro.bro.Webservice.AsyncLoginResponse;
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.getbro.bro.Webservice.HttpGetRequest;
 
-/**
- * Created by chris on 04/05/14.
- */
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.ExecutionException;
+
 public class UserProxy {
+    private static final String TAG = UserProxy.class.getSimpleName();
 
-    public static User getUser(AsyncLoginResponse ac, long id){
+    public static User getUser(long id){
+        Log.d(TAG, "try to fetch user: " + id);
 
-        User u = null; // User.findById(User.class, id);
+        User u = DatabaseManager.getInstance().getUser(id);
 
         //try to find it on the internet
         if(u == null){
-            //TODO: exceptionhandling no inet connection
+            Log.d(TAG, "use inet connection to fetch user");
 
-            HttpGetRequest server = ac.getHTTPRequest();
-            u = server.getUser(id);
+            try {
+                u = new AsyncTask<Long,Void, User>(){
 
-            //u.save();
+                    @Override
+                    protected User doInBackground(Long... ids) {
+                        HttpGetRequest server = HttpGetRequest.getHttpGetRequest();
+                        return server.getUser(ids[0]);
+                    }
+                }.execute(id).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
+
+            if(u != null) DatabaseManager.getInstance().addUser(u);
+        }else {
+            Log.d(TAG, "found user within database!");
         }
 
         return u;
+    }
+
+
+
+    public static List<User> getUsers(long ids[]){
+        ArrayList<User> users = new ArrayList<User>();
+
+        if (ids == null) return users;
+
+        for(long id: ids)
+            users.add(getUser(id));
+
+        return users;
     }
 }

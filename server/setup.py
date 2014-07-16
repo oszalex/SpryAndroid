@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -17,7 +17,7 @@ setup(
     license = "commercial",
     keywords = "reference bro broapp",
     url = "https://github.com/inkrement/bro/tree/dev/server",
-    packages=['broapp', 'tests'],
+    packages=find_packages(),
     long_description=read('README'),
     classifiers=[
         "Development Status :: 1 - Alpha",
