@@ -16,6 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -144,12 +148,13 @@ public class MainActivity extends Activity
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
 
-            ItemData itemsData[] = { new ItemData("Help",R.drawable.ic_launcher),
-                    new ItemData("Delete",R.drawable.ic_launcher),
-                    new ItemData("Cloud",R.drawable.ic_launcher),
-                    new ItemData("Favorite",R.drawable.ic_launcher),
-                    new ItemData("Like",R.drawable.ic_launcher),
-                    new ItemData("Rating",R.drawable.ic_launcher)};
+            //DEMO DATA
+            EventItem itemsData[] = { new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
+                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
+                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
+                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
+                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
+                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L)};
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

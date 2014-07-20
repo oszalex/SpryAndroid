@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-    private ItemData[] itemsData;
+    private EventItem[] itemsData;
 
-    public EventAdapter(ItemData[] itemsData) {
+    public EventAdapter(EventItem[] itemsData) {
         this.itemsData = itemsData;
     }
 
@@ -35,9 +35,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
 
-        viewHolder.txtViewTitle.setText(itemsData[position].getTitle());
-        viewHolder.imgViewIcon.setImageResource(itemsData[position].getImageUrl());
-
+        viewHolder.txtViewTitle.setText(itemsData[position].Name);
+        viewHolder.txtViewTags.setText(itemsData[position].Tags.toString());
+        viewHolder.txtViewTimeLeft.setText(itemsData[position].DateTime.toString());
+        //viewHolder.imgViewIcon.setImageResource(itemsData[position].getImageUrl());
 
     }
 
@@ -45,12 +46,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtViewTitle;
-        public ImageView imgViewIcon;
+        public TextView txtViewTags;
+        public TextView txtViewTimeLeft;
+        //public ImageView imgViewIcon;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txtViewTitle = (TextView) itemLayoutView.findViewById(R.id.item_title);
-            imgViewIcon = (ImageView) itemLayoutView.findViewById(R.id.item_icon);
+            txtViewTitle = (TextView) itemLayoutView.findViewById(R.id.eventname);
+            txtViewTags = (TextView) itemLayoutView.findViewById(R.id.tags);
+            txtViewTimeLeft = (TextView) itemLayoutView.findViewById(R.id.timeleft);
         }
     }
 
