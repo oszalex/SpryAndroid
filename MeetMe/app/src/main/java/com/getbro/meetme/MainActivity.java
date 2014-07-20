@@ -54,9 +54,21 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
+
+        Fragment fragment = PlaceholderFragment.newInstance(position+1);
+
+        switch(position){
+            case 1:
+                fragment = ContactsFragment.newInstance();
+                break;
+            case 2:
+                break;
+        }
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, fragment)
                 .commit();
+
     }
 
     public void onSectionAttached(int number) {
