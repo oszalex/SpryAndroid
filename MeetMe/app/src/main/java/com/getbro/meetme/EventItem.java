@@ -9,7 +9,6 @@ import java.util.List;
  */
 
 public class EventItem {
-    private int id;
     public long RemoteId;
     public Date DateTime;
     public String Name;
@@ -18,12 +17,11 @@ public class EventItem {
     public ArrayList<String> Tags;
     public long VenueId;
     public long CreatorId;
-
-
+    private int id;
 
 
     public EventItem(long CreatorId, Date DateTime, String Name, List<Long> Participants,
-                 boolean IsPublic, List<String> Tags, long VenueId){
+                     boolean IsPublic, List<String> Tags, long VenueId) {
         this.CreatorId = CreatorId;
         this.DateTime = DateTime;
         this.Name = Name;
@@ -32,7 +30,6 @@ public class EventItem {
         this.Tags = new ArrayList<String>(Tags);
         this.VenueId = VenueId;
     }
-
 
 
 }

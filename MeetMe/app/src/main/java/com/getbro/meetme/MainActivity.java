@@ -1,11 +1,11 @@
 package com.getbro.meetme;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -50,9 +48,6 @@ public class MainActivity extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
 
-
-
-
     }
 
     @Override
@@ -80,7 +75,6 @@ public class MainActivity extends Activity
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -121,6 +115,9 @@ public class MainActivity extends Activity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        public PlaceholderFragment() {
+        }
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -133,36 +130,30 @@ public class MainActivity extends Activity
             return fragment;
         }
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
 
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             //load fragment
-
-
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
 
             //DEMO DATA
-            EventItem itemsData[] = { new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
-                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
-                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
-                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
-                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
-                    new EventItem(293L,new Date(), "test", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L)};
+            EventItem itemsData[] = {
+                    new EventItem(293L, new Date(System.currentTimeMillis() - (1000 * 60 * 60)), "Urlaub", Arrays.asList(23L, 23L), false, Arrays.asList("Buenos Aires", "Córdoba", "La Plata"), 323L),
+                    new EventItem(293L, new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 12)), "Bier her!", Arrays.asList(23L, 23L), false, Arrays.asList("bier", "party", "beisl"), 323L),
+                    new EventItem(293L, new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24)), "WM schauen", Arrays.asList(23L, 23L), false, Arrays.asList("beamer", "argentinia"), 323L),
+                    new EventItem(293L, new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 48)), "Noch ein verrückter Test", Arrays.asList(23L, 23L), false, Arrays.asList("nur", "ein", "test"), 323L),
+                    new EventItem(293L, new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 213)), "Weltuntergang", Arrays.asList(23L, 23L), false, Arrays.asList("sex", "herpes", "La Plata"), 323L),
+                    new EventItem(293L, new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 3243)), "Geburtstagsfeier", Arrays.asList(23L, 23L), false, Arrays.asList("oma", "opa", "feier"), 323L)};
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-            EventAdapter mAdapter = new EventAdapter(itemsData);
+            EventAdapter mAdapter = new EventAdapter(getActivity(), itemsData);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
 
 
             return rootView;
