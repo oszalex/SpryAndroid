@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends Activity
@@ -31,6 +33,7 @@ public class MainActivity extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private ContactListFragment contactListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,9 @@ public class MainActivity extends Activity
 
         switch(position){
             case 1:
-                fragment = ContactsFragment.newInstance();
+                //fragment = ContactListFragment.newInstance();
+                ListContactTask task = new ListContactTask(this, fragmentManager.beginTransaction());
+                task.execute();
                 break;
             case 2:
                 break;
@@ -69,6 +74,20 @@ public class MainActivity extends Activity
                 .replace(R.id.container, fragment)
                 .commit();
 
+    }
+
+
+    public void addContactListFragment(FragmentTransaction ft,
+                                       List result) {
+        contactListFragment = (ContactListFragment) getFragmentManager().
+                findFragmentByTag("ContactList");
+        if(contactListFragment == null){
+            contactListFragment = new ContactListFragment();
+        }
+        ft.replace(R.id.container, contactListFragment);
+        ft.commit();
+        contactListFragment.setDataList(result);
+        contactListFragment.taskRun = true;
     }
 
     public void onSectionAttached(int number) {
@@ -178,5 +197,7 @@ public class MainActivity extends Activity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+
 
 }
