@@ -1,4 +1,4 @@
-package minirestwebservice;
+/*package minirestwebservice;
 
 import com.sun.jersey.api.client.*;
 
@@ -21,9 +21,9 @@ public class TestClient
    	wrs = Client.create().resource( "http://localhost:4434/test/createEvent?desc=morgen19:00tennisspielen" );	
    	System.out.println("Event erstellt: " + wrs.accept( "application/json" ).get( String.class ) );
    	
-   //User zu Event hinzufügen
-   	wrs = Client.create().resource( "http://localhost:4434/test/addUsertoEvent?eventID=1&userID=1" );	
-   	System.out.println("User zu Event hinzugefügt: " + wrs.accept( "application/json" ).get( String.class ) );
+      // add user
+      wrs = Client.create().resource( "http://localhost:4434/test/addUsertoEvent?eventID=1&userID=1" );	
+   	System.out.println("User zu Event hinzugefuegt: " + wrs.accept( "application/json" ).get( String.class ) );
    //Events anzeigen
       	wrs = Client.create().resource( "http://localhost:4434/test/getEvents" );	
    	System.out.println("Alle Events anzeigen: " +  wrs.accept( "application/json" ).get( String.class ) );
@@ -62,4 +62,4 @@ public class TestClient
       	wrs = Client.create().resource( "http://localhost:4434/test/getUsers" );	
    	System.out.println("Alle User anzeigen " + wrs.accept( "application/json" ).get( String.class ) );
    }
-}
+}*/

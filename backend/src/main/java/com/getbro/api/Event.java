@@ -1,4 +1,4 @@
-package minirestwebservice;
+package com.getbro.api;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;  
