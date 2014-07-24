@@ -14,6 +14,12 @@ import javax.ws.rs.core.Response;
 @Path("events")
 public class EventController extends ApiStorangeWrapper{
 
+    public EventController(){
+        events.add(new Event("me #hunger #essen @vapiano now!"));
+        events.add(new Event("kino heute @apollo 18:00 +chris +diana"));
+        events.add(new Event("rammelrudel morgen @alexgarten"));
+    }
+
     /**
      * list all events
      */
@@ -28,7 +34,7 @@ public class EventController extends ApiStorangeWrapper{
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id:[a-z0-9]+}")
+    @Path("/{id:[a-z0-9]+}")
     public Event getEvent(@QueryParam("eventID") String eventID) {
         return events.get(Integer.parseInt(eventID));
     }

@@ -23,7 +23,7 @@ public class UserController extends ApiStorangeWrapper{
 	 * get single user by id
 	 */
 	@GET
-	@Path("{id:[a-z0-9]+}")
+	@Path("/{id:[a-z0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public User getUser(@QueryParam("userID") String userID) {
 		return users.get(Integer.parseInt(userID));
