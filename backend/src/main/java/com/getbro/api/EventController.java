@@ -5,6 +5,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 
@@ -14,26 +15,9 @@ import javax.ws.rs.core.Response;
 import java.math.BigInteger;
 
 @Path("events")
-public class EventController extends ApiStorangeWrapper{
+public class EventController extends ApiStorageWrapper{
 
     public EventController(){
-
-        if(users.size() == 0){
-
-            users.add(new User("chris", 22));
-            users.add(new User("alex", 433));
-
-            events.add(new Event("me #hunger #essen @vapiano now!"));
-            events.add(new Event("kino heute @apollo 18:00 +chris +diana"));
-
-
-            Event e1 = new Event("rammelrudel morgen @alexgarten #public");
-            e1.invite(new EventInvitation(0, BigInteger.valueOf(0), BigInteger.valueOf(0), InvitationStatus.INVITED));
-            
-            events.add(e1);
-
-        }
-        
     }
 
     /**
@@ -48,13 +32,12 @@ public class EventController extends ApiStorangeWrapper{
     /**
      * get single event
      */
-    @GET
+     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id}")
-    public Event getEvent(@QueryParam("id") String id) {
-        return events.get(Integer.parseInt(id));
+    @Path("{eventID:[a-z0-9]+}")
+    public Event getEvent(@PathParam("eventID") String eventID) {
+        return events.get(Integer.parseInt(eventID)-1);
     }
-
     /**
      * add event
      */

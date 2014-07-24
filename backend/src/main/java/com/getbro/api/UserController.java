@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 
 @Path("/users")
-public class UserController extends ApiStorangeWrapper{
+public class UserController extends ApiStorageWrapper{
 
 	/**
 	 * get all users
@@ -22,12 +22,12 @@ public class UserController extends ApiStorangeWrapper{
 	/**
 	 * get single user by id
 	 */
-	@GET
-	@Path("{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public User getUser(@QueryParam("id") String id) {
-		return users.get(Integer.parseInt(id));
-	}
+	 @GET
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Path("{userID:[a-z0-9]+}")
+	 public User getUser(@PathParam("userID") String userID) {
+	 	 return users.get(Integer.parseInt(userID)-1);
+	 }
 
 	/**
 	 * add new user (user registration)
