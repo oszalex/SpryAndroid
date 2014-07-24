@@ -14,34 +14,47 @@ import javax.ws.rs.core.Response;
 @Path("events")
 public class EventController extends ApiStorangeWrapper{
 
+    /**
+     * list all events
+     */
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getEvents() {
         return events;
     }
     
+    /**
+     * get single event
+     */
     @GET
-    @Path("/event")
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id:[a-z0-9]+}")
     public Event getEvent(@QueryParam("eventID") String eventID) {
-        return events.get(Integer.parseInt(eventID)-1);
+        return events.get(Integer.parseInt(eventID));
     }
 
+    /**
+     * add event
+     */
     @POST
-    @Path("/postEvent")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postEvent( Event event ) {
+    public Response postJsonEvent( Event event ) {
         String output = event.toString();
         events.add(event);
         return Response.status(200).entity(output).build();
     }
 
-    @GET 
+    /**
+     * warum eine zweite Methode zum hinzufügen?
+     */
+
+    /*
+    @POST 
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/createEvent")
     public Event createEvent(@QueryParam("desc") String desc) {
         Event x = new Event(desc);
         events.add(x);
         return x;
     }
+    */
 }
