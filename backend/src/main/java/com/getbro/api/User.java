@@ -19,6 +19,12 @@ public class User {
 		this.age = age;
 		this.userID = BigInteger.valueOf(ID);
 	}
+	public User(User user) {
+		ID++;
+		this.name = user.name;
+		this.age = user.age;
+		this.userID = BigInteger.valueOf(ID);
+	}
 
 	@XmlElement(name="name")
 	public String getUsername(){

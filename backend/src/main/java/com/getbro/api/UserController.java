@@ -44,7 +44,7 @@ public class UserController extends ApiStorageWrapper{
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addJsonUser( User user ) {
 		String output = user.toString();
-		users.add(user);
+		users.add(new User(user));
 		return Response.status(200).entity(output).build();
 	}
 	

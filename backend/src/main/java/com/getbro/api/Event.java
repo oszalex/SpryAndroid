@@ -30,7 +30,16 @@ public class Event {
 		this.createdAt = System.currentTimeMillis();
 		this.creatorID = new BigInteger("004369911602033");
 	}
+	public Event(Event event) {
 
+		if(desc.indexOf("#public") > 0)
+			this.isPublic = true;
+		countID++;
+		this.desc = event.desc;
+		this.eventID = countID;
+		this.createdAt = System.currentTimeMillis();
+		this.creatorID = new BigInteger("004369911602033");
+	}
 
 
 	@XmlElement(name="raw")

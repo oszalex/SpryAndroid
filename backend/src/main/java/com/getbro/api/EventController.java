@@ -45,7 +45,7 @@ public class EventController extends ApiStorageWrapper{
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postJsonEvent( Event event ) {
         String output = event.toString();
-        events.add(event);
+        events.add(new Event(event));
         return Response.status(200).entity(output).build();
     }
 
