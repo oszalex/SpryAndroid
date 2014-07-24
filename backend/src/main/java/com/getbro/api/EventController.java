@@ -17,7 +17,7 @@ public class EventController extends ApiStorangeWrapper{
     public EventController(){
         events.add(new Event("me #hunger #essen @vapiano now!"));
         events.add(new Event("kino heute @apollo 18:00 +chris +diana"));
-        events.add(new Event("rammelrudel morgen @alexgarten"));
+        events.add(new Event("rammelrudel morgen @alexgarten #public"));
     }
 
     /**

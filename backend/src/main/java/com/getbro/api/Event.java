@@ -1,20 +1,37 @@
 package com.getbro.api;
 
 import javax.xml.bind.annotation.*;
-import java.util.*;  
+import java.util.*;
+import java.math.BigInteger;
 
 
 @XmlRootElement
 public class Event {
 	private String desc;
-	private int eventID;
+	private long eventID;
 	private long createdAt;
+	private BigInteger creatorID;
+	private boolean isPublic;
 
 	public static int countID=0;
         public List<User> invited = new LinkedList<User>();
 	private int usercount=0;
         
 	private Event() {}
+
+	public Event(String desc) {
+
+		if(desc.indexOf("#public") > 0)
+			this.isPublic = true;
+
+		countID++;
+		this.desc = desc;
+		this.eventID = countID;
+		this.createdAt = System.currentTimeMillis();
+		this.creatorID = new BigInteger("004369911602033");
+	}
+
+
 
 	@XmlElement(name="raw")
 	public String getRaw(){
@@ -32,15 +49,18 @@ public class Event {
 	}
 
 	@XmlElement(name="id")
-	public int getId(){
+	public long getId(){
 		return eventID;
 	}
-   
-	public Event(String desc) {
-		countID++;
-		this.desc = desc;
-		this.eventID = countID;
-		this.createdAt = System.currentTimeMillis();
+
+	@XmlElement(name="creatorId")
+	public BigInteger getCreatorId(){
+		return creatorID;
+	}
+
+	@XmlElement(name="public")
+	public boolean getIsPublic(){
+		return isPublic;
 	}
 	
 	public boolean addUser(User x) {
