@@ -23,10 +23,10 @@ public class UserController extends ApiStorangeWrapper{
 	 * get single user by id
 	 */
 	@GET
-	@Path("/{id:[a-z0-9]+}")
+	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User getUser(@QueryParam("userID") String userID) {
-		return users.get(Integer.parseInt(userID));
+	public User getUser(@QueryParam("id") String id) {
+		return users.get(Integer.parseInt(id));
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class UserController extends ApiStorangeWrapper{
 	@Path("/addUsertoEvent")
 	public User addUsertoEvent(@QueryParam("eventID") String eventID, @QueryParam("userID") String userID) {
 		User x = users.get(Integer.parseInt(userID)-1);
-		events.get(Integer.parseInt(eventID)-1).addUser(x);
+		//events.get(Integer.parseInt(eventID)-1).addUser(x);
 		return x;
 	}
 	

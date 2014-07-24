@@ -14,8 +14,8 @@ public class Event {
 	private boolean isPublic;
 
 	public static int countID=0;
-        public List<User> invited = new LinkedList<User>();
-	private int usercount=0;
+    
+    private LinkedList<EventInvitation> invited = new LinkedList<EventInvitation>();
         
 	private Event() {}
 
@@ -58,14 +58,23 @@ public class Event {
 		return creatorID;
 	}
 
+	@XmlElement(name="invitations")
+	public List<BigInteger> getInvitations(){
+		List<BigInteger> users = new LinkedList<BigInteger>();
+
+		for (EventInvitation i : invited){
+			users.add(i.getUserId());
+		}
+		return users;
+	}
+
 	@XmlElement(name="public")
 	public boolean getIsPublic(){
 		return isPublic;
 	}
+
 	
-	public boolean addUser(User x) {
-		invited.add(x);
-		usercount++;
-		return true;
+	public void invite(EventInvitation i) {
+		invited.add(i);
 	}
  }

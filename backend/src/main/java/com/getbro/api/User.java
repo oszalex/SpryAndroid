@@ -1,11 +1,13 @@
 package com.getbro.api;
 
 import javax.xml.bind.annotation.*;
+import java.math.BigInteger;
+
 @XmlRootElement
 public class User {
-	public String name;
-	public int age;
-	public int userID;
+	private String name;
+	private int age;
+	private BigInteger userID;
 	
 	public static int ID;
 	
@@ -15,6 +17,16 @@ public class User {
 		ID++;
 		this.name = name;
 		this.age = age;
-		this.userID = ID;
+		this.userID = BigInteger.valueOf(ID);
+	}
+
+	@XmlElement(name="name")
+	public String getUsername(){
+		return name;
+	}
+
+	@XmlElement(name="id")
+	public BigInteger getId(){
+		return userID;
 	}
  }
