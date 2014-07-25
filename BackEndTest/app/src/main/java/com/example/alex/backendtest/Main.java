@@ -65,6 +65,29 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ListView lv = (ListView) findViewById(R.id.listView);
+        lv.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // getting values from selected ListItem
+                String name = ((TextView) view.findViewById(R.id.creator))
+                        .getText().toString();
+                String cost = ((TextView) view.findViewById(R.id.raw))
+                        .getText().toString();
+
+
+                // Starting single contact activity
+                /*Intent in = new Intent(getApplicationContext(),
+                        SingleContactActivity.class);
+                in.putExtra(TAG_NAME, name);
+                in.putExtra(TAG_EMAIL, cost);
+                in.putExtra(TAG_PHONE_MOBILE, description);
+                startActivity(in);
+*/
+            }
+        });
     }
 
 
@@ -87,18 +110,12 @@ public class Main extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void allEvents(View v) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-        ListView lv = (ListView) findViewById(R.id.listView);
-        List<String> your_array_list = new ArrayList<String>();
-        your_array_list.add("foo");
-        your_array_list.add("bar");
+    public JSONArray getJSONFromServer(String URL)
+    {
         JSONArray jason = new JSONArray();
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://192.168.0.13:8080/events");
+        HttpGet httpGet = new HttpGet(URL);
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();
@@ -110,34 +127,8 @@ public class Main extends Activity {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     builder.append(line);
-
                 }
                 jason = new JSONArray(builder.toString());
-                ArrayList<HashMap<String, String>> oslist = new ArrayList<HashMap<String, String>>();
-                for(int i=0;i<jason.length();i++ ) {
-                    JSONObject c = jason.getJSONObject(i);
-                    // Storing  JSON item in a Variable
-                    Toast.makeText(this, jason.toString(), Toast.LENGTH_SHORT).show();
-                    String creator = c.getString("creatorId");
-                    String raw = c.getString("raw");
-                    String time = c.getString("time");
-                    // Adding value HashMap key => value
-                    HashMap<String, String> map = new HashMap<String, String>();
-
-                    map.put("creator", creator);
-                    map.put("raw", raw);
-                    map.put("time", time);
-                    oslist.add(map);
-                    ListAdapter adapter = new SimpleAdapter(
-                            Main.this, oslist,
-                            R.layout.event_element, new String[] { "creator", "raw",
-                            "time" }, new int[] { R.id.creator,
-                            R.id.raw, R.id.time });
-
-                    lv.setAdapter(adapter);
-                }
-            } else {
-                //Log.e(ParseJSON.class.toString(), "Failed to download file");
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
@@ -146,19 +137,75 @@ public class Main extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-        // This is the array adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
-
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-       //         this,
-        //        android.R.layout.simple_list_item_1,
-         //       your_array_list );
+        return jason;
+    }
+    public void allEvents(View v) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        ListView lv = (ListView) findViewById(R.id.listView);
+        List<String> your_array_list = new ArrayList<String>();
+        your_array_list.add("foo");
+        your_array_list.add("bar");
+        JSONArray jason = getJSONFromServer("http://192.168.0.13:8080/events");
+        eventToListView(lv,jason);
+                //Log.e(ParseJSON.class.toString(), "Failed to download file");
     }
 
+
+    public void eventToListView(ListView lv, JSONArray jason)
+    {
+        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        try {
+            for (int i = 0; i < jason.length(); i++) {
+                JSONObject c = jason.getJSONObject(i);
+            //    Toast.makeText(this, jason.toString(), Toast.LENGTH_SHORT).show();
+                String creator = c.getString("creatorId");
+                String raw = c.getString("raw");
+                String time = c.getString("time");
+
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("creator", creator);
+                map.put("raw", raw);
+                map.put("time", time);
+                list.add(map);
+                ListAdapter adapter = new SimpleAdapter(
+                        Main.this, list,
+                        R.layout.event_element, new String[]{"creator", "raw",
+                        "time"}, new int[]{R.id.creator,
+                        R.id.raw, R.id.time}
+                );
+                lv.setAdapter(adapter);
+            }
+        }catch (JSONException e) {
+                e.printStackTrace();
+        }
+    }
+    public void userToListView(ListView lv, JSONArray jason)
+    {
+        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        try {
+            for (int i = 0; i < jason.length(); i++) {
+                JSONObject c = jason.getJSONObject(i);
+                //    Toast.makeText(this, jason.toString(), Toast.LENGTH_SHORT).show();
+                String name = c.getString("name");
+                String id = c.getString("id");
+
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("name", name);
+                map.put("id", id);
+                list.add(map);
+                ListAdapter adapter = new SimpleAdapter(
+                        Main.this, list,
+                        R.layout.user_element, new String[]{"name", "id"},
+                        new int[]{R.id.name,
+                        R.id.id}
+                );
+                lv.setAdapter(adapter);
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public String readJSON() {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -189,7 +236,7 @@ public class Main extends Activity {
     public void viewEvent(View v) {
 
     }
-    public void addUsertoEvent(View v) {
+    public void addUserToEvent(View v) {
 
     }
     public void createEvent(View v) {
@@ -199,7 +246,15 @@ public class Main extends Activity {
 
     }
     public void allUsers(View v) {
-
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        ListView lv = (ListView) findViewById(R.id.listView);
+        List<String> your_array_list = new ArrayList<String>();
+        your_array_list.add("foo");
+        your_array_list.add("bar");
+        JSONArray jason = getJSONFromServer("http://192.168.0.13:8080/users");
+        userToListView(lv,jason);
+        //Log.e(ParseJSON.class.toString(), "Failed to download file");
     }
     public void createUser(View v) {
         EditText x = (EditText) findViewById(R.id.editText3);
@@ -243,7 +298,7 @@ public class Main extends Activity {
 
                 } catch(Exception e) {
                     e.printStackTrace();
-                  //  createDialog("Error", "Cannot Estabilish Connection");
+                  //  createDialog("Error", "Cannot Establish Connection");
                 }
                 Looper.loop(); //Loop in the message queue
             }
