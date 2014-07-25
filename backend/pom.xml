@@ -3,7 +3,7 @@
   <groupId>com.getbro.api</groupId>
   <artifactId>backend</artifactId>
   <packaging>war</packaging>
-  <version>0.0.65-SNAPSHOT</version>
+  <version>0.0.78-SNAPSHOT</version>
   <name>backend</name>
   <url>http://maven.apache.org</url>
   <properties>

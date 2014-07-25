@@ -32,18 +32,19 @@ public class UserController extends ApiStorageWrapper{
 	/**
 	 * add new user (user registration)
 	 */
-	@POST
+	/*@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public User addUser(@QueryParam("name") String name, @QueryParam("age") String age) {
 		User x = new User(name,Integer.parseInt(age));
 		users.add(x);
 		return x;
 	}
-
+*/
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addJsonUser( User user ) {
 		String output = user.toString();
+		System.out.println("Test: " +output);
 		users.add(new User(user));
 		return Response.status(200).entity(output).build();
 	}
