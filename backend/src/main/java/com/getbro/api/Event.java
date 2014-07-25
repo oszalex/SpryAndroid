@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 @XmlRootElement
 public class Event {
-	private String desc;
+	private String raw;
 	private long eventID;
 	private long createdAt;
 	private BigInteger creatorID;
@@ -19,23 +19,21 @@ public class Event {
         
 	private Event() {}
 
-	public Event(String desc) {
+	public Event(String raw) {
 
-		if(desc.indexOf("#public") > 0)
+		if(raw.indexOf("#public") > 0)
 			this.isPublic = true;
 
 		countID++;
-		this.desc = desc;
+		this.raw = raw;
 		this.eventID = countID;
 		this.createdAt = System.currentTimeMillis();
 		this.creatorID = new BigInteger("004369911602033");
 	}
 	public Event(Event event) {
-
-		if(desc.indexOf("#public") > 0)
-			this.isPublic = true;
+		//if(raw.indexOf("#public") > 0) this.isPublic = true;
 		countID++;
-		this.desc = event.desc;
+		this.raw = event.raw;
 		this.eventID = countID;
 		this.createdAt = System.currentTimeMillis();
 		this.creatorID = new BigInteger("004369911602033");
@@ -44,7 +42,11 @@ public class Event {
 
 	@XmlElement(name="raw")
 	public String getRaw(){
-		return desc;
+		return raw;
+	}
+	public void setRaw(String raw){
+		System.out.println("Setraw");
+		this.raw = raw;
 	}
 
 	@XmlElement(name="time")

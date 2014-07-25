@@ -18,7 +18,7 @@
             android:layout_width="600px"
             android:layout_height="wrap_content"
             android:text="Max Mustermann"
-            android:id="@+id/editText3" />
+            android:id="@+id/name" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_width="600px"
             android:text="heute 15:00 tennis"
             android:layout_height="wrap_content"
-            android:id="@+id/editText4" />
+            android:id="@+id/raw" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
