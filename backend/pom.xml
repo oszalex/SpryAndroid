@@ -3,7 +3,7 @@
   <groupId>com.getbro.api</groupId>
   <artifactId>backend</artifactId>
   <packaging>war</packaging>
-  <version>0.0.78-SNAPSHOT</version>
+  <version>2</version>
   <name>backend</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -153,7 +153,7 @@
             <contextPath>/</contextPath>
             <webInfIncludeJarPattern>.*/.*jersey-[^/]\.jar$</webInfIncludeJarPattern>
           </webApp>
-          <war>${project.build.directory}/${project.build.finalName}.war</war>
+          <war>${project.build.directory}/${project.version}.war</war>
         </configuration>
       </plugin>
     </plugins>
