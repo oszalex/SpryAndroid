@@ -31,7 +31,7 @@ public class Event {
 		this.creatorID = new BigInteger("004369911602033");
 	}
 	public Event(Event event) {
-		//if(raw.indexOf("#public") > 0) this.isPublic = true;
+		if(event.getRaw().indexOf("#public") > 0) this.isPublic = true;
 		countID++;
 		this.raw = event.raw;
 		this.eventID = countID;
