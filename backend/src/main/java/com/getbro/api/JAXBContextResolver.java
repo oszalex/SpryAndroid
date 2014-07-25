@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.*;
 import javax.xml.bind.*;
 import com.sun.jersey.api.json.*;
-//import com.sun.jersey.api.json.*;
+
 @Provider
 public class JAXBContextResolver implements ContextResolver<JAXBContext> {
    

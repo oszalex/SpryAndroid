@@ -22,7 +22,7 @@ public class User {
 	public User(User user) {
 		ID++;
 		this.name = user.name;
-		this.age = user.age;
+		this.age = 20;
 		this.userID = BigInteger.valueOf(ID);
 	}
 
@@ -30,9 +30,15 @@ public class User {
 	public String getUsername(){
 		return name;
 	}
+	public void setUsername(String name){	
+		this.name=name;
+	}
 
 	@XmlElement(name="id")
 	public BigInteger getId(){
 		return userID;
+	}
+	public void setId(int ID){
+		this.userID=BigInteger.valueOf(this.ID);
 	}
  }
