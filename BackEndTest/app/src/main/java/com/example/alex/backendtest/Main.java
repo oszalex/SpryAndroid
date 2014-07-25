@@ -97,7 +97,7 @@ public class Main extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+    String URI = "http://84.114.33.167:8080";
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -146,7 +146,7 @@ public class Main extends Activity {
         List<String> your_array_list = new ArrayList<String>();
         your_array_list.add("foo");
         your_array_list.add("bar");
-        JSONArray jason = getJSONFromServer("http://192.168.0.13:8080/events");
+        JSONArray jason = getJSONFromServer(URI+"/events");
         eventToListView(lv,jason);
                 //Log.e(ParseJSON.class.toString(), "Failed to download file");
     }
@@ -209,7 +209,7 @@ public class Main extends Activity {
     public String readJSON() {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://192.168.0.13:8080/events");
+        HttpGet httpGet = new HttpGet(URI+"/events");
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();
@@ -252,7 +252,7 @@ public class Main extends Activity {
         List<String> your_array_list = new ArrayList<String>();
         your_array_list.add("foo");
         your_array_list.add("bar");
-        JSONArray jason = getJSONFromServer("http://192.168.0.13:8080/users");
+        JSONArray jason = getJSONFromServer(URI+"/users");
         userToListView(lv,jason);
         //Log.e(ParseJSON.class.toString(), "Failed to download file");
     }
@@ -262,12 +262,12 @@ public class Main extends Activity {
         JSONObject jason = new JSONObject();
         try {
             jason.put("name", x.getText() );
-            jason.put("age", 24);
+            jason.put("id", 24);
         } catch (org.json.JSONException e) {
             e.printStackTrace();
         }
 
-        sendJason("http://192.168.0.13:8080/users", jason);
+        sendJason(URI+"/users", jason);
     }
     public void sendJason(final String URL, final JSONObject jason) {
         //Toast.makeText(this, jason.toString(), Toast.LENGTH_SHORT).show();
