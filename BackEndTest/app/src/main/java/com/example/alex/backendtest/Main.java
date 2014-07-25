@@ -262,7 +262,7 @@ public class Main extends Activity {
         JSONObject jason = new JSONObject();
         try {
             jason.put("name", x.getText() );
-            jason.put("age", 24);
+            jason.put("id", 24);
         } catch (org.json.JSONException e) {
             e.printStackTrace();
         }
