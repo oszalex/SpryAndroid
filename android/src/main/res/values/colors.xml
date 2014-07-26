@@ -1,7 +1,0 @@
-<resources>
-	<color name="textColor" >#0000FF</color>
-	<color name="actionbar_background">#007AFF</color>
-	<color name="actionbar_text">#5AC8FA</color>
-    <color name="profil_data_description">#9E9E9E</color>
-    <color name="profil_background_top">#2DAAE1</color>
-</resources>

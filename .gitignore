@@ -1,3 +1,4 @@
+*.iml
 *.pyc
 *.class
 *.cache
@@ -9,6 +10,7 @@
 .classpath
 .project
 default.properties
+local.properties
 
 bin/
 gen/
