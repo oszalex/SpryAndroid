@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,7 +96,7 @@ public class MainActivity extends Activity {
                 String raw = c.getString("raw");
                 String time = c.getString("time");
 
-                creator = getContactName(getApplicationContext(), creator);
+                creator = "by " + getContactName(getApplicationContext(), creator);
                 time = relativeTimeSpan(time);
 
                 HashMap<String, String> map = new HashMap<String, String>();
@@ -172,5 +173,7 @@ public class MainActivity extends Activity {
         return "3w";
 
     }
+
+
 
 }

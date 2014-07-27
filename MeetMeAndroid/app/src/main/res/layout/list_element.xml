@@ -9,31 +9,55 @@
 
     <!-- Name Label -->
 
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/raw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_blue"
+            android:text="me #hunger #essen @vapiano now!"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/time"
+            android:layout_toStartOf="@+id/time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2w"
+            android:textSize="18sp"
+            android:id="@+id/time"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
     <TextView
         android:id="@+id/creator"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#43bd00"
+        android:textColor="#acacac"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:text="by Christian Hotz-Behofsits"
+        android:layout_below="@+id/raw"/>
+
+
+
 
     <!-- Email label -->
-    <TextView
-        android:id="@+id/raw"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:textColor="#acacac" />
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Time: "
-        android:textColor="#5d5d5d"
-        android:textStyle="bold" />
+
+
+
 
 </LinearLayout>
