@@ -23,10 +23,11 @@
         android:background="@drawable/ripple"
         android:textColor="#fff"
         android:id="@+id/fabbutton"
-        android:layout_margin="@dimen/activity_horizontal_margin"
         android:paddingBottom="16dp"
         android:fontFamily="sans-serif-light"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="right|bottom" />
+        android:layout_gravity="right|bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/list"
+        android:layout_alignEnd="@+id/list" />
 
 </RelativeLayout>
