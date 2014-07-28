@@ -1,12 +1,20 @@
 package com.getbro.meetmeandroid;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,13 +78,13 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
 
             if (creator_tv != null){
-                creator_tv.setText(getContactName(context, String.valueOf(e.getCreatorID())));
+                creator_tv.setText(Html.fromHtml("<b>by </b> " + getContactName(context, String.valueOf(e.getCreatorID()) )));
             }
             if (raw_tv != null){
-                raw_tv.setText(e.getRaw());
+                raw_tv.setText(colorTags(context, e.getRaw()));
             }
             if (time_tv != null){
-                time_tv.setText(e.getTime().toString());
+                time_tv.setText(getRelativeTimeSpan(e.getTime()));
             }
 
         }
@@ -107,5 +115,69 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
         return contactName;
     }
+
+
+    public static String getRelativeTimeSpan(Date time){
+        long current = System.currentTimeMillis();
+        long time_milli = time.getTime();
+
+        double min = 1000*60.0;
+        double h = min*60;
+        double d = h * 24;
+        double w = d*7;
+
+        long diff = time_milli - current;
+
+        //greater than a week
+        if(diff > w)
+            return (diff/w) + "w";
+        else if(diff > d)
+            return (diff/d) + "d";
+        else if(diff > h)
+            return (diff/h) + "h";
+        else if(diff > min)
+            return (diff/min) + "m";
+
+        return "just now";
+    }
+
+
+
+    public static SpannableStringBuilder colorTags(Context cxt, String text){
+        final Pattern hashtag = Pattern.compile("#\\w+");
+        final Pattern at = Pattern.compile("(\\s|\\A)@(\\w+)");
+        final Pattern name = Pattern.compile("(\\s|\\A)\\+(\\w+)");
+
+        final SpannableStringBuilder spannable = new SpannableStringBuilder(text);
+
+        final ForegroundColorSpan at_color = new ForegroundColorSpan(cxt.getResources().getColor(R.color.orange));
+        final ForegroundColorSpan hash_color = new ForegroundColorSpan(cxt.getResources().getColor(R.color.light_blue));
+        final ForegroundColorSpan name_color = new ForegroundColorSpan(cxt.getResources().getColor(R.color.green));
+
+        final Matcher matcher = hashtag.matcher(text);
+        final Matcher at_matcher = at.matcher(text);
+        final Matcher name_matcher = name.matcher(text);
+
+
+        while (matcher.find()) {
+            spannable.setSpan(
+                    hash_color, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+
+        while (at_matcher.find()) {
+            spannable.setSpan(
+                    at_color, at_matcher.start(), at_matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+
+        while (name_matcher.find()) {
+            spannable.setSpan(
+                    name_color, name_matcher.start(), name_matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+        return spannable;
+    }
+
 
 }

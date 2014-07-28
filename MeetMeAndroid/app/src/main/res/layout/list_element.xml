@@ -21,7 +21,7 @@
             android:id="@+id/raw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_blue"
+            android:textColor="@color/gray"
             android:text="me #hunger #essen @vapiano now!"
             android:textSize="18sp"
             android:layout_centerVertical="true"
