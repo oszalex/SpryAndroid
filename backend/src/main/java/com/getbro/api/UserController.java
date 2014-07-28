@@ -31,14 +31,6 @@ public class UserController extends ApiStorageWrapper{
 	/**
 	 * add new user (user registration)
 	 */
-	/*@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public User addUser(@QueryParam("name") String name, @QueryParam("age") String age) {
-		User x = new User(name,Integer.parseInt(age));
-		users.add(x);
-		return x;
-	}
-*/
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addJsonUser( User user ) {
@@ -56,8 +48,8 @@ public class UserController extends ApiStorageWrapper{
 		// USer finden und code vergleichen
 		System.out.println("Activaating new USer " +output);
 		System.out.println("Received Code " + user.getCode());
-		if( user.checkActivation()) return Response.status(200).entity(user).build();
-		else return Response.status(404).entity(user).build();
+		if( user.checkActivation()) return Response.status(200).entity(output).build();
+		else return Response.status(501).entity(output).build();
 	}
 	
 

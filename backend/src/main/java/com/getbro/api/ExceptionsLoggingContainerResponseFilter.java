@@ -1,4 +1,4 @@
-package com.getbro.api;
+/*package com.getbro.api;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container;
@@ -31,4 +31,4 @@ public class ExceptionsLoggingContainerResponseFilter implements ContainerRespon
         return entity.equals("") ? "(blank)" : entity;
     }
 
-}
+}*/
