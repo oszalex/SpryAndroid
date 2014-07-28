@@ -13,6 +13,7 @@ import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -82,98 +83,9 @@ public class MainActivity extends Activity {
     public void allEvents() {
         ListView lv = (ListView) findViewById(R.id.list);
         JSONArray jason = MeetMeAPI.getJSONFromServer(URI + "/events");
-        eventToListView(lv,jason);
+
+        APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, MeetMeAPI.getEvents());
+        lv.setAdapter(m_adapter);
     }
-
-    public void eventToListView(ListView lv, JSONArray jason)
-    {
-        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-        try {
-            for (int i = 0; i < jason.length(); i++) {
-                JSONObject c = jason.getJSONObject(i);
-                //    Toast.makeText(this, jason.toString(), Toast.LENGTH_SHORT).show();
-                String creator = c.getString("creatorId");
-                String raw = c.getString("raw");
-                String time = c.getString("time");
-
-                creator = "by " + getContactName(getApplicationContext(), creator);
-                time = relativeTimeSpan(time);
-
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("creator", creator);
-                map.put("raw", raw);
-                map.put("time", time);
-                list.add(map);
-                ListAdapter adapter = new SimpleAdapter(
-                        MainActivity.this, list,
-                        R.layout.list_element, new String[]{ "creator","raw",
-                        "time"
-                }, new int[]{
-                        R.id.creator,R.id.raw,R.id.time}
-                );
-                lv.setAdapter(adapter);
-            }
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /* homebrew */
-
-    public static String getContactName(Context context, String phoneNumber) {
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        String contactName = null;
-        if(cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-        }
-
-        if(cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-
-        return contactName;
-    }
-
-
-    private static String relativeTimeSpan(String time){
-        Date expires = new Date(Long.parseLong(time, 10));
-
-        long now = System.currentTimeMillis();
-        DateTime expiresDt = new DateTime(expires);
-        DateTime nowDt = new DateTime();
-        long difference = Math.abs(expires.getTime() - now);
-        Period period = new Period(expiresDt, nowDt);
-        PeriodFormatterBuilder formatterBuilder = new PeriodFormatterBuilder();
-        if (difference > DateUtils.YEAR_IN_MILLIS) {
-            formatterBuilder.appendYears().appendSuffix(" y");
-        } else if (difference > DateUtils.DAY_IN_MILLIS * 30) {
-            formatterBuilder.appendMonths().appendSuffix(" m");
-        } else if (difference > DateUtils.WEEK_IN_MILLIS) {
-            formatterBuilder.appendWeeks().appendSuffix(" w");
-        } else if (difference > DateUtils.DAY_IN_MILLIS) {
-            formatterBuilder.appendDays().appendSuffix(" d");
-        } else if (difference > DateUtils.HOUR_IN_MILLIS) {
-            formatterBuilder.appendHours().appendSuffix(" h");
-        } else if (difference > DateUtils.MINUTE_IN_MILLIS) {
-            formatterBuilder.appendMinutes().appendSuffix(" m");
-        } else if (difference > DateUtils.SECOND_IN_MILLIS) {
-            formatterBuilder.appendSeconds().appendSuffix(" s");
-        }else{
-            formatterBuilder.appendSeconds().appendSuffix("just now");
-        }
-
-        //return formatterBuilder.toFormatter().print(period);
-
-        return "3w";
-
-    }
-
-
 
 }

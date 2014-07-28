@@ -5,6 +5,10 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
+
+import com.getbro.meetmeandroid.APIObjects.APIEvent;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,11 +29,44 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Alex on 25.07.2014.
  */
 public class MeetMeAPI {
+    private static final String URI = "http://api.getbro.com/v1";
+
+
+    public static ArrayList<APIEvent> getEvents(){
+        ArrayList<APIEvent> events = new ArrayList<APIEvent>();
+        JSONArray raw_response = getJSONFromServer(URI + "/events");
+
+        for (int i = 0; i < raw_response.length(); i++) {
+            JSONObject c = null;
+            try {
+                c = raw_response.getJSONObject(i);
+
+                events.add(
+                        new APIEvent(Long.valueOf(c.getString("creatorId")),
+                                c.getString("raw"),
+                                new java.util.Date(Long.parseLong(c.getString("time"), 10))
+                        )
+                );
+
+
+            } catch (JSONException e) {
+                //TODO: error handling
+            }
+
+        }
+
+        return events;
+    }
+
 
     public static JSONObject JSONcreator(Activity main, String[] field)
     {
