@@ -48,6 +48,7 @@ public class comm {
         Log.i("Created JSON", jason.toString() );
         return jason;
     }
+
     //TODO: Geht auch anders zB als AsyncTask +  Refactore in extra Klasse
     public static HttpResponse sendJason(final String URL, final JSONObject jason) {
        // HttpResponse response;

@@ -31,6 +31,22 @@ public class FirstRun extends Activity {
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();
         et.setText(mPhoneNumber);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String code = extras.getString("msgContent");
+            Log.i("Code Activation", "code");
+            String messageSender = extras.getString("sender");
+            EditText et2 = (EditText) findViewById(R.id.code);
+            et.setText(code);
+            Intent returnIntent = new Intent();
+            if(activate(code,this)) {
+                Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        }
     }
 
 
@@ -76,7 +92,7 @@ public class FirstRun extends Activity {
         }
         return first;
     }
-
+    public int activationcode;
     public void register(View v)
     {   JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
         comm.sendJason(Main.URI + "/users", x);
@@ -104,7 +120,7 @@ public class FirstRun extends Activity {
         String number = et.getText().toString().replace("+","");
         Intent returnIntent = new Intent();
         //Toast.makeText(a, y.toString() + " activated", Toast.LENGTH_SHORT).show();
-        if(activate(number,this)) {
+        if(!activate(number,this)) {
             Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
         }
         else{
