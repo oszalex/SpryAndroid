@@ -2,6 +2,7 @@ package com.getbro.api;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
+import java.util.Random;
 
 @XmlRootElement
 public class User {
@@ -23,6 +24,9 @@ public class User {
 		this.age = age;
 		this.userID = BigInteger.valueOf(ID);
 		this.phonenumber="123";
+		this.activationcode = 2345;
+		this.activated = true;
+		this.telnr = BigInteger.valueOf(456);
 	}
 	public User(User user) {
 		ID++;
@@ -30,21 +34,29 @@ public class User {
 		this.age = 20;
 		this.userID = BigInteger.valueOf(ID);
 		this.phonenumber="234";
+		this.activated = false;
+		this.activationcode = 1234;
+		this.telnr = BigInteger.valueOf(456);
 	}
 	
 	public int sendConfirmation()
-	{
+	{	
+		Random randomGenerator = new Random();
+		activationcode = randomGenerator.nextInt(99999);
 		//Sende SMS an Handynummer mit genereiertem Code
-		System.out.println("Sending Activation Message");
-		activationcode = 1234;
+		System.out.println("Sending Activation Code " + activationcode);
 		return 1;
 	}
-	public boolean checkActivation()
+	public boolean checkActivation(int code)
 	{	
-		System.out.println("User activated " +activationcode);
-		//if(code==1234) return 1;
-		//else return 0;
-		return true;
+		if(code == activationcode){
+			System.out.println("Code OK " +activationcode);
+			return true;
+		}
+		else{
+			System.out.println("Wrong Code " +code);
+			return false;
+		}
 	}
 	
 	
@@ -53,7 +65,6 @@ public class User {
 		return name;
 	}
 	public void setUsername(String name){	
-	//	System.out.println("Name: " +name);
 		this.name=name;
 	}
 /*	@XmlElement(name="phonenumber")
@@ -76,8 +87,9 @@ public class User {
 	}*/
 	@XmlElement(name="phonenumber")
 	public String getId(){
-		//return telnr.toString();
-		return new String(telnr.toByteArray());
+		return telnr.toString();
+		//return new String(telnr.toByteArray());
+		//System.out.println("Number: " + telnr);
 		//return "blabla";
 	}
 	public void setId(String phonenumber){
@@ -90,7 +102,7 @@ public class User {
 	public String getCode(){
 		//return telnr.toString();
 		return Integer.toString(activationcode);
-		//return "blabla";
+		//return activationcode;
 	}
 	public void setCode(String code){
 		this.activationcode = new Integer(code);

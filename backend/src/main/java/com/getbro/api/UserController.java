@@ -46,10 +46,10 @@ public class UserController extends ApiStorageWrapper{
 	public Response checkJsonUser( User user ) {
 		String output = user.toString();
 		// USer finden und code vergleichen
-		System.out.println("Activaating new USer " +output);
+		System.out.println("Try to activate user " +output);
 		System.out.println("Received Code " + user.getCode());
-		if( user.checkActivation()) return Response.status(200).entity(output).build();
-		else return Response.status(501).entity(output).build();
+		if( users.get(users.size() - 1).checkActivation(Integer.parseInt(user.getCode()))) return Response.status(200).entity(user.getCode()).build();
+		else return Response.status(501).entity(user.getCode()).build();
 	}
 	
 

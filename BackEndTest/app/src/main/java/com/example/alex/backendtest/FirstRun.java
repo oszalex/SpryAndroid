@@ -82,32 +82,36 @@ public class FirstRun extends Activity {
         comm.sendJason(Main.URI + "/users", x);
         Log.i("Registering user", x.toString());
         Toast.makeText(this, "User " + x.toString() + " created", Toast.LENGTH_SHORT).show();
-
-        //SMS lesen und check aufrufen
-
     }
-
-    public void check(View v)
-    {   JSONObject x = comm.JSONcreator(this, new String[] {"code"});
-        EditText et = (EditText) findViewById(R.id.phonenumber );
-        String number = et.getText().toString().replace("+","");
-        HttpResponse y = comm.sendJason(Main.URI + "/users/"+number, x);
+    public static boolean activate(String phonenumber, Activity a){
+        JSONObject x = comm.JSONcreator(a, new String[] {"code"});
+        HttpResponse y = comm.sendJason(Main.URI + "/users/"+phonenumber, x);
         Log.i("Activating user", x.toString());
-        Toast.makeText(this, y.toString() + " activated", Toast.LENGTH_SHORT).show();
-        Intent returnIntent = new Intent();
-        if (y.getStatusLine().getStatusCode() != 200)
-        {
-            Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
-            Log.i("Activation Code wrong", "False " + y.getStatusLine().getStatusCode());
+
+        if (y.getStatusLine().getStatusCode() != 200){
+            Log.i("Activation Code wrong", "False ");
+            return false;
         }
         else {
-            setResult(RESULT_OK, returnIntent);
             Log.i("Activation Code accepted", "OK");
-            //returnIntent.putExtra("result",result);
-
+            return true;
             //  setResult(RESULT_CANCELED, returnIntent);
+        }
+    }
+    public void check(View v)
+    {
+        EditText et = (EditText) findViewById(R.id.phonenumber );
+        String number = et.getText().toString().replace("+","");
+        Intent returnIntent = new Intent();
+        //Toast.makeText(a, y.toString() + " activated", Toast.LENGTH_SHORT).show();
+        if(activate(number,this)) {
+            Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            setResult(RESULT_OK, returnIntent);
             finish();
         }
+
     }
 
 }
