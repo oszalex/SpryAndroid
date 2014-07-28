@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -86,6 +89,19 @@ public class MainActivity extends Activity {
 
         APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, MeetMeAPI.getEvents());
         lv.setAdapter(m_adapter);
+    }
+
+
+    public void createNewEvent(View v){
+        Intent myIntent = new Intent(MainActivity.this, NewEventActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
+    public boolean refresh(MenuItem v){
+        allEvents();
+
+        Toast.makeText(this,"refreshed", Toast.LENGTH_SHORT).show();
+        return true;
     }
 
 }

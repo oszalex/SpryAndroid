@@ -28,6 +28,7 @@
         android:layout_gravity="right|bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/list"
-        android:layout_alignEnd="@+id/list" />
+        android:layout_alignEnd="@+id/list"
+        android:onClick="createNewEvent" />
 
 </RelativeLayout>

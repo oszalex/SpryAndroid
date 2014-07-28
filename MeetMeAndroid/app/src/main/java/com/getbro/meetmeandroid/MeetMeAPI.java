@@ -171,4 +171,18 @@ public class MeetMeAPI {
         }
         return jason;
     }
+
+
+    public static void createEvent(String raw){
+        JSONObject raw_event = new JSONObject();
+
+        try {
+            raw_event.put("raw", raw);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MeetMeAPI.sendJason(URI + "/events", raw_event);
+    }
+
 }
