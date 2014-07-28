@@ -11,7 +11,7 @@ public class User {
 	private BigInteger userID;
 	
 	private boolean activated = false;
-	public int activationcode;
+	private int activationcode;
 	private BigInteger telnr;
 	public static int ID;
 	
@@ -35,17 +35,19 @@ public class User {
 	public int sendConfirmation()
 	{
 		//Sende SMS an Handynummer mit genereiertem Code
-		System.out.println("Sending Textmessage");
+		System.out.println("Sending Activation Message");
 		activationcode = 1234;
 		return 1;
 	}
-	public int checkActivation(int code)
+	public boolean checkActivation()
 	{	
-		System.out.println("User activated");
+		System.out.println("User activated " +activationcode);
 		//if(code==1234) return 1;
 		//else return 0;
-		return 1;
+		return true;
 	}
+	
+	
 	@XmlElement(name="name")
 	public String getUsername(){
 		return name;
@@ -74,12 +76,25 @@ public class User {
 	}*/
 	@XmlElement(name="phonenumber")
 	public String getId(){
-		return telnr.toString();
+		//return telnr.toString();
+		return new String(telnr.toByteArray());
+		//return "blabla";
 	}
 	public void setId(String phonenumber){
 		
 		this.telnr = new BigInteger(phonenumber);
 		System.out.println("Number: " +phonenumber+"  " + telnr);
+		//this.phonenumber=phonenumber;
+	}
+	@XmlElement(name="code")
+	public String getCode(){
+		//return telnr.toString();
+		return Integer.toString(activationcode);
+		//return "blabla";
+	}
+	public void setCode(String code){
+		this.activationcode = new Integer(code);
+		System.out.println("Code: " +code);
 		//this.phonenumber=phonenumber;
 	}
  }

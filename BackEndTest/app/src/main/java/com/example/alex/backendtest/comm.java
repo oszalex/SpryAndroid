@@ -45,6 +45,7 @@ public class comm {
         } catch (org.json.JSONException e) {
             e.printStackTrace();
         }
+        Log.i("Created JSON", jason.toString() );
         return jason;
     }
     //TODO: Geht auch anders zB als AsyncTask +  Refactore in extra Klasse
@@ -122,6 +123,7 @@ public class comm {
                     builder.append(line);
                 }
                 jason = new JSONArray(builder.toString());
+                Log.i("Received", line );
             }
             else {
                 Log.e("Error", "statuscode"+ statusCode );

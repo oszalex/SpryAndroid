@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,22 +80,29 @@ public class FirstRun extends Activity {
     public void register(View v)
     {   JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
         comm.sendJason(Main.URI + "/users", x);
+        Log.i("Registering user", x.toString());
         Toast.makeText(this, "User " + x.toString() + " created", Toast.LENGTH_SHORT).show();
+
+        //SMS lesen und check aufrufen
 
     }
 
     public void check(View v)
     {   JSONObject x = comm.JSONcreator(this, new String[] {"code"});
-        HttpResponse y = comm.sendJason(Main.URI + "/users/5432", x);
+        EditText et = (EditText) findViewById(R.id.phonenumber );
+        String number = et.getText().toString().replace("+","");
+        HttpResponse y = comm.sendJason(Main.URI + "/users/"+number, x);
+        Log.i("Activating user", x.toString());
         Toast.makeText(this, y.toString() + " activated", Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
         if (y.getStatusLine().getStatusCode() != 200)
         {
             Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
+            Log.i("Activation Code wrong", "False " + y.getStatusLine().getStatusCode());
         }
         else {
             setResult(RESULT_OK, returnIntent);
-
+            Log.i("Activation Code accepted", "OK");
             //returnIntent.putExtra("result",result);
 
             //  setResult(RESULT_CANCELED, returnIntent);

@@ -6,7 +6,6 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
 import javax.ws.rs.core.Response;
 
-
 @Path("/users")
 public class UserController extends ApiStorageWrapper{
 
@@ -44,18 +43,21 @@ public class UserController extends ApiStorageWrapper{
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addJsonUser( User user ) {
 		//String output = user.toString();
+		System.out.println("Creating New User");
 		users.add(new User(user));
+		users.get(users.size() - 1).sendConfirmation();
 		return Response.status(200).entity(user).build();
 	}
 	@POST
 	@Path("{userID:[a-z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response checkJsonUser( User user ) {
-		//String output = user.toString();
+		String output = user.toString();
 		// USer finden und code vergleichen
-		System.out.println("Received Code " + user.activationcode);
-		if( user.activationcode ==1234) return Response.status(200).entity(user.activationcode).build();
-		else return Response.status(404).entity(user.activationcode).build();
+		System.out.println("Activaating new USer " +output);
+		System.out.println("Received Code " + user.getCode());
+		if( user.checkActivation()) return Response.status(200).entity(user).build();
+		else return Response.status(404).entity(user).build();
 	}
 	
 
