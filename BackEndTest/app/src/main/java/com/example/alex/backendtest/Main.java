@@ -60,10 +60,27 @@ import android.widget.TextView;
 
 
 public class Main extends Activity {
-
-    public String URI = "http://84.114.33.167:8080";
+    private final int reg=1;
+    final public static String URI = "http://84.114.33.167:8080";
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == reg) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                FirstRun.setFirst(Main.this);
+                Toast.makeText(this, "Passt", Toast.LENGTH_SHORT).show();
+            }
+            else finish();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (FirstRun.isFirst(Main.this) == false){
+            Intent x = new Intent(this, FirstRun.class);
+            startActivityForResult( x,  reg);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ListView lv = (ListView) findViewById(R.id.listView);

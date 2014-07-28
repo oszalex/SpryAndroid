@@ -44,9 +44,18 @@ public class UserController extends ApiStorageWrapper{
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addJsonUser( User user ) {
 		//String output = user.toString();
-		System.out.println("Test: " +user);
 		users.add(new User(user));
 		return Response.status(200).entity(user).build();
+	}
+	@POST
+	@Path("{userID:[a-z0-9]+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response checkJsonUser( User user ) {
+		//String output = user.toString();
+		// USer finden und code vergleichen
+		System.out.println("Received Code " + user.activationcode);
+		if( user.activationcode ==1234) return Response.status(200).entity(user.activationcode).build();
+		else return Response.status(404).entity(user.activationcode).build();
 	}
 	
 

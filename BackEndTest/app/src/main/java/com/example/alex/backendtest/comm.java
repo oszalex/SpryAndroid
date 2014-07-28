@@ -36,7 +36,7 @@ public class comm {
         EditText x;
         JSONObject jason = new JSONObject();
         try {
-            for(int i=0;i<1;i++){
+            for(int i=0;i<field.length;i++){
                 //x = (EditText) findViewById(R.id.+ field );
                 int resId = main.getResources().getIdentifier(field[i], "id", main.getPackageName());
                 x = (EditText) main.findViewById(resId);
@@ -48,11 +48,14 @@ public class comm {
         return jason;
     }
     //TODO: Geht auch anders zB als AsyncTask +  Refactore in extra Klasse
-    public static void sendJason(final String URL, final JSONObject jason) {
-        HttpResponse response;
-        Thread t = new Thread() {
-            public void run() {
-                Looper.prepare(); //For Preparing Message Pool for the child Thread
+    public static HttpResponse sendJason(final String URL, final JSONObject jason) {
+       // HttpResponse response;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+      //  Thread t = new Thread() {
+          //  public void run() {
+
+               // Looper.prepare(); //For Preparing Message Pool for the child Thread
                 HttpClient client = new DefaultHttpClient();
                 HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
                 HttpResponse response;
@@ -77,15 +80,16 @@ public class comm {
                     {
                         Log.e("Error","Response Null");
                     }
+                    return response;
                 } catch(Exception e) {
                     e.printStackTrace();
                     Log.e("Error", e.toString());
                 }
-                Looper.loop(); //Loop in the message queue
-            }
-        };
-        t.start();
-
+         //       Looper.loop(); //Loop in the message queue
+        //    }
+     //   };
+       // t.start();
+        return null;
     }
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
