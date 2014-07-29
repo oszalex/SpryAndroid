@@ -1,24 +1,46 @@
 package com.getbro.meetmeandroid;
 
 import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.getbro.meetmeandroid.R;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class NewEventActivity extends Activity {
     private final String TAG = Activity.class.toString();
+
+    private ArrayList<String> suggestions = new ArrayList<String>();
+    private ArrayAdapter<String> autoCompleter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+
+        getActionBar().setTitle(R.string.actionbar_newevent);
+
+        suggestions.addAll(getContactNames(getApplicationContext()));
+
+        autoCompleter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, suggestions);
+
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.rawevent);
+        textView.setAdapter(autoCompleter);
     }
 
 
@@ -55,5 +77,24 @@ public class NewEventActivity extends Activity {
 
         MeetMeAPI.createEvent(rawEvent.getText().toString());
         finish();
+    }
+
+
+    /**
+     * get all contact names with trailing '+' sign
+     * @param ctx
+     * @return
+     */
+    private static ArrayList<String> getContactNames(Context ctx){
+        String contactName = null;
+        ArrayList<String> contacts = new ArrayList<String>();
+        Cursor cursor = ctx.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+        while (cursor.moveToNext()){
+            contactName  = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            contacts.add("+" + contactName);
+        }
+
+        return contacts;
     }
 }

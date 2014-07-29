@@ -44,6 +44,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getActionBar().setTitle(R.string.actionbar_main);
+
         allEvents();
 
         /*
