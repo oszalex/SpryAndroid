@@ -1,42 +1,22 @@
 package com.getbro.meetmeandroid;
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Html;
-import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.support.v4.widget.SwipeRefreshLayout;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+
+import org.json.JSONArray;
 //import android.graphics.Outline;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
     private final String URI = "http://api.getbro.com/v1";
 
     @Override
@@ -46,7 +26,30 @@ public class MainActivity extends Activity {
 
         getActionBar().setTitle(R.string.actionbar_main);
 
-        allEvents();
+
+        final ListView lv = (ListView) findViewById(R.id.list);
+        final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+
+        srl.setOnRefreshListener(this);
+
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int topRowVerticalPosition =
+                        (lv == null || lv.getChildCount() == 0) ?
+                                0 : lv.getChildAt(0).getTop();
+                srl.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
+
+
+
+        allEvents(lv, srl);
 
         /*
         Button fab = (Button) findViewById(R.id.fabbutton);
@@ -60,6 +63,13 @@ public class MainActivity extends Activity {
         fab.setClipToOutline(true);
         */
 
+    }
+
+    /**
+     * for refresh swipe refresh layout
+     */
+    @Override public void onRefresh() {
+        allEvents();
     }
 
 
@@ -86,11 +96,20 @@ public class MainActivity extends Activity {
     /* auszüge aus dem Backendtest */
 
     public void allEvents() {
-        ListView lv = (ListView) findViewById(R.id.list);
+        final ListView lv = (ListView) findViewById(R.id.list);
+        final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+
+        allEvents(lv, srl);
+    }
+
+    public void allEvents(ListView lv, SwipeRefreshLayout srl) {
         JSONArray jason = MeetMeAPI.getJSONFromServer(URI + "/events");
 
         APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, MeetMeAPI.getEvents());
         lv.setAdapter(m_adapter);
+
+        srl.setRefreshing(false);
+        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }
 
 
