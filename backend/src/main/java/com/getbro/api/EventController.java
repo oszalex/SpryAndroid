@@ -25,9 +25,10 @@ public class EventController extends ApiStorageWrapper{
      */
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public List<Event> getEvents(long userId) {
-    	List<Event> visibleevents = new LinkedList<Event> ();
+   // @Consumes(MediaType.APPLICATION_JSON)
+    public List<Event> getEvents() {
+    	//List<Event> visibleevents = new LinkedList<Event> ();
+    	return new ArrayList<Event>(events.values());
     	/*//Alle Elemente in Hashmap durchlaufen
     	for(Event x: events){	
     		//User ID ist Ersteller des Events
@@ -43,7 +44,7 @@ public class EventController extends ApiStorageWrapper{
     			}
     		}
     	}*/
-        return visibleevents;
+       // return visibleevents;
     }
     
     /**
