@@ -15,6 +15,7 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.getbro.meetmeandroid.APIObjects.APIEvent;
 
 
 public class APIEventAdapter extends ArrayAdapter<APIEvent> {
+    final static String TAG = APIEventAdapter.class.toString();
 
     // declaring our ArrayList of items
     private ArrayList<APIEvent> objects;
@@ -79,7 +81,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
 
             if (creator_tv != null){
-                creator_tv.setText(getContactName(context, "by " + String.valueOf(e.getCreatorID()) ));
+                creator_tv.setText(getContactName(context, "by " + String.valueOf(e.getCreatorID())));
             }
             if (raw_tv != null){
                 raw_tv.setText(getInfo(context, e.getRaw()));
@@ -125,12 +127,14 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
         long current = System.currentTimeMillis();
         long time_milli = time.getTime();
 
-        double min = 1000*60.0;
-        double h = min*60;
-        double d = h * 24;
-        double w = d*7;
+        long min = 1000*60;
+        long h = min*60;
+        long d = h * 24;
+        long w = d*7;
 
-        long diff = time_milli - current;
+        long diff =  current - time_milli;
+
+        Log.i(TAG, "time difference: " + diff);
 
         //greater than a week
         if(diff > w)
