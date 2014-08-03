@@ -75,16 +75,20 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             TextView creator_tv = (TextView) v.findViewById(R.id.creator);
             TextView raw_tv = (TextView) v.findViewById(R.id.raw);
             TextView time_tv = (TextView) v.findViewById(R.id.time);
+            TextView desc_tv = (TextView) v.findViewById(R.id.desc);
 
 
             if (creator_tv != null){
-                creator_tv.setText(Html.fromHtml("<b>by </b> " + getContactName(context, String.valueOf(e.getCreatorID()) )));
+                creator_tv.setText(getContactName(context, "by " + String.valueOf(e.getCreatorID()) ));
             }
             if (raw_tv != null){
-                raw_tv.setText(colorTags(context, e.getRaw()));
+                raw_tv.setText(getInfo(context, e.getRaw()));
             }
             if (time_tv != null){
                 time_tv.setText(getRelativeTimeSpan(e.getTime()));
+            }
+            if (time_tv != null){
+                desc_tv.setText(getDescription(e.getRaw()));
             }
 
         }
@@ -177,6 +181,57 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             );
         }
         return spannable;
+    }
+
+
+
+    public static SpannableStringBuilder getInfo(Context cxt, String raw){
+        final SpannableStringBuilder spannable = new SpannableStringBuilder("");
+
+        String[] parts = raw.split(" ");
+        int pos = 0;
+
+        for(String part: parts){
+            String p = part + " ";
+
+            if(part.startsWith("#")){
+                spannable.append(p);
+                spannable.setSpan(new ForegroundColorSpan(cxt.getResources().getColor(R.color.light_blue)), pos, pos + part.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                pos += p.length();
+            }
+            if(part.startsWith("@")){
+                spannable.append(p);
+                spannable.setSpan(new ForegroundColorSpan(cxt.getResources().getColor(R.color.orange)), pos, pos + part.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                pos += p.length();
+            }
+
+        }
+
+        return spannable;
+    }
+
+
+    public static String getDescription(String raw){
+        String[] parts = raw.split(" ");
+
+        StringBuilder description = new StringBuilder();
+
+        for(String part: parts){
+            if(part.length() < 2)
+                continue;
+            if(part.startsWith("#"))
+                continue;
+            if(part.startsWith("+"))
+                continue;
+            if(part.startsWith("@"))
+                continue;
+            if(Character.isDigit(part.charAt(0)))
+                continue;
+
+            description.append(part + " ");
+        }
+
+        return description.toString();
     }
 
 

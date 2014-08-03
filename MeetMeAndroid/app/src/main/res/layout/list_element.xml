@@ -22,15 +22,23 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:text="eat something now"
+            android:textStyle="bold"
+            android:textSize="24sp"/>
+
+        <TextView
             android:id="@+id/raw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
-            android:text="me #hunger #essen @vapiano now!"
+            android:text="eat something #hunger #essen @vapiano now!"
             android:textSize="18sp"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_below="@+id/desc"
             android:layout_toLeftOf="@+id/time"
             android:layout_toStartOf="@+id/time" />
 
@@ -39,6 +47,7 @@
             android:layout_height="wrap_content"
             android:text="2w"
             android:textSize="18sp"
+            android:layout_below="@+id/desc"
             android:id="@+id/time"
             android:layout_gravity="right"
             android:layout_alignParentRight="true"
@@ -53,7 +62,8 @@
         android:textColor="#acacac"
         android:textSize="16sp"
         android:text="by Christian Hotz-Behofsits"
-        android:layout_below="@+id/raw"/>
+        android:layout_below="@+id/raw"
+        android:textStyle="italic"/>
 
 
 
