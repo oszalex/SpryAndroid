@@ -81,7 +81,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
 
             if (creator_tv != null){
-                creator_tv.setText(getContactName(context, "by " + String.valueOf(e.getCreatorID())));
+                creator_tv.setText("by " + getContactName(context, String.valueOf(e.getCreatorID())));
             }
             if (raw_tv != null){
                 raw_tv.setText(getInfo(context, e.getRaw()));
