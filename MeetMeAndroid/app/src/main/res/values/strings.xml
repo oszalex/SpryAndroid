@@ -7,6 +7,6 @@
     <string name="title_activity_new_event">NewEventActivity</string>
     <string name="menuitem_refresh">reload</string>
     <string name="actionbar_newevent">create event</string>
-    <string name="actionbar_main">eventlist</string>
+    <string name="actionbar_main"></string>
 
 </resources>
