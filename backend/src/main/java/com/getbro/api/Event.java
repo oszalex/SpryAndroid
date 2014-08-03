@@ -18,7 +18,7 @@ public class Event {
 	private String raw;
 	private long eventID;
 	private long createdAt;
-	private BigInteger creatorID;
+	private long creatorID;
 	private boolean isPublic;
 	private ArrayList<String> tags = new ArrayList<String>();
 	private Calendar datetime = Calendar.getInstance();
@@ -34,7 +34,7 @@ public class Event {
 	public static Event fromString(long creator, String raw){
 		Event e = new Event();
 
-		e.creatorID = BigInteger.valueOf(creator);
+		e.creatorID = creator;
 
 		String[] words = raw.split(" ");
 
@@ -93,7 +93,7 @@ public class Event {
 		this.raw = raw;
 		this.eventID = countID;
 		this.createdAt = System.currentTimeMillis();
-		this.creatorID = new BigInteger("004369911602033");
+		this.creatorID = (long)4369911602033L;
 	}
 
 	public Event(Event event) {
@@ -102,7 +102,7 @@ public class Event {
 		this.raw = event.raw;
 		this.eventID = countID;
 		this.createdAt = System.currentTimeMillis();
-		this.creatorID = new BigInteger("004369911602033");
+		this.creatorID = (long)4369911602033L;
 	}
 
 
@@ -141,13 +141,13 @@ public class Event {
 	}
 
 	@XmlElement(name="creatorId")
-	public BigInteger getCreatorId(){
+	public long getCreatorId(){
 		return creatorID;
 	}
 
 	@XmlElement(name="invitations")
-	public List<BigInteger> getInvitations(){
-		List<BigInteger> users = new LinkedList<BigInteger>();
+	public List<Long> getInvitations(){
+		List<Long> users = new LinkedList<Long>();
 
 		for (EventInvitation i : invited){
 			users.add(i.getUserId());

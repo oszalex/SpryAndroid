@@ -6,51 +6,41 @@ import java.util.Random;
 
 @XmlRootElement
 public class User {
-	private String name;
-	private String phonenumber;
-	private int age;
-	private BigInteger userID;
 	
+	//public static long ID;
+	//private int birthdate;
+	//private long userID;
+	
+	private String name;
+	private long phonenumber;
 	private boolean activated = false;
-	private int activationcode;
-	private BigInteger telnr;
-	public static int ID;
 	
 	public User() {} 
-   
-	public User(String name, int age) {
-		ID++;
+
+	public User(String name, long phonenumber) {
+		//ID++;
+		//this.userID = ID;
 		this.name = name;
-		this.age = age;
-		this.userID = BigInteger.valueOf(ID);
-		this.phonenumber="123";
-		this.activationcode = 2345;
+		this.phonenumber = phonenumber;
 		this.activated = true;
-		this.telnr = BigInteger.valueOf(456);
 	}
 	public User(User user) {
-		ID++;
-		this.name = user.name;
-		this.age = 20;
-		this.userID = BigInteger.valueOf(ID);
-		this.phonenumber="234";
+		//ID++;
+		this.name = user.getUsername();
+		this.phonenumber=Long.parseLong(user.getId());
 		this.activated = false;
-		this.activationcode = 1234;
-		this.telnr = BigInteger.valueOf(456);
 	}
 	
-	public int sendConfirmation()
-	{	
-		Random randomGenerator = new Random();
-		activationcode = randomGenerator.nextInt(99999);
+	public int sendConfirmation(){	
+	//	Random randomGenerator = new Random();
+	//	activationcode = randomGenerator.nextInt(99999);
 		//Sende SMS an Handynummer mit genereiertem Code
-		System.out.println("Sending Activation Code " + activationcode);
+		System.out.println("Sending Activation Code " + activationcode());
 		return 1;
 	}
-	public boolean checkActivation(int code)
-	{	
-		if(code == activationcode){
-			System.out.println("Code OK " +activationcode);
+	public boolean checkActivation(int code){	
+		if(code == activationcode()){
+			System.out.println("Code OK " +activationcode());
 			return true;
 		}
 		else{
@@ -59,7 +49,13 @@ public class User {
 		}
 	}
 	
-	
+	private int activationcode()
+	{
+		String digits = Long.toString(phonenumber);
+		int x = Integer.parseInt(digits.substring(digits.length()-4,digits.length()));
+		x += Integer.parseInt(Long.toString(phonenumber).substring(0,4));
+		return x % 10000;
+	}
 	@XmlElement(name="name")
 	public String getUsername(){
 		return name;
@@ -67,7 +63,33 @@ public class User {
 	public void setUsername(String name){	
 		this.name=name;
 	}
-/*	@XmlElement(name="phonenumber")
+
+	@XmlElement(name="phonenumber")
+	public String getId(){
+		return Long.toString(phonenumber);
+		//return new String(telnr.toByteArray());
+		//System.out.println("Number: " + telnr);
+		//return "blabla";
+	}
+	public void setId(String phonenumber){
+		this.phonenumber = Long.parseLong(phonenumber);
+		System.out.println("Number: " +phonenumber);
+		//this.phonenumber=phonenumber;
+	}
+	
+/*	@XmlElement(name="code")
+	public String getCode(){
+		//return telnr.toString();
+		return Integer.toString(activationcode);
+		//return activationcode;
+	}
+	public void setCode(String code){
+		this.activationcode = new Integer(code);
+		System.out.println("Code: " +code);
+		//this.phonenumber=phonenumber;
+	}
+	
+	/*	@XmlElement(name="phonenumber")
 	public BigInteger phonenumber(){
 		return userID;
 	}
@@ -85,28 +107,4 @@ public class User {
 		System.out.println("Hier: code " + code);
 		//this.phonenumber=phonenumber;
 	}*/
-	@XmlElement(name="phonenumber")
-	public String getId(){
-		return telnr.toString();
-		//return new String(telnr.toByteArray());
-		//System.out.println("Number: " + telnr);
-		//return "blabla";
-	}
-	public void setId(String phonenumber){
-		
-		this.telnr = new BigInteger(phonenumber);
-		System.out.println("Number: " +phonenumber+"  " + telnr);
-		//this.phonenumber=phonenumber;
-	}
-	@XmlElement(name="code")
-	public String getCode(){
-		//return telnr.toString();
-		return Integer.toString(activationcode);
-		//return activationcode;
-	}
-	public void setCode(String code){
-		this.activationcode = new Integer(code);
-		System.out.println("Code: " +code);
-		//this.phonenumber=phonenumber;
-	}
  }

@@ -7,12 +7,12 @@ import java.math.BigInteger;
 @XmlRootElement
 public class EventInvitation {
 	private long eventId;
-	private BigInteger userID;
-	private BigInteger inviterID;
+	private long userID;
+	private long inviterID;
 	private InvitationStatus status;
 
-	public EventInvitation(long eventId, BigInteger userID, 
-		BigInteger inviter, InvitationStatus status){
+	public EventInvitation(long eventId, long userID, 
+		long inviter, InvitationStatus status){
 		this.eventId = eventId;
 		this.userID = userID;
 		this.inviterID = inviterID;
@@ -25,12 +25,12 @@ public class EventInvitation {
 	}
 
 	@XmlElement(name="guestId")
-	public BigInteger getUserId(){
+	public long getUserId(){
 		return userID;
 	}
 
 	@XmlElement(name="inviterId")
-	public BigInteger getInviterID(){
+	public long getInviterID(){
 		return inviterID;
 	}
 

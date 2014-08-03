@@ -119,7 +119,7 @@ public class comm {
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
+                String line ="";
                 while ((line = reader.readLine()) != null) {
                     builder.append(line);
                 }

@@ -25,8 +25,25 @@ public class EventController extends ApiStorageWrapper{
      */
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Event> getEvents() {
-        return events;
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<Event> getEvents(long userId) {
+    	List<Event> visibleevents = new LinkedList<Event> ();
+    	/*//Alle Elemente in Hashmap durchlaufen
+    	for(Event x: events){	
+    		//User ID ist Ersteller des Events
+    		if(x.getCreatorId() == userId) visibleevents.add(x);
+    		else{
+    			//User ist eingeladen
+    			List<User> invites = x.getInvitations();
+    			for(User y : invites){
+    				if(y.getID() == userId){
+    					visibleevents.add(x);
+    					break;
+    				}	
+    			}
+    		}
+    	}*/
+        return visibleevents;
     }
     
     /**
@@ -46,8 +63,9 @@ public class EventController extends ApiStorageWrapper{
     public Response postJsonEvent( Event event ) {
        // System.out.println("Testevent: " + event);
      //   System.out.println("Testevent2: " +(String) event);
-        events.add(new Event(event));
-        System.out.println("hier");
+    	Event x = new Event(event);
+        events.put(x.getId(),x);
+        System.out.println("Event "+ x.getId() +" added");
         return Response.status(200).entity(event).build();
     }
 
