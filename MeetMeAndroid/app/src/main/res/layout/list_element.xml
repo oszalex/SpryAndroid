@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -10,12 +6,6 @@
     android:padding="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp" >
-
-    <!-- Name Label -->
-
-
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,23 +22,24 @@
 
         <TextView
             android:id="@+id/raw"
+            android:layout_below="@+id/desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
-            android:text="eat something #hunger #essen @vapiano now!"
+            android:text="#hunger #essen @vapiano"
             android:textSize="18sp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/desc"
             android:layout_toLeftOf="@+id/time"
             android:layout_toStartOf="@+id/time" />
 
         <TextView
+            android:id="@+id/time"
+            android:textColor="#acacac"
+            android:layout_below="@+id/desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2w"
             android:textSize="18sp"
-            android:layout_below="@+id/desc"
-            android:id="@+id/time"
             android:layout_gravity="right"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -64,13 +55,6 @@
         android:text="by Christian Hotz-Behofsits"
         android:layout_below="@+id/raw"
         android:textStyle="italic"/>
-
-
-
-
-    <!-- Email label -->
-
-
 
 
 

@@ -5,10 +5,12 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Eventlist"
+        android:typeface="monospace"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:gravity="center"
         android:id="@+id/textView"
         android:background="@color/bittersweet_light_red" />
@@ -41,7 +43,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:text="+"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
         android:textSize="40sp"
         android:background="@drawable/ripple"
