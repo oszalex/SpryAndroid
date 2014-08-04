@@ -36,14 +36,14 @@ public class IncomingSMS extends BroadcastReceiver {
                     Log.i("SmsReceiver", "senderNum: " + senderNum + "; message: " + message);
                     int index = message.indexOf("Meetme:");
                     Log.i("Binda", "Index: " + index);
-                    if( index > -1 ) {
+                   /* if( index > -1 ) {
                         Intent intentx = new Intent(context, FirstRun.class);
                         intentx.putExtra("msgContent", message.substring(index+7));
                         intentx.putExtra("sender",senderNum);
                         intentx.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intentx);
+                     //   context.startActivity(intentx);
                     }
-
+*/
                     // Show Alert
                     //int duration = Toast.LENGTH_LONG;
                   //  Toast toast = Toast.makeText(context,

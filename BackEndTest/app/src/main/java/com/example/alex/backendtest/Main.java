@@ -164,7 +164,7 @@ public class Main extends Activity {
         userToListView(lv,jason);
     }
     public void createUser(View v) {
-        JSONObject x = comm.JSONcreator(this, new String[] {"name"});
+        JSONObject x = comm.JSONcreator(this, new String[] {"name","phonenumber"});
         comm.sendJason(URI+"/users",x );
         Toast.makeText(this, "User "+ x.toString() +" created", Toast.LENGTH_SHORT).show();
         try
