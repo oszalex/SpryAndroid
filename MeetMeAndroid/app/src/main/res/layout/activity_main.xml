@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Eventlist"
+        android:text="Events"
         android:typeface="monospace"
         android:textColor="@color/white"
         android:textStyle="bold"

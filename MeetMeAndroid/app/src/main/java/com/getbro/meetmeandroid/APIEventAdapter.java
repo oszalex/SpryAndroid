@@ -200,7 +200,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
             if(part.startsWith("#")){
                 spannable.append(p);
-                spannable.setSpan(new ForegroundColorSpan(cxt.getResources().getColor(R.color.light_blue)), pos, pos + part.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+               // spannable.setSpan(new ForegroundColorSpan(cxt.getResources().getColor(R.color.gray)), pos, pos + part.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 pos += p.length();
             }
             if(part.startsWith("@")){
@@ -221,6 +221,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
         StringBuilder description = new StringBuilder();
 
         for(String part: parts){
+
             if(part.length() < 2)
                 continue;
             if(part.startsWith("#"))
@@ -232,7 +233,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             if(Character.isDigit(part.charAt(0)))
                 continue;
 
-            description.append(part + " ");
+            description.append(part.replaceAll("[^a-zA-Z]+", "") + " ");
         }
 
         return description.toString();

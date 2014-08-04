@@ -18,14 +18,14 @@
             android:textColor="@color/gray"
             android:text="eat something now"
             android:textStyle="bold"
-            android:textSize="24sp"/>
+            android:textSize="22sp"/>
 
         <TextView
             android:id="@+id/raw"
             android:layout_below="@+id/desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray"
+            android:textColor="@color/lightergray"
             android:text="#hunger #essen @vapiano"
             android:textSize="18sp"
             android:layout_alignParentLeft="true"
