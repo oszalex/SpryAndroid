@@ -77,7 +77,7 @@ public class UserController extends ApiStorageWrapper{
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/addUsertoEvent")
 	public User addUsertoEvent(String jason) {
-		User x = users.get(Integer.parseInt(userID)-1);
+		User x = users.get(1);
 		//events.get(Integer.parseInt(eventID)-1).addUser(x);
 		return x;
 	}
