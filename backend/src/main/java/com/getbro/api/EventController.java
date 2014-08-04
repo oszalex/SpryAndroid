@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.math.BigInteger;
-
+import org.json.*;
 @Path("events")
 public class EventController extends ApiStorageWrapper{
 
@@ -77,14 +77,14 @@ public class EventController extends ApiStorageWrapper{
      @GET 
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/addUsertoEvent")
-	//@Path("/{eventID:[a-z0-9]+}/{")
-	public User addUsertoEvent(@PathParam("userID") String inviterId; String jason) {
+	@Path("/{eventID:[a-z0-9]+}/{userId:[0-9]+}")
+	public EventInvitation addUsertoEvent(@PathParam("userID") String userId,@PathParam("eventId") String eventId, String jason) {
+		System.out.println("Fuege Event " + eventId + " den User "+ userId + " hinzu");
 		JSONObject obj = new JSONObject(jason);
-		long userId = Long.parseLong(obj.getString("userId"));
-		long eventId = Long.parseLong(obj.getString("eventId"));
-		long invitorId = Long.parseLong(obj.getString("phonenumber"));
-		EventInvitation x = new EventInvitation(eventId,userId, InvitationStatus.INVITED);
+		long userIdx = Long.parseLong(obj.getString("userId"));
+		long eventIdx = Long.parseLong(obj.getString("eventId"));
+		long invitorIdx = Long.parseLong(obj.getString("phonenumber"));
+		EventInvitation x = new EventInvitation(eventIdx,userIdx, invitorIdx, InvitationStatus.INVITED);
 		events.get(eventId).invite(x);
 		return x;
 	}
