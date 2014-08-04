@@ -73,7 +73,21 @@ public class EventController extends ApiStorageWrapper{
     /**
      * warum eine zweite Methode zum hinzufügen?
      */
-
+     
+     @GET 
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/addUsertoEvent")
+	//@Path("/{eventID:[a-z0-9]+}/{")
+	public User addUsertoEvent(@PathParam("userID") String inviterId; String jason) {
+		JSONObject obj = new JSONObject(jason);
+		long userId = Long.parseLong(obj.getString("userId"));
+		long eventId = Long.parseLong(obj.getString("eventId"));
+		long invitorId = Long.parseLong(obj.getString("phonenumber"));
+		EventInvitation x = new EventInvitation(eventId,userId, InvitationStatus.INVITED);
+		events.get(eventId).invite(x);
+		return x;
+	}
     /*
     @POST 
     @Produces(MediaType.APPLICATION_JSON)

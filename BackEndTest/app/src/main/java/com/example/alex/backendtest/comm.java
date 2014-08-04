@@ -124,7 +124,7 @@ public class comm {
                     builder.append(line);
                 }
                 jason = new JSONArray(builder.toString());
-                Log.i("Received", line );
+              //  Log.i("Received", line );
             }
             else {
                 Log.e("Error", "statuscode"+ statusCode );
@@ -136,6 +136,9 @@ public class comm {
             Log.e("Error", e.toString());
             e.printStackTrace();
         } catch (JSONException e) {
+            Log.e("Error", e.toString());
+            e.printStackTrace();
+        } catch (Exception e) {
             Log.e("Error", e.toString());
             e.printStackTrace();
         }
