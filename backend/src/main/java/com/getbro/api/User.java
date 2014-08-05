@@ -4,6 +4,20 @@ import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
 import java.util.Random;
 import java.security.*;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.*;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.xml.bind.DatatypeConverter;
 @XmlRootElement
 public class User {
 	
@@ -64,7 +78,7 @@ public class User {
 		this.name=name;
 	}
 
-	@XmlElement(name="phonenumber")
+	@XmlElement(name="userId")
 	public String getId(){
 		return Long.toString(phonenumber);
 		//return new String(telnr.toByteArray());
@@ -76,18 +90,29 @@ public class User {
 		System.out.println("Number: " +phonenumber);
 		//this.phonenumber=phonenumber;
 	}
-	@XmlElement(name="publicKey")
+	/*@XmlElement(name="publicKey")
 	public String publicKey(){
+		try{
 		return savePublicKey(this.publicKey);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 		//return new String(telnr.toByteArray());
 		//System.out.println("Number: " + telnr);
 		//return "blabla";
 	}
 	public void publicKey(String publicKey){
+		try{
 		this.publicKey = loadPublicKey(publicKey);
-		System.out.println("SetKey: " + publickey);
+		System.out.println("SetKey: " + publicKey);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		//this.phonenumber=phonenumber;
-	}
+	}*/
 	public String decode(String signature)
 	{
 		return signature;	
@@ -123,7 +148,7 @@ public class User {
 		//this.phonenumber=phonenumber;
 	}*/
 	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
-        byte[] data = Base64.decode(stored, 0);
+        byte[] data = DatatypeConverter.parseBase64Binary(stored);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
         KeyFactory fact = KeyFactory.getInstance("RSA");
         return fact.generatePublic(spec);
@@ -134,6 +159,6 @@ public class User {
         KeyFactory fact = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec spec = fact.getKeySpec(publ,
                 X509EncodedKeySpec.class);
-        return Base64.encodeToString(spec.getEncoded(), 0);
+        return DatatypeConverter.printBase64Binary(spec.getEncoded());
     }
  }

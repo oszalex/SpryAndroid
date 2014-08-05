@@ -101,11 +101,16 @@ public class FirstRun extends Activity {
        // Log.i("Registering user", x.toString());
         Toast.makeText(this, "User  created", Toast.LENGTH_SHORT).show();
     }
-    public static boolean activate(String phonenumber, Activity a){
-        JSONObject x = comm.JSONcreator(a, new String[] {"code"});
-       // HttpResponse y = comm.sendJason(Main.URI + "/users/"+phonenumber, x);
-        Log.i("Activating user", x.toString());
-
+    public  boolean activate(String phonenumber, Activity a){
+        //JSONObject x = comm.JSONcreator(a, new String[] {"code"});
+        HttpResponse y ;//= comm.sendJason(Main.URI + "/users/"+phonenumber, x);
+        int resId = this.getResources().getIdentifier("code", "id", this.getPackageName());
+        EditText x = (EditText) this.findViewById(resId);
+       // String a = x.getText();
+        if(restfulClient.activateUser(this,Integer.parseInt( x.getText().toString()))) {
+            Log.i("here ami", x.toString());
+        }
+      //  Log.i("Activating user", x.toString());
      /*   if (y.getStatusLine().getStatusCode() != 200){
             Log.i("Activation Code wrong", "False ");
             return false;
@@ -116,6 +121,7 @@ public class FirstRun extends Activity {
             //  setResult(RESULT_CANCELED, returnIntent);
         }*/
         return true;
+
     }
     public void check(View v)
     {

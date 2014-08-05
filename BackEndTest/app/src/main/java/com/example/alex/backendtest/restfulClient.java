@@ -15,10 +15,10 @@ import java.security.KeyPairGenerator;
  * Created by Alex on 05.08.2014.
  */
 public class restfulClient {
-
-    public static HttpResponse createUser(Activity act,long phonenumber)
+    static long  phonenumber;
+    public static HttpResponse createUser(Activity act,long phonenumberx)
     {
-
+        phonenumber=phonenumberx;
         try {
             //Create Keys
             KeyPairGenerator keygenerator = null;
@@ -50,11 +50,30 @@ public class restfulClient {
         return null;
     }
 
-    public static HttpResponse activateUser(int code)
+    public static boolean activateUser(Activity act,int code)
     {
-        //Send Code
-        //Check Code
-        return null;
+        try{
+            JSONObject x = new JSONObject();
+            x.put("code", code);
+            //Post JSON
+            new HttpPostx(act).execute(Main.URI + "/users/" +phonenumber,x.toString());
+            Log.i("Activating user", x.toString());
+           /* if (y.getStatusLine().getStatusCode() != 200){
+                Log.i("Activation Code wrong", "False ");
+                return null;
+            }
+            else {
+                Log.i("Activation Code accepted", "OK");
+                return y;
+                //  setResult(RESULT_CANCELED, returnIntent);
+            }*/
+        }catch(Exception e)
+        {
+            Log.e("Error", e.toString());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static HttpResponse createEvent(String raw)

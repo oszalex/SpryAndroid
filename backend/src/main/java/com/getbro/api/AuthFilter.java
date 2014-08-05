@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import org.json.*;
 import java.io.ByteArrayInputStream;
 @Provider
+//@UserAuthorization
 public class AuthFilter implements ContainerRequestFilter
 {
 	private static final int BUFFER_SIZE = 4 * 1024;
@@ -53,14 +54,16 @@ public class AuthFilter implements ContainerRequestFilter
         String authHeader = requestContext.getHeaderString( HttpHeaders.AUTHORIZATION );
         if ( authHeader == null ){
    	 	 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("User cannot access the resource.").build());
+   	 	 System.out.println("Abort 0");
         }
         String[] credentials = decodeheader(authHeader);
-        
+        //System.out.println("IS:" + credentials[0] + " " + credentials[1]);
         if(requestContext.hasEntity()){
         	//Aendern des JSON, userID aus header in Json kopieren
         	InputStream is;
         	if((is= editJson(requestContext.getEntityStream(),credentials[0]))==null){
         		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Invalid Request.").build());
+        		System.out.println("Abort 4");
         	}
         	requestContext.setEntityStream(is);
         }else{
@@ -68,6 +71,7 @@ public class AuthFilter implements ContainerRequestFilter
                     .status(Response.Status.UNAUTHORIZED)
                     .entity("Invalid Request.")
                     .build());
+                System.out.println("Abort 1");
         }
        /* if(method.equals("GET") && (path.equals("application.wadl") || path.equals("application.wadl/xsd0.xsd"))){
        	    System.out.println("Wadl");   
@@ -83,6 +87,7 @@ public class AuthFilter implements ContainerRequestFilter
                     .status(Response.Status.UNAUTHORIZED)
                     .entity("Invalid Request.")
                     .build());
+                System.out.println("Abort 2");
         }
    }
    public static boolean authorize(String userId, String signature, String date)

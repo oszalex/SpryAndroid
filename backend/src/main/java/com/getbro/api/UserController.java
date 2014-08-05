@@ -34,8 +34,10 @@ public class UserController extends ApiStorageWrapper{
 	 * add new user (user registration)
 	 */
 	@POST
+	//@UserAuthorization
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addJsonUser( User user ) {
+		System.out.println("Creating New Userxx");
 		try{
 		System.out.println("Creating New User");
 		User x = new User(user);
@@ -50,6 +52,7 @@ public class UserController extends ApiStorageWrapper{
 	}
 	@POST
 	@Path("{userID:[0-9]+}")
+	//@UserAuthorization
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response checkJsonUser( String jason, @PathParam("userID") String userID ) {
 		try{
