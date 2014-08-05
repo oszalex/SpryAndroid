@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import java.util.Date;
+import static org.apache.http.impl.cookie.DateUtils.formatDate;
+
 /**
  * Created by Alex on 25.07.2014.
  */
@@ -51,7 +54,7 @@ public class comm {
     }
 
     //TODO: Geht auch anders zB als AsyncTask +  Refactore in extra Klasse
-    public static HttpResponse sendJason(final String URL, final JSONObject jason) {
+    public static HttpResponse postJason(final String URL, final JSONObject jason) {
        // HttpResponse response;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -114,8 +117,11 @@ public class comm {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL);
-        String basicAuth = "Basic " + new String(Base64.encode("user:pass".getBytes(),Base64.NO_WRAP ));
+        Date now = new Date();
+        String userpass = "436802118976"+":"+formatDate( now);
+        String basicAuth = "Basic " + new String(Base64.encode(userpass.getBytes(),Base64.NO_WRAP ));
         httpGet.setHeader("Authorization", basicAuth);
+        httpGet.setHeader("Date", formatDate( now));
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();

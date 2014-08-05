@@ -40,13 +40,14 @@ public class AuthFilter implements ContainerRequestFilter
         builder.append(buffer, 0, length);
     }
     return builder.toString();
-    	}
+ }
    @Override
-   public void filter( ContainerRequestContext requestContext ) throws IOException //COntainerrequest anstatt containerrequestcntext
+   public void filter( ContainerRequestContext requestContext ) throws IOException
    {
         String method = requestContext.getMethod();
         String path = requestContext.getUriInfo().getPath();
-        
+        final String date = requestContext.getHeaderString( HttpHeaders.DATE );
+        System.out.println("Date "+ date);   
       //Ohne Authentifizierung erlaubt
        if(method.equals("GET") && (path.equals("application.wadl") || path.equals("application.wadl/xsd0.xsd"))){
        	    System.out.println("Wadl");   
@@ -57,10 +58,9 @@ public class AuthFilter implements ContainerRequestFilter
             return;
         }
         final String authHeader = requestContext.getHeaderString( HttpHeaders.AUTHORIZATION );
-        String json = inputStreamToString(requestContext.getEntityStream(),"UTF-8");
-        System.out.println("JSON " +json);
-        // phonenumber:signature
-        //wir signieren das Datum im header Date
+       // String json = inputStreamToString(requestContext.getEntityStream(),"UTF-8");
+     //   System.out.println("JSON " +json);
+        
       if ( authHeader == null ){
          requestContext.abortWith(Response
                     .status(Response.Status.UNAUTHORIZED)
@@ -77,7 +77,16 @@ public class AuthFilter implements ContainerRequestFilter
             final String signature = asArray[ 1 ];
                     System.out.println("User " +username);
                     System.out.println("Pass " +signature);
-            // code to check username and password
+                    
+                    User x = ApiStorageWrapper.users.get(Long.parseLong(username));
+                    // Public key des User holen
+                    // signatur entschluesseln
+                    //x.decode
+                    // Vergleich mit HTTP Datum
+                  if(signature.compareTo(requestContext.getHeaderString( HttpHeaders.DATE )) > 0){
+                  	  System.out.println("Signatur passt " +signature);	  
+                  }
+                    
          }
 	 else{
             requestContext.abortWith(Response

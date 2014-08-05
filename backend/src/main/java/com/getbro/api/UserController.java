@@ -53,13 +53,11 @@ public class UserController extends ApiStorageWrapper{
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response checkJsonUser( String jason, @PathParam("userID") String userID ) {
 		try{
-		//wie hole ich mir den Code aus JSON??
 		JSONObject obj = new JSONObject(jason);
 		int activationcode = Integer.parseInt(obj.getString("code"));
 		System.out.println("Received Code" + activationcode);
 		
 		User x = users.get(Long.parseLong(userID));
-		//No Such User
 		if( x == null) return Response.status(500).entity(x).build();
 		if( x.checkActivation(activationcode)) return Response.status(200).entity(x).build();
 		else return Response.status(501).entity(x).build();
