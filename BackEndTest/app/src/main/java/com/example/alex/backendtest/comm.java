@@ -3,6 +3,7 @@ package com.example.alex.backendtest;
 import android.app.Activity;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -65,6 +66,8 @@ public class comm {
                 Log.i("Sending",  jason.toString());
                 try {
                     HttpPost post = new HttpPost(URL);
+                    String basicAuth = "Basic " + new String(Base64.encode("user:pass".getBytes(),Base64.NO_WRAP ));
+                    post.setHeader("Authorization", basicAuth);
                     StringEntity se = new StringEntity( jason.toString());
 
                     post.setHeader("Accept", "application/json");
@@ -111,6 +114,8 @@ public class comm {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL);
+        String basicAuth = "Basic " + new String(Base64.encode("user:pass".getBytes(),Base64.NO_WRAP ));
+        httpGet.setHeader("Authorization", basicAuth);
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();

@@ -21,47 +21,69 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import com.sun.jersey.core.util.Base64;
-
-
+import org.glassfish.jersey.server.ContainerRequest;
+import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 @Provider
 public class AuthFilter implements ContainerRequestFilter
 {
+	private static final int BUFFER_SIZE = 4 * 1024;
+
+	public static String inputStreamToString(InputStream inputStream, String charsetName)
+        throws IOException {
+    StringBuilder builder = new StringBuilder();
+    InputStreamReader reader = new InputStreamReader(inputStream, charsetName);
+    char[] buffer = new char[BUFFER_SIZE];
+    int length;
+    while ((length = reader.read(buffer)) != -1) {
+        builder.append(buffer, 0, length);
+    }
+    return builder.toString();
+    	}
    @Override
    public void filter( ContainerRequestContext requestContext ) throws IOException //COntainerrequest anstatt containerrequestcntext
    {
-      final String authHeader = requestContext.getHeaderString( HttpHeaders.AUTHORIZATION );
-      System.out.println("Filter");
-      //GET, POST, PUT, DELETE, ...
         String method = requestContext.getMethod();
-        // myresource/get/56bCA for example
-        String path = requestContext.getPath(true);
+        String path = requestContext.getUriInfo().getPath();
+        
       //Ohne Authentifizierung erlaubt
        if(method.equals("GET") && (path.equals("application.wadl") || path.equals("application.wadl/xsd0.xsd"))){
-            return containerRequest;
+       	    System.out.println("Wadl");   
+            return;
         }
-        //Usercreate ist einzige erlaubt ohne Authentifizierung
+        if(method.equals("POST") && (path.equals("users") || path.equals("application.wadl/xsd0.xsd"))){
+            System.out.println("Usercreation - No Login needed");
+            return;
+        }
+        final String authHeader = requestContext.getHeaderString( HttpHeaders.AUTHORIZATION );
+        String json = inputStreamToString(requestContext.getEntityStream(),"UTF-8");
+        System.out.println("JSON " +json);
         // phonenumber:signature
-        //wir signieren das Datum imheader Date
+        //wir signieren das Datum im header Date
       if ( authHeader == null ){
-        // requestContext.abortWith( Response.header( HttpHeaders.WWW_AUTHENTICATE, "Basic realm=\"realm\"" )
-          //  .entity( "Page requires login." ).build( ) );
+         requestContext.abortWith(Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .entity("User cannot access the resource.")
+                    .build());
       }
-      else
-      {
+      else{
          final String withoutBasic = authHeader.replaceFirst( "[Bb]asic ", "" );
 	 final String userColonPass = new String(Base64.decode( withoutBasic ));
 	 final String[ ] asArray = userColonPass.split( ":" );
  
-	 if ( asArray.length == 2 )
-	 {
+	 if ( asArray.length == 2 ){
             final String username = asArray[ 0 ];
-            final String password = asArray[ 1 ];
- 
+            final String signature = asArray[ 1 ];
+                    System.out.println("User " +username);
+                    System.out.println("Pass " +signature);
             // code to check username and password
          }
-	 else
-	 {
-            // abort with error
+	 else{
+            requestContext.abortWith(Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .entity("User cannot access the resource.")
+                    .build());
          }
       }
    }
