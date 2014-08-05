@@ -3,7 +3,7 @@ package com.getbro.api;
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
 import java.util.Random;
-
+import java.security.*;
 @XmlRootElement
 public class User {
 	
@@ -14,7 +14,7 @@ public class User {
 	private String name;
 	private long phonenumber;
 	private boolean activated = false;
-	
+	private PublicKey publicKey;
 	public User() {} 
 
 	public User(String name, long phonenumber) {
@@ -76,7 +76,22 @@ public class User {
 		System.out.println("Number: " +phonenumber);
 		//this.phonenumber=phonenumber;
 	}
-	
+	@XmlElement(name="publicKey")
+	public String publicKey(){
+		return savePublicKey(this.publicKey);
+		//return new String(telnr.toByteArray());
+		//System.out.println("Number: " + telnr);
+		//return "blabla";
+	}
+	public void publicKey(String publicKey){
+		this.publicKey = loadPublicKey(publicKey);
+		System.out.println("SetKey: " + publickey);
+		//this.phonenumber=phonenumber;
+	}
+	public String decode(String signature)
+	{
+		return signature;	
+	}
 /*	@XmlElement(name="code")
 	public String getCode(){
 		//return telnr.toString();
@@ -107,4 +122,18 @@ public class User {
 		System.out.println("Hier: code " + code);
 		//this.phonenumber=phonenumber;
 	}*/
+	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
+        byte[] data = Base64.decode(stored, 0);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        return fact.generatePublic(spec);
+    }
+
+
+    public static String savePublicKey(PublicKey publ) throws GeneralSecurityException {
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec spec = fact.getKeySpec(publ,
+                X509EncodedKeySpec.class);
+        return Base64.encodeToString(spec.getEncoded(), 0);
+    }
  }
