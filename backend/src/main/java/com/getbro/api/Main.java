@@ -23,7 +23,10 @@ public class Main {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.example package
         final ResourceConfig rc = new ResourceConfig().packages("com.getbro.api");
-
+       // rc.getProperties().put(
+        //	"com.sun.jersey.spi.container.ContainerRequestFilters",
+        //	"com.sun.jersey.api.container.filter.LoggingFilter;com.getbro.api.AuthFilter"
+        //);
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
