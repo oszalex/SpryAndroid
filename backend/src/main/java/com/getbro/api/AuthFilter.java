@@ -92,18 +92,19 @@ public class AuthFilter implements ContainerRequestFilter
    }
    public static boolean authorize(String userId, String signature, String date)
    {
-   	   System.out.println("authorize " + userId + " " + signature + " " + date);
+   	   
    	   try{
    	   	   User x = ApiStorageWrapper.users.get(Long.parseLong(userId));
                     // signatur entschluesseln
                     signature = x.decode(signature);
+                    System.out.println("authorize " + x.getId() + " " + signature + " " + date);
                     // Vergleich mit HTTP Datum
                   if(signature.compareTo(date) > 0){
-                  	  System.out.println("Signatur passt " +signature);
+                  	  System.out.println("Signatur passt ");
                   	  return true;
                   } 
                   else{
-                  	  System.out.println("Signatur passt nicht" +signature);
+                  	  System.out.println("Signatur passt nicht");
                   	  return true;
                   }
            }
@@ -136,7 +137,7 @@ public class AuthFilter implements ContainerRequestFilter
             final String username = asArray[ 0 ];
             final String signature = asArray[ 1 ];
                     System.out.println("User " +username);
-                    System.out.println("Pass " +signature); 
+              //      System.out.println("Pass " +signature); 
          }
 	 else{
 	 	 return null;

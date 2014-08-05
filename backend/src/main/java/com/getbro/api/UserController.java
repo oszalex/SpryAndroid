@@ -36,11 +36,11 @@ public class UserController extends ApiStorageWrapper{
 	@POST
 	//@UserAuthorization
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addJsonUser( User user ) {
-		System.out.println("Creating New Userxx");
+	public Response addJsonUser( String jason ) {
+		JSONObject obj = new JSONObject(jason);
 		try{
-		System.out.println("Creating New User");
-		User x = new User(user);
+		System.out.println("Creating New User " + obj.getString("publicKey"));
+		User x = new User(obj.getString("publicKey"),Long.parseLong(obj.getString("userId")));
 		if(!users.containsKey(x.getId())) users.put(Long.parseLong(x.getId()),x);
 		x.sendConfirmation();
 		}
@@ -54,13 +54,13 @@ public class UserController extends ApiStorageWrapper{
 	@Path("{userID:[0-9]+}")
 	//@UserAuthorization
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response checkJsonUser( String jason, @PathParam("userID") String userID ) {
+	public Response checkJsonUser( String jason) {
 		try{
 		JSONObject obj = new JSONObject(jason);
 		int activationcode = Integer.parseInt(obj.getString("code"));
 		System.out.println("Received Code" + activationcode);
 		
-		User x = users.get(Long.parseLong(userID));
+		User x = users.get(Long.parseLong(obj.getString("userId")));
 		if( x == null) return Response.status(500).entity(x).build();
 		if( x.checkActivation(activationcode)) return Response.status(200).entity(x).build();
 		else return Response.status(501).entity(x).build();

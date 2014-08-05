@@ -31,7 +31,7 @@ import android.content.SharedPreferences;
 import android.content.*;
 public class HttpPostx extends AsyncTask<String, Void, HttpResponse>
 {
-    public long userId = 436802118976L;
+   // public long userId = 436802118976L;
     private Context mContext;
     SharedPreferences SP;
 
@@ -50,15 +50,16 @@ public class HttpPostx extends AsyncTask<String, Void, HttpResponse>
             Log.i("Sending", jason.toString());
             HttpPost post = new HttpPost(params[0]);
             StringEntity se = new StringEntity(jason.toString());
-            SP = mContext.getSharedPreferences("KeyPair", Context.MODE_PRIVATE);
+            SP = mContext.getSharedPreferences("com.example.alex.backendtest", Context.MODE_PRIVATE);
             Date now = new Date();
             String signature = formatDate(now);
             String key = SP.getString("privateKey", "");
-            Log.i("Keyzeu", key);
+            Long userId = Long.parseLong(SP.getString("userId", ""));
+            //Log.i("Keyzeu", key);
             String encsign = Keys.Encrypt(signature,Keys.loadPrivateKey(key));
-            Log.i("Keyzeug encsign", encsign);
+           // Log.i("Keyzeug encsign", encsign);
             String basicAuth = "Basic " + new String(Base64.encode((Long.toString(userId)+":"+encsign).getBytes(), Base64.NO_WRAP));
-            //String basicAuth = "user:pass";
+            Log.i("BasicAuth", basicAuth);
             post.setHeader("Authorization", basicAuth);
             post.setHeader("Date", signature );
             post.setHeader("Accept", "application/json");

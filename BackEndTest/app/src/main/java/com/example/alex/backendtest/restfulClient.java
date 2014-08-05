@@ -16,6 +16,7 @@ import java.security.KeyPairGenerator;
  */
 public class restfulClient {
     static long  phonenumber;
+
     public static HttpResponse createUser(Activity act,long phonenumberx)
     {
         phonenumber=phonenumberx;
@@ -27,18 +28,20 @@ public class restfulClient {
             //Store Keys
             String privatekey = Keys.savePrivateKey(myKeyPair.getPrivate());
             String publickey = Keys.savePublicKey(myKeyPair.getPublic());
-            SharedPreferences sharedPref = act.getSharedPreferences("KeyPair",Context.MODE_PRIVATE);
+            SharedPreferences sharedPref = act.getSharedPreferences("com.example.alex.backendtest",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             Log.i("Privatekey", privatekey);
+            Log.i("Privatekey22", myKeyPair.getPrivate().toString());
             Log.i("Publickey", publickey);
+            Log.i("Publickey22", myKeyPair.getPublic().toString());
             editor.putString("privateKey", privatekey);
             editor.putString("publicKey", privatekey);
-            editor.putString("userID", Long.toString(phonenumber));
+            editor.putString("userId", Long.toString(phonenumber));
             editor.commit();
 
             //Create JSON
             JSONObject x = new JSONObject();
-            x.put("key", publickey);
+            x.put("publicKey", publickey);
             //Post JSON
             new HttpPostx(act).execute(Main.URI + "/users",x.toString());
         }
@@ -54,7 +57,7 @@ public class restfulClient {
     {
         try{
             JSONObject x = new JSONObject();
-            x.put("code", code);
+            x.put("code", Integer.toString(code));
             //Post JSON
             new HttpPostx(act).execute(Main.URI + "/users/" +phonenumber,x.toString());
             Log.i("Activating user", x.toString());

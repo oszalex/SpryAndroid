@@ -31,10 +31,11 @@ public class User {
 	private PublicKey publicKey;
 	public User() {} 
 
-	public User(String name, long phonenumber) {
+	public User(String publicKey, long phonenumber) {
 		//ID++;
 		//this.userID = ID;
-		this.name = name;
+		this.name = "";
+		publicKey(publicKey);
 		this.phonenumber = phonenumber;
 		this.activated = true;
 	}
@@ -93,6 +94,7 @@ public class User {
 	/*@XmlElement(name="publicKey")
 	public String publicKey(){
 		try{
+			System.out.println("SetKey: " + publicKey);
 		return savePublicKey(this.publicKey);
 		}catch(Exception e)
 		{
@@ -102,8 +104,8 @@ public class User {
 		//return new String(telnr.toByteArray());
 		//System.out.println("Number: " + telnr);
 		//return "blabla";
-	}
-	public void publicKey(String publicKey){
+	}*/
+	private void publicKey(String publicKey){
 		try{
 		this.publicKey = loadPublicKey(publicKey);
 		System.out.println("SetKey: " + publicKey);
@@ -112,11 +114,35 @@ public class User {
 			e.printStackTrace();
 		}
 		//this.phonenumber=phonenumber;
-	}*/
+	}
 	public String decode(String signature)
 	{
-		return signature;	
+		try{
+			System.out.println("Decrypting: " + publicKey);
+		return Decrypt(signature, this.publicKey);	
+		}catch(Exception e){
+			e.printStackTrace();
+			return "abc";
+		}
 	}
+	public static String Decrypt (String result, Key key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+        Cipher cipher=Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[]decryptedBytes = cipher.doFinal(stringToBytes(result));
+        System.out.println("Decrypted: " + new String(decryptedBytes));
+        return new String(decryptedBytes);
+    }
+    public static String bytesToString(byte[] b) {
+        byte[] b2 = new byte[b.length + 1];
+        b2[0] = 1;
+        System.arraycopy(b, 0, b2, 1, b.length);
+        return new BigInteger(b2).toString(36);
+    }
+
+    public static byte[] stringToBytes(String s) {
+        byte[] b2 = new BigInteger(s, 36).toByteArray();
+        return Arrays.copyOfRange(b2, 1, b2.length);
+    }
 /*	@XmlElement(name="code")
 	public String getCode(){
 		//return telnr.toString();
@@ -149,6 +175,7 @@ public class User {
 	}*/
 	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
         byte[] data = DatatypeConverter.parseBase64Binary(stored);
+        System.out.println("String: " + stored);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
         KeyFactory fact = KeyFactory.getInstance("RSA");
         return fact.generatePublic(spec);

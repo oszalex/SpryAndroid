@@ -97,9 +97,11 @@ public class FirstRun extends Activity {
     {   //JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
       //  comm.sendJason(Main.URI + "/users", x);
       //  new HttpPostx().execute(Main.URI + "/users",x.toString());
-        restfulClient.createUser(this,436802118976L);
-       // Log.i("Registering user", x.toString());
-        Toast.makeText(this, "User  created", Toast.LENGTH_SHORT).show();
+        int resId = this.getResources().getIdentifier("phonenumber", "id", this.getPackageName());
+        EditText x = (EditText) this.findViewById(resId);
+        restfulClient.createUser(this,Long.parseLong(x.getText().toString().replace("+","")));
+        Log.i("Registering user", x.getText().toString());
+        Toast.makeText(this, "USer created", Toast.LENGTH_SHORT).show();
     }
     public  boolean activate(String phonenumber, Activity a){
         //JSONObject x = comm.JSONcreator(a, new String[] {"code"});
