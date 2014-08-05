@@ -54,10 +54,10 @@ public class comm {
     }
 
     //TODO: Geht auch anders zB als AsyncTask +  Refactore in extra Klasse
-    public static HttpResponse postJason(final String URL, final JSONObject jason) {
+    public static HttpResponse postData(final String URL, final String json) {
        // HttpResponse response;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      //  StrictMode.setThreadPolicy(policy);
       //  Thread t = new Thread() {
           //  public void run() {
 
@@ -65,9 +65,10 @@ public class comm {
                 HttpClient client = new DefaultHttpClient();
                 HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
                 HttpResponse response;
-
-                Log.i("Sending",  jason.toString());
+                JSONObject jason;
                 try {
+                    jason = new JSONObject(json);
+                    Log.i("Sending",  jason.toString());
                     HttpPost post = new HttpPost(URL);
                     String basicAuth = "Basic " + new String(Base64.encode("user:pass".getBytes(),Base64.NO_WRAP ));
                     post.setHeader("Authorization", basicAuth);
@@ -93,10 +94,6 @@ public class comm {
                     e.printStackTrace();
                     Log.e("Error", e.toString());
                 }
-         //       Looper.loop(); //Loop in the message queue
-        //    }
-     //   };
-       // t.start();
         return null;
     }
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{

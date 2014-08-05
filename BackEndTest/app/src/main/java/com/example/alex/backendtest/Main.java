@@ -143,7 +143,8 @@ public class Main extends Activity {
     }
     public void createEvent(View v) {
         JSONObject x = comm.JSONcreator(this, new String[] {"raw"});
-        comm.sendJason(URI+"/events",x );
+        //comm.sendJason(URI+"/events",x );
+        new HttpPostx().execute(x.toString());
         Toast.makeText(this, "Event "+ x.toString() +" created", Toast.LENGTH_SHORT).show();
         try
         {
@@ -165,7 +166,7 @@ public class Main extends Activity {
     }
     public void createUser(View v) {
         JSONObject x = comm.JSONcreator(this, new String[] {"name","phonenumber"});
-        comm.sendJason(URI+"/users",x );
+       // comm.sendJason(URI+"/users",x );
         Toast.makeText(this, "User "+ x.toString() +" created", Toast.LENGTH_SHORT).show();
         try
         {

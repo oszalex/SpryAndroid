@@ -95,16 +95,17 @@ public class FirstRun extends Activity {
     public int activationcode;
     public void register(View v)
     {   JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
-        comm.sendJason(Main.URI + "/users", x);
+      //  comm.sendJason(Main.URI + "/users", x);
+        new HttpPostx().execute(Main.URI + "/users",x.toString());
         Log.i("Registering user", x.toString());
         Toast.makeText(this, "User " + x.toString() + " created", Toast.LENGTH_SHORT).show();
     }
     public static boolean activate(String phonenumber, Activity a){
         JSONObject x = comm.JSONcreator(a, new String[] {"code"});
-        HttpResponse y = comm.sendJason(Main.URI + "/users/"+phonenumber, x);
+       // HttpResponse y = comm.sendJason(Main.URI + "/users/"+phonenumber, x);
         Log.i("Activating user", x.toString());
 
-        if (y.getStatusLine().getStatusCode() != 200){
+     /*   if (y.getStatusLine().getStatusCode() != 200){
             Log.i("Activation Code wrong", "False ");
             return false;
         }
@@ -112,7 +113,8 @@ public class FirstRun extends Activity {
             Log.i("Activation Code accepted", "OK");
             return true;
             //  setResult(RESULT_CANCELED, returnIntent);
-        }
+        }*/
+        return true;
     }
     public void check(View v)
     {
