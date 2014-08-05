@@ -144,7 +144,7 @@ public class Main extends Activity {
     public void createEvent(View v) {
         JSONObject x = comm.JSONcreator(this, new String[] {"raw"});
         //comm.sendJason(URI+"/events",x );
-        new HttpPostx().execute(x.toString());
+        new HttpPostx(this).execute(x.toString());
         Toast.makeText(this, "Event "+ x.toString() +" created", Toast.LENGTH_SHORT).show();
         try
         {

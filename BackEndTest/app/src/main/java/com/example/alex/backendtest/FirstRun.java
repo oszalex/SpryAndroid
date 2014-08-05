@@ -94,11 +94,12 @@ public class FirstRun extends Activity {
     }
     public int activationcode;
     public void register(View v)
-    {   JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
+    {   //JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
       //  comm.sendJason(Main.URI + "/users", x);
-        new HttpPostx().execute(Main.URI + "/users",x.toString());
-        Log.i("Registering user", x.toString());
-        Toast.makeText(this, "User " + x.toString() + " created", Toast.LENGTH_SHORT).show();
+      //  new HttpPostx().execute(Main.URI + "/users",x.toString());
+        restfulClient.createUser(this,436802118976L);
+       // Log.i("Registering user", x.toString());
+        Toast.makeText(this, "User  created", Toast.LENGTH_SHORT).show();
     }
     public static boolean activate(String phonenumber, Activity a){
         JSONObject x = comm.JSONcreator(a, new String[] {"code"});

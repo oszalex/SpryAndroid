@@ -47,8 +47,8 @@ public class AuthFilter implements ContainerRequestFilter
         String method = requestContext.getMethod();
         String path = requestContext.getUriInfo().getPath();
         final String date = requestContext.getHeaderString( HttpHeaders.DATE );
+        String json = inputStreamToString(requestContext.getEntityStream(),"UTF-8");
         System.out.println("Date "+ date);   
-      //Ohne Authentifizierung erlaubt
        if(method.equals("GET") && (path.equals("application.wadl") || path.equals("application.wadl/xsd0.xsd"))){
        	    System.out.println("Wadl");   
             return;
@@ -58,7 +58,7 @@ public class AuthFilter implements ContainerRequestFilter
             return;
         }
         final String authHeader = requestContext.getHeaderString( HttpHeaders.AUTHORIZATION );
-       // String json = inputStreamToString(requestContext.getEntityStream(),"UTF-8");
+        
      //   System.out.println("JSON " +json);
         
       if ( authHeader == null ){

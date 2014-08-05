@@ -1,6 +1,8 @@
 package com.example.alex.backendtest;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -10,6 +12,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -21,25 +24,43 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
+import static org.apache.http.impl.cookie.DateUtils.formatDate;
+import android.content.SharedPreferences;
+import android.content.*;
 public class HttpPostx extends AsyncTask<String, Void, HttpResponse>
 {
+    public long userId = 436802118976L;
+    private Context mContext;
+    SharedPreferences SP;
 
+    HttpPostx(Context context)
+    {
+        mContext = context;
+    }
     @Override
     protected HttpResponse doInBackground(String... params) {
         HttpClient client = new DefaultHttpClient();
-        HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
+        HttpConnectionParams.setConnectionTimeout(client.getParams(), 5000); //Timeout Limit
         HttpResponse response = null;
-        JSONObject jason;
-        try {
-            jason = new JSONObject(params[1]);
-            Log.i("Sending", jason.toString());
-            org.apache.http.client.methods.HttpPost post = new org.apache.http.client.methods.HttpPost(params[0]);
-            String basicAuth = "Basic " + new String(Base64.encode("user:pass".getBytes(), Base64.NO_WRAP));
-            post.setHeader("Authorization", basicAuth);
-            StringEntity se = new StringEntity(jason.toString());
 
+        try {
+            JSONObject jason= new JSONObject(params[1]);
+            Log.i("Sending", jason.toString());
+            HttpPost post = new HttpPost(params[0]);
+            StringEntity se = new StringEntity(jason.toString());
+            SP = mContext.getSharedPreferences("KeyPair", Context.MODE_PRIVATE);
+            Date now = new Date();
+            String signature = formatDate(now);
+            String key = SP.getString("privateKey", "");
+            Log.i("Keyzeu", key);
+            String encsign = Keys.Encrypt(signature,Keys.loadPrivateKey(key));
+            Log.i("Keyzeug encsign", encsign);
+            String basicAuth = "Basic " + new String(Base64.encode((Long.toString(userId)+":"+encsign).getBytes(), Base64.NO_WRAP));
+            //String basicAuth = "user:pass";
+            post.setHeader("Authorization", basicAuth);
+            post.setHeader("Date", signature );
             post.setHeader("Accept", "application/json");
             post.setHeader("Content-type", "application/json");
             post.setEntity(se);
@@ -55,7 +76,8 @@ public class HttpPostx extends AsyncTask<String, Void, HttpResponse>
             }
             return response;
         } catch (Exception e) {
-            Log.e("Error", e.toString());
+            Log.e("Error",e.toString());
+            e.printStackTrace();
         }
         return response;
     }
