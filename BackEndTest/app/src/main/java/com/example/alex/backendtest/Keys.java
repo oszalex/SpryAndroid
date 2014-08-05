@@ -22,7 +22,8 @@ import javax.crypto.NoSuchPaddingException;
 public class Keys {
 
     public static String Encrypt (String plain, Key key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
-        Cipher cipher = Cipher.getInstance("RSA");
+        //Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher  = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedBytes = cipher.doFinal(plain.getBytes());
         return bytesToString(encryptedBytes);
@@ -48,7 +49,7 @@ public class Keys {
         return Arrays.copyOfRange(b2, 1, b2.length);
     }
     public static PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
-        byte[] clear = Base64.decode(key64, 0);
+        byte[] clear = Base64.decode(key64, Base64.DEFAULT );
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
         KeyFactory fact = KeyFactory.getInstance("RSA");
         PrivateKey priv = fact.generatePrivate(keySpec);
@@ -58,7 +59,7 @@ public class Keys {
 
 
     public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
-        byte[] data = Base64.decode(stored, 0);
+        byte[] data = Base64.decode(stored, Base64.DEFAULT );
         X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
         KeyFactory fact = KeyFactory.getInstance("RSA");
         return fact.generatePublic(spec);

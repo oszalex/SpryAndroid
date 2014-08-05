@@ -8,6 +8,7 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 
@@ -33,9 +34,14 @@ public class restfulClient {
             Log.i("Privatekey", privatekey);
             Log.i("Privatekey22", myKeyPair.getPrivate().toString());
             Log.i("Publickey", publickey);
+
             Log.i("Publickey22", myKeyPair.getPublic().toString());
+            BigInteger bi = new BigInteger(
+                    myKeyPair.getPublic().toString().substring(myKeyPair.getPublic().toString().indexOf("=")+1,myKeyPair.getPublic().toString().indexOf(",")),
+                    16);
+            Log.i("Base 10 Publickey", bi.toString(10));
             editor.putString("privateKey", privatekey);
-            editor.putString("publicKey", privatekey);
+            editor.putString("publicKey", publickey);
             editor.putString("userId", Long.toString(phonenumber));
             editor.commit();
 

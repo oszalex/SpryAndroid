@@ -118,7 +118,7 @@ public class User {
 	public String decode(String signature)
 	{
 		try{
-			System.out.println("Decrypting: " + publicKey);
+			System.out.println("Decrypting: " + publicKey.toString());
 		return Decrypt(signature, this.publicKey);	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -126,7 +126,8 @@ public class User {
 		}
 	}
 	public static String Decrypt (String result, Key key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
-        Cipher cipher=Cipher.getInstance("RSA");
+        //Cipher cipher=Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[]decryptedBytes = cipher.doFinal(stringToBytes(result));
         System.out.println("Decrypted: " + new String(decryptedBytes));
