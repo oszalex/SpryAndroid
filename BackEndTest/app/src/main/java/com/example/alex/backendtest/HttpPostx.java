@@ -32,9 +32,9 @@ import android.content.*;
 public class HttpPostx extends AsyncTask<String, Void, HttpResponse>
 {
    // public long userId = 436802118976L;
-    private Context mContext;
+    public static Context mContext;
     SharedPreferences SP;
-
+    DataDownloadListener dataDownloadListener;
     HttpPostx(Context context)
     {
         mContext = context;
@@ -82,11 +82,25 @@ public class HttpPostx extends AsyncTask<String, Void, HttpResponse>
         }
         return response;
     }
-    protected void onPostExecute(String page)
+
+    @Override
+    protected void onPostExecute(HttpResponse results)
     {
-        //textView.setText(page);
-      //  Toast toast = Toast.makeText(getApplicationContext(), page, Toast.LENGTH_SHORT);
-      //  toast.show();
+        if(results != null){
+            Log.e("Result", results.toString());
+            dataDownloadListener.dataDownloadedSuccessfully(results);
+        }
+        else
+            Log.e("Result", "is null");
+            dataDownloadListener.dataDownloadFailed();
+       }
+    public void setDataDownloadListener(DataDownloadListener dataDownloadListener) {
+        Log.e("Listener", "is set");
+        this.dataDownloadListener = dataDownloadListener;
+    }
+    public static interface DataDownloadListener {
+        void dataDownloadedSuccessfully(Object data);
+        void dataDownloadFailed();
     }
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
