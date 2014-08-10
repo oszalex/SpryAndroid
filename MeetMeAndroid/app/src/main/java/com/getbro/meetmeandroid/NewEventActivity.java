@@ -3,8 +3,12 @@ package com.getbro.meetmeandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,7 +89,26 @@ public class NewEventActivity extends Activity {
             //label.setVisibility(View.GONE);
 
             //add suggestion to text
-            text.setText(text.getText() + " " + suggestion);
+                Editable old_str = text.getText();
+            SpannableString span = new SpannableString(old_str + " " + suggestion);
+
+            //restore old spans
+
+            BackgroundColorSpan[] old_spans = old_str.getSpans(0, old_str.length(), BackgroundColorSpan.class);
+
+                for(BackgroundColorSpan sp : old_spans)
+                    span.setSpan(sp, old_str.getSpanStart(sp), old_str.getSpanEnd(sp), 0);
+
+
+            //add new span
+
+            span.setSpan(
+                    new BackgroundColorSpan(Color.GRAY),
+                    text.getText().length() + 1,
+                    text.getText().length() + suggestion.length() + 1,
+                    0);
+
+            text.setText(span);
 
             //set cursor to the end
             text.setSelection(text.getText().length());

@@ -1,27 +1,13 @@
 package com.getbro.meetmeandroid;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.APIObjects.APIEvent;
-
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by chris on 28/07/14.

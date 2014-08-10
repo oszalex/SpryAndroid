@@ -8,10 +8,8 @@ import java.util.regex.Pattern;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -22,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.APIObjects.APIEvent;
+import com.getbro.meetmeandroid.API.APIEvent;
 
 /**
  * Created by chris on 28/07/14.
