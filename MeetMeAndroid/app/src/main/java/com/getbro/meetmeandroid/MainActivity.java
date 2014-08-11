@@ -39,6 +39,12 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
         final ListView lv = (ListView) findViewById(R.id.list);
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
+        srl.setColorSchemeColors(
+                getResources().getColor(R.color.refreshAnimimation1),
+                getResources().getColor(R.color.refreshAnimimation2),
+                getResources().getColor(R.color.refreshAnimimation3),
+                getResources().getColor(R.color.refreshAnimimation4));
+
         srl.setOnRefreshListener(this);
 
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
