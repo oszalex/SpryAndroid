@@ -2,14 +2,17 @@ package com.getbro.meetmeandroid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +30,7 @@ public class NewEventActivity extends Activity {
 
     private ArrayList<Suggestion> s = new ArrayList<Suggestion>();
     private SuggestionAdapter m_adapter;
+    private EditText text;
 
     private int state = 0;
 
@@ -35,6 +39,34 @@ public class NewEventActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+
+        text = (EditText) findViewById(R.id.rawevent);
+
+
+        text.setOnKeyListener(new View.OnKeyListener() {
+
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    //remove last word if suggestion
+
+                    Editable old_str = text.getText();
+                    BackgroundColorSpan[] old_spans = old_str.getSpans(0, old_str.length(), BackgroundColorSpan.class);
+
+                    /*
+                    if(old_spans.length>0){
+
+                        Log.v("NEWEVENTAC", old_spans.length + );
+                        if(old_str.getSpanEnd(old_spans[old_spans.length - 1]) == old_str.length()){
+                            text.setText(old_str.toString().substring(0, old_str.toString().lastIndexOf(" ")));
+                        }
+                    }*/
+                }
+                return false;
+            }
+        });
+
+
 
         getActionBar().setTitle(R.string.actionbar_newevent);
 
@@ -73,7 +105,6 @@ public class NewEventActivity extends Activity {
     private void setupSuggest(){
         int resource;
         final GridView grid = (GridView) findViewById(R.id.suggestionGrid);
-        final EditText text = (EditText) findViewById(R.id.rawevent);
 
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

@@ -3,6 +3,7 @@ package com.getbro.meetmeandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,11 +14,19 @@ import android.widget.Toast;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 
+import com.getbro.meetmeandroid.API.API;
+import com.getbro.meetmeandroid.API.APIEvent;
+import com.getbro.meetmeandroid.API.JSONEvent;
+import com.koushikdutta.async.future.FutureCallback;
+
 import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 //import android.graphics.Outline;
 
 public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
-    private final String URI = "http://api.getbro.com/v1";
+    private final static String TAG = MainActivity.class.toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,14 +111,29 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
         allEvents(lv, srl);
     }
 
-    public void allEvents(ListView lv, SwipeRefreshLayout srl) {
-        JSONArray jason = MeetMeAPI.getJSONFromServer(URI + "/events");
+    public void allEvents(final ListView lv,final SwipeRefreshLayout srl) {
 
-        APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, MeetMeAPI.getEvents());
-        lv.setAdapter(m_adapter);
+        API.getEvents(this).setCallback(new FutureCallback<List<JSONEvent>>() {
+            @Override
+            public void onCompleted(Exception e, List<JSONEvent> result) {
 
-        srl.setRefreshing(false);
-        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                if(result == null){
+                    Log.e(TAG, "shit. no events found!");
+                    srl.setRefreshing(false);
+                    return;
+                }
+
+
+                APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, APIEvent.fromJSONEvent(result));
+                lv.setAdapter(m_adapter);
+
+                srl.setRefreshing(false);
+                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
     }
 
 

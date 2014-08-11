@@ -1,6 +1,8 @@
 package com.getbro.meetmeandroid.API;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by chris on 28/07/14.
@@ -38,5 +40,15 @@ public class APIEvent {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public static ArrayList<APIEvent> fromJSONEvent(List<JSONEvent> items){
+        ArrayList<APIEvent> results = new ArrayList<APIEvent>();
+
+        for(JSONEvent i : items){
+            results.add(new APIEvent(i.creatorId,i.raw,new java.util.Date(i.time)));
+        }
+
+        return results;
     }
 }
