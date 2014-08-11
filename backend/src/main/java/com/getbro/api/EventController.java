@@ -8,7 +8,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
-
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,12 +28,29 @@ public class EventController extends ApiStorageWrapper{
     @Produces(MediaType.APPLICATION_JSON)
    // @Consumes(MediaType.APPLICATION_JSON)
     public List<Event> getEvents() {
-    	//List<Event> visibleevents = new LinkedList<Event> ();
-    	return new ArrayList<Event>(events.values());
+    	List<Event> visibleevents = new LinkedList<Event> ();
+    	long userId = 436802118976L;
+    	for(Event x: events.values())
+    	{
+    		if(x.getCreatorId() == userId) {
+    			visibleevents.add(x);
+    			break;
+    		} else {
+    			List<Long> invites = x.getInvitations();
+    			for(long y : invites){
+    				if(y == userId){
+    					visibleevents.add(x);
+    					break;
+    				}	
+    			}
+    		}
+    		
+    	}
+    	
     	/*//Alle Elemente in Hashmap durchlaufen
     	for(Event x: events){	
     		//User ID ist Ersteller des Events
-    		if(x.getCreatorId() == userId) visibleevents.add(x);
+    		
     		else{
     			//User ist eingeladen
     			List<User> invites = x.getInvitations();
@@ -44,7 +62,8 @@ public class EventController extends ApiStorageWrapper{
     			}
     		}
     	}*/
-       // return visibleevents;
+        return visibleevents;
+       //return new ArrayList<Event>(events.values());
     }
     
     /**
@@ -61,12 +80,15 @@ public class EventController extends ApiStorageWrapper{
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postJsonEvent( Event event ) {
+    public Response postJsonEvent(@Context HttpHeaders headers, Event event ) {
        // System.out.println("Testevent: " + event);
      //   System.out.println("Testevent2: " +(String) event);
+     for(String header : headers.getRequestHeaders().keySet()){
+	System.out.println(header);
+}
     	Event x = new Event(event);
         events.put(x.getId(),x);
-        System.out.println("Event "+ x.getId() +" added");
+        System.out.println("Event "+ x.getId()+"");
         return Response.status(200).entity(event).build();
     }
 

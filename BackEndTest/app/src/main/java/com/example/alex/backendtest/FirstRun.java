@@ -39,13 +39,14 @@ public class FirstRun extends Activity {
             EditText et2 = (EditText) findViewById(R.id.code);
             et.setText(code);
             Intent returnIntent = new Intent();
-            if(activate(code,this)) {
+            restfulClient.activateUser(this,Integer.parseInt( code));
+            /*if(activate(code,this)) {
                 Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
             }
             else{
                 setResult(RESULT_OK, returnIntent);
                 finish();
-            }
+            }*/
         }
     }
 
@@ -94,40 +95,23 @@ public class FirstRun extends Activity {
     }
     public int activationcode;
     public void register(View v)
-    {   JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
-        comm.sendJason(Main.URI + "/users", x);
-        Log.i("Registering user", x.toString());
-        Toast.makeText(this, "User " + x.toString() + " created", Toast.LENGTH_SHORT).show();
+    {   //JSONObject x = comm.JSONcreator(this, new String[] {"phonenumber"});
+      //  comm.sendJason(Main.URI + "/users", x);
+      //  new HttpPostx().execute(Main.URI + "/users",x.toString());
+        int resId = this.getResources().getIdentifier("phonenumber", "id", this.getPackageName());
+        EditText x = (EditText) this.findViewById(resId);
+        restfulClient.createUser(this,Long.parseLong(x.getText().toString().replace("+","")));
+        Log.i("Registering user", x.getText().toString());
+        Toast.makeText(this, "USer created", Toast.LENGTH_SHORT).show();
     }
-    public static boolean activate(String phonenumber, Activity a){
-        JSONObject x = comm.JSONcreator(a, new String[] {"code"});
-        HttpResponse y = comm.sendJason(Main.URI + "/users/"+phonenumber, x);
-        Log.i("Activating user", x.toString());
 
-        if (y.getStatusLine().getStatusCode() != 200){
-            Log.i("Activation Code wrong", "False ");
-            return false;
-        }
-        else {
-            Log.i("Activation Code accepted", "OK");
-            return true;
-            //  setResult(RESULT_CANCELED, returnIntent);
-        }
-    }
     public void check(View v)
     {
         EditText et = (EditText) findViewById(R.id.phonenumber );
         String number = et.getText().toString().replace("+","");
-        Intent returnIntent = new Intent();
-        //Toast.makeText(a, y.toString() + " activated", Toast.LENGTH_SHORT).show();
-        if(!activate(number,this)) {
-            Toast.makeText(this, "Wrong activation Code", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            setResult(RESULT_OK, returnIntent);
-            finish();
-        }
-
+        int resId = this.getResources().getIdentifier("code", "id", this.getPackageName());
+        EditText x = (EditText) this.findViewById(resId);
+        restfulClient.activateUser(this,Integer.parseInt( x.getText().toString()));
     }
 
 }

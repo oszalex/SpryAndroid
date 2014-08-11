@@ -3,7 +3,21 @@ package com.getbro.api;
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
 import java.util.Random;
-
+import java.security.*;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.*;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.xml.bind.DatatypeConverter;
 @XmlRootElement
 public class User {
 	
@@ -14,13 +28,14 @@ public class User {
 	private String name;
 	private long phonenumber;
 	private boolean activated = false;
-	
+	private PublicKey publicKey;
 	public User() {} 
 
-	public User(String name, long phonenumber) {
+	public User(String publicKey, long phonenumber) {
 		//ID++;
 		//this.userID = ID;
-		this.name = name;
+		this.name = "";
+		publicKey(publicKey);
 		this.phonenumber = phonenumber;
 		this.activated = true;
 	}
@@ -64,7 +79,7 @@ public class User {
 		this.name=name;
 	}
 
-	@XmlElement(name="phonenumber")
+	@XmlElement(name="userId")
 	public String getId(){
 		return Long.toString(phonenumber);
 		//return new String(telnr.toByteArray());
@@ -76,7 +91,59 @@ public class User {
 		System.out.println("Number: " +phonenumber);
 		//this.phonenumber=phonenumber;
 	}
-	
+	/*@XmlElement(name="publicKey")
+	public String publicKey(){
+		try{
+			System.out.println("SetKey: " + publicKey);
+		return savePublicKey(this.publicKey);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		//return new String(telnr.toByteArray());
+		//System.out.println("Number: " + telnr);
+		//return "blabla";
+	}*/
+	private void publicKey(String publicKey){
+		try{
+		this.publicKey = loadPublicKey(publicKey);
+		System.out.println("SetKey: " + publicKey);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		//this.phonenumber=phonenumber;
+	}
+	public String decode(String signature)
+	{
+		try{
+			System.out.println("Decrypting: " + publicKey.toString());
+		return Decrypt(signature, this.publicKey);	
+		}catch(Exception e){
+			e.printStackTrace();
+			return "abc";
+		}
+	}
+	public static String Decrypt (String result, Key key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+        //Cipher cipher=Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[]decryptedBytes = cipher.doFinal(stringToBytes(result));
+        System.out.println("Decrypted: " + new String(decryptedBytes));
+        return new String(decryptedBytes);
+    }
+    public static String bytesToString(byte[] b) {
+        byte[] b2 = new byte[b.length + 1];
+        b2[0] = 1;
+        System.arraycopy(b, 0, b2, 1, b.length);
+        return new BigInteger(b2).toString(36);
+    }
+
+    public static byte[] stringToBytes(String s) {
+        byte[] b2 = new BigInteger(s, 36).toByteArray();
+        return Arrays.copyOfRange(b2, 1, b2.length);
+    }
 /*	@XmlElement(name="code")
 	public String getCode(){
 		//return telnr.toString();
@@ -107,4 +174,19 @@ public class User {
 		System.out.println("Hier: code " + code);
 		//this.phonenumber=phonenumber;
 	}*/
+	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
+        byte[] data = DatatypeConverter.parseBase64Binary(stored);
+        System.out.println("String: " + stored);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        return fact.generatePublic(spec);
+    }
+
+
+    public static String savePublicKey(PublicKey publ) throws GeneralSecurityException {
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec spec = fact.getKeySpec(publ,
+                X509EncodedKeySpec.class);
+        return DatatypeConverter.printBase64Binary(spec.getEncoded());
+    }
  }

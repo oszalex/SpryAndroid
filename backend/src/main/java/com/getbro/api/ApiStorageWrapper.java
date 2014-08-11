@@ -10,8 +10,8 @@ class ApiStorageWrapper{
 	{
 		if(users.size() == 0){
 
-            users.put(4369911602033L, new User("Chris", 4369911602033L));
-            users.put(436802118976L, new User("Alex", 436802118976L));
+           // users.put(4369911602033L, new User("Chris", 4369911602033L));
+        //    users.put(436802118976L, new User("Alex", 436802118976L));
             
             Event x = new Event("me #hunger #essen @vapiano now!");
             events.put(x.getId(),x);

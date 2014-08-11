@@ -3,6 +3,7 @@ package com.example.alex.backendtest;
 import android.app.Activity;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -25,6 +26,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import java.util.Date;
+import static org.apache.http.impl.cookie.DateUtils.formatDate;
 
 /**
  * Created by Alex on 25.07.2014.
@@ -50,10 +54,10 @@ public class comm {
     }
 
     //TODO: Geht auch anders zB als AsyncTask +  Refactore in extra Klasse
-    public static HttpResponse sendJason(final String URL, final JSONObject jason) {
+    public static HttpResponse postData(final String URL, final String json) {
        // HttpResponse response;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      //  StrictMode.setThreadPolicy(policy);
       //  Thread t = new Thread() {
           //  public void run() {
 
@@ -61,10 +65,13 @@ public class comm {
                 HttpClient client = new DefaultHttpClient();
                 HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
                 HttpResponse response;
-
-                Log.i("Sending",  jason.toString());
+                JSONObject jason;
                 try {
+                    jason = new JSONObject(json);
+                    Log.i("Sending",  jason.toString());
                     HttpPost post = new HttpPost(URL);
+                    String basicAuth = "Basic " + new String(Base64.encode("user:pass".getBytes(),Base64.NO_WRAP ));
+                    post.setHeader("Authorization", basicAuth);
                     StringEntity se = new StringEntity( jason.toString());
 
                     post.setHeader("Accept", "application/json");
@@ -87,10 +94,6 @@ public class comm {
                     e.printStackTrace();
                     Log.e("Error", e.toString());
                 }
-         //       Looper.loop(); //Loop in the message queue
-        //    }
-     //   };
-       // t.start();
         return null;
     }
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -111,6 +114,11 @@ public class comm {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL);
+        Date now = new Date();
+        String userpass = "436802118976"+":"+formatDate( now);
+        String basicAuth = "Basic " + new String(Base64.encode(userpass.getBytes(),Base64.NO_WRAP ));
+        httpGet.setHeader("Authorization", basicAuth);
+        httpGet.setHeader("Date", formatDate( now));
         try {
             HttpResponse response = client.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();
