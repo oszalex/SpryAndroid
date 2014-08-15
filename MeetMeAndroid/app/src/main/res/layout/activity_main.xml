@@ -13,7 +13,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:id="@+id/textView"
-        android:background="@color/bittersweet_light_red" />
+        android:background="@color/menuBar" />
 
 
 
