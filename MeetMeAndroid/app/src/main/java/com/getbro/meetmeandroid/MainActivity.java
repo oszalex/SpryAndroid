@@ -33,9 +33,6 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getActionBar().setTitle(R.string.actionbar_main);
-
-
         final ListView lv = (ListView) findViewById(R.id.list);
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 

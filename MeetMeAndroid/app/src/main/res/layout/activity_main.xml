@@ -10,10 +10,16 @@
         android:background="@color/menuBar"
         android:id="@+id/menuBar">
 
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/menuBarTopBorder"
+        android:layout_height="7dp"/>
+
+
         <ImageView
             android:layout_width="match_parent"
             android:src="@drawable/spry"
-            android:layout_height="fill_parent"
+            android:layout_height="60dp"
             android:scaleType="centerInside"/>
     </LinearLayout>
 
@@ -54,4 +60,4 @@
         android:onClick="createNewEvent"
         android:layout_alignParentRight="true" />
 
-    </RelativeLayout>
+</RelativeLayout>
