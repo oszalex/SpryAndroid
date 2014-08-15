@@ -24,10 +24,18 @@
     <item name="refreshAnimimation3" type="color">@color/bittersweet_light_red</item>
     <item name="refreshAnimimation4" type="color">@color/bittersweet_dark_red</item>
 
-    <item name="menuBar" type="color">@color/bittersweet_dark_red</item>
-    <item name="menuBarTopBorder" type="color">@color/bittersweet_light_red</item>
+    <item name="menuBar" type="color">@color/wm_light_green</item>
+    <item name="menuBarTopBorder" type="color">@color/wm_dark_green</item>
     <item name="addButton" type="color">@color/orange</item>
 
+
+    <!-- color watermelon -->
+
+    <item name="wm_dark_green" type="color">#36C488</item>
+    <item name="wm_light_green" type="color">#7BE19A</item>
+    <item name="wm_light_orange" type="color">#FFA473</item>
+    <item name="wm_dark_orange" type="color">#FF825C</item>
+    <item name="wm_red" type="color">#EA6044</item>
 
     <!-- color codes -->
 
