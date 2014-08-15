@@ -2,14 +2,12 @@ package com.getbro.meetmeandroid;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import com.getbro.meetmeandroid.API.API;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
 
 import java.util.ArrayList;
 
@@ -185,8 +185,13 @@ public class NewEventActivity extends Activity {
 
         Log.v(TAG, "send event:" + rawEvent.getText().toString());
 
-        MeetMeAPI.createEvent(rawEvent.getText().toString());
-        finish();
+        //MeetMeAPI.createEvent(rawEvent.getText().toString());
+        API.createEvent(this, rawEvent.getText().toString()).setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                finish();
+            }
+        });
     }
 
 
