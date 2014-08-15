@@ -62,6 +62,10 @@ public class AuthFilter implements ContainerRequestFilter
          * FIXME: DEBUG it!
          *
          */
+
+        requestContext.setProperty("username", credentials[0]);
+
+
         if(credentials[0].equals("004369911602033")){
           return;
         }
