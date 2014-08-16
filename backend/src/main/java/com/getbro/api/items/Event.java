@@ -18,10 +18,10 @@ public class Event {
     @XmlElement(required=true)
     private String raw;
     @XmlElement(required=true)
-    private long eventID;
+    private long eventId;
     @XmlElement(required=true)
     private long createdAt;
-    private long creatorID;
+    private long creatorId;
     private boolean isPublic;
     private ArrayList<String> tags = new ArrayList<String>();
     private LinkedList<EventInvitation> invited = new LinkedList<EventInvitation>();
@@ -40,7 +40,7 @@ public class Event {
     public static Event fromString(long creator, String raw) {
         Event e = new Event();
 
-        e.creatorID = creator;
+        e.creatorId = creator;
 
         String[] words = raw.split(" ");
 
@@ -93,18 +93,18 @@ public class Event {
 
         countID++;
         this.raw = raw;
-        this.eventID = countID;
+        this.eventId = countID;
         this.createdAt = System.currentTimeMillis();
-        this.creatorID = (long) 4369911602033L;
+        this.creatorId = (long) 4369911602033L;
     }
 
     public Event(Event event) {
         if (event.getRaw().indexOf("#public") > 0) this.isPublic = true;
         countID++;
         this.raw = event.raw;
-        this.eventID = countID;
+        this.eventId = countID;
         this.createdAt = System.currentTimeMillis();
-        this.creatorID = (long) 4369911602033L;
+        this.creatorId = (long) 4369911602033L;
     }
 
 
@@ -134,11 +134,11 @@ public class Event {
 
     //@XmlElement(name = "id")
     public long getId() {
-        return eventID;
+        return eventId;
     }
 
     public long setCreatorId(long id) {
-        return creatorID = id;
+        return creatorId = id;
     }
 
 
@@ -148,7 +148,7 @@ public class Event {
 
     //@XmlElement(name = "creatorId")
     public long getCreatorId() {
-        return creatorID;
+        return creatorId;
     }
 
     //@XmlElement(name = "invitations")

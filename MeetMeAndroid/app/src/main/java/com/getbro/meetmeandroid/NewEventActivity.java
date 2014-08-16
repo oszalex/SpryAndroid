@@ -66,10 +66,6 @@ public class NewEventActivity extends Activity {
             }
         });
 
-
-
-        getActionBar().setTitle(R.string.actionbar_newevent);
-
         setupSuggest();
     }
 

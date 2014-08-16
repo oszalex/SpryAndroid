@@ -6,20 +6,21 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:background="@color/menuBar"
         android:id="@+id/menuBar">
 
         <LinearLayout
         android:layout_width="match_parent"
         android:background="@color/menuBarTopBorder"
-        android:layout_height="7dp"/>
+        android:layout_height="8dp"/>
 
 
         <ImageView
             android:layout_width="match_parent"
             android:src="@drawable/spry"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="-4dp"
             android:scaleType="centerInside"/>
     </LinearLayout>
 
@@ -49,8 +50,8 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:text="+"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
         android:textSize="40sp"
         android:background="@drawable/ripple"
         android:textColor="@color/white"

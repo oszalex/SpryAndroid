@@ -17,7 +17,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.getbro.meetmeandroid.API.API;
 import com.getbro.meetmeandroid.API.APIEvent;
 import com.getbro.meetmeandroid.API.JSONEvent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONArray;
 
@@ -44,6 +47,7 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
         srl.setOnRefreshListener(this);
 
+
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -58,7 +62,6 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 srl.setEnabled(topRowVerticalPosition >= 0);
             }
         });
-
 
 
         allEvents(lv, srl);

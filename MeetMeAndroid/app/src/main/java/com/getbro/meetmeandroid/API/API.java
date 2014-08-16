@@ -19,7 +19,7 @@ import java.util.List;
  * Created by chris on 11/08/14.
  */
 public class API {
-    final static String basic_url = "http://api.getbro.com/v1";
+    final static String basic_url = "http://api.getbro.com/v3";
     final static String TAG = API.class.toString();
 
     private static Builders.Any.B basicHelper(Context context, String url){
@@ -27,6 +27,8 @@ public class API {
         Builders.Any.B result = Ion.
                 with(context).
                 load(basic_url + url).
+                basicAuthentication("4369911602033", "somepassword").
+                setLogging(TAG, Log.VERBOSE).
                 setHeader("Accept","application/json");
         Log.d(TAG, result.asJsonObject().toString());
 
@@ -37,6 +39,7 @@ public class API {
         Builders.Any.B result = Ion.
                 with(context).
                 load("POST", basic_url + url).
+                basicAuthentication("4369911602033", "somepassword").
                 setHeader("Accept","application/json");
         Log.d(TAG, result.asJsonObject().toString());
 
