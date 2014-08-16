@@ -13,6 +13,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.Collator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,6 +48,15 @@ public class EventController extends ApiStorageWrapper {
             if(eventIsVisible(e, userId))
                 visibleevents.add(e);
         }
+
+
+        Collections.sort(visibleevents, new Comparator<Event>() {
+            @Override
+            public int compare(Event o1, Event o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
         return visibleevents;
     }
 
@@ -123,6 +135,6 @@ public class EventController extends ApiStorageWrapper {
                     return true;
             }
         }
-        return false;
+        return e.getIsPublic();
     }
 }

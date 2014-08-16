@@ -18,7 +18,7 @@ public class EventInvitation {
                            long inviter, InvitationStatus status) {
         this.eventId = eventId;
         this.userID = userID;
-        this.inviterID = inviterID;
+        this.inviterID = inviter;
         this.status = status;
     }
 

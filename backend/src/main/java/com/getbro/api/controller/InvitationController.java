@@ -1,4 +1,4 @@
-package com.getbro.api;
+package com.getbro.api.controller;
 
 import java.util.*;
 import javax.ws.rs.GET;

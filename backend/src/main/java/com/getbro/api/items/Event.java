@@ -14,7 +14,7 @@ import java.text.ParseException;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Event {
+public class Event implements Comparable<Event> {
     @XmlElement(required=true)
     private String raw;
     @XmlElement(required=true)
@@ -35,14 +35,13 @@ public class Event {
 
 
     private Event() {
+        eventId = countID++;
     }
 
     public static Event fromString(long creator, String raw) {
         Event e = new Event();
-
-        e.creatorId = creator;
-
-        String[] words = raw.split(" ");
+        e.setRaw(raw);
+        e.setCreatorId(creator);
 
 		/*
          * search for 24h time definition
@@ -62,49 +61,56 @@ public class Event {
             }
         }
 
+        /*
+         * process tags and special words
+         */
 
+        String[] words = raw.split(" ");
         for (String word : words) {
 
-			/*
-			 * find tags
-			 */
-            if (word.startsWith("#")) {
+			// find tags
+            if (word.startsWith("#"))
                 e.addTag(word.substring(1));
-            }
 
-			/*
-			 * find timeinfo
-			 */
+			 // find timeinfo
             switch (word) {
                 case "tomorrow":
+                case "morgen":
                     e.datetime.add(Calendar.DATE, 1);
+                    break;
+                case "nextweek":
+                    e.datetime.add(Calendar.DATE, 7);
+                    break;
             }
 
-
         }
+
+        if(e.tags.contains("public"))
+            e.isPublic = true;
 
         return e;
     }
 
     public Event(String raw) {
-
         if (raw.indexOf("#public") > 0)
             this.isPublic = true;
 
-        countID++;
         this.raw = raw;
-        this.eventId = countID;
+        this.eventId = countID++;
         this.createdAt = System.currentTimeMillis();
-        this.creatorId = (long) 4369911602033L;
     }
 
+    /**
+     * copy constructor
+     *
+     * @param event
+     */
     public Event(Event event) {
-        if (event.getRaw().indexOf("#public") > 0) this.isPublic = true;
-        countID++;
+        this.isPublic = event.isPublic;
         this.raw = event.raw;
         this.eventId = countID;
-        this.createdAt = System.currentTimeMillis();
-        this.creatorId = (long) 4369911602033L;
+        this.createdAt = event.createdAt;
+        this.creatorId = event.creatorId;
     }
 
 
@@ -114,7 +120,6 @@ public class Event {
     }
 
     public void setRaw(String raw) {
-        System.out.println("Setraw");
         this.raw = raw;
     }
 
@@ -190,5 +195,10 @@ public class Event {
 
     public Calendar getDatetime() {
         return datetime;
+    }
+
+    @Override
+    public int compareTo(Event o) {
+        return this.datetime.compareTo(o.datetime);
     }
 }

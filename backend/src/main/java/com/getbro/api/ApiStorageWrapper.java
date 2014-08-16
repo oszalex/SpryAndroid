@@ -17,16 +17,21 @@ public class ApiStorageWrapper {
             users.put(4369911602033L, new User("Chris", 4369911602033L));
             users.put(436802118976L, new User("Alex", 436802118976L));
 
-            Event x = new Event("me #hunger #essen @vapiano now!");
-            events.put(x.getId(), x);
-            x = new Event("kino heute @apollo 18:00 +chris +diana");
-            events.put(x.getId(), x);
+            Event e;
 
-            x = new Event("rammelrudel morgen @alexgarten #public");
+            e = Event.fromString(4369911602033L, "me #hunger #essen @vapiano now!");
+            events.put(e.getId(), e);
+            e = Event.fromString(4369911602033L, "kino heute @apollo 18:00 +chris +diana");
+            events.put(e.getId(), e);
+            e = Event.fromString(4369911602033L, "some #public event nextweek @home 20:10 +peter");
+            events.put(e.getId(), e);
+            e = Event.fromString(436802118976L, "dieses event sollte chris nicht sehen");
+            events.put(e.getId(), e);
 
+            e = Event.fromString(436802118976L, "rammelrudel tomorrow @alexgarten");
+            e.invite(users.get(4369911602033L), users.get(436802118976L));
 
-            x.invite(users.get(436802118976L),users.get(4369911602033L));
-            events.put(x.getId(), x);
+            events.put(e.getId(), e);
         }
     }
 }
