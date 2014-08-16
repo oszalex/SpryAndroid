@@ -1,5 +1,6 @@
 package com.getbro.api;
 
+import com.getbro.api.items.Event;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

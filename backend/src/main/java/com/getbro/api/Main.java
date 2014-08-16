@@ -9,7 +9,6 @@ import java.net.URI;
 
 /**
  * Main class.
- *
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
@@ -17,13 +16,14 @@ public class Main {
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
+     *
      * @return Grizzly HTTP server.
      */
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.example package
         final ResourceConfig rc = new ResourceConfig().packages("com.getbro.api");
-       // rc.getProperties().put(
+        // rc.getProperties().put(
         //	"com.sun.jersey.spi.container.ContainerRequestFilters",
         //	"com.sun.jersey.api.container.filter.LoggingFilter;com.getbro.api.AuthFilter"
         //);
@@ -34,6 +34,7 @@ public class Main {
 
     /**
      * Main method.
+     *
      * @param args
      * @throws IOException
      */
