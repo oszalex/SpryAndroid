@@ -36,7 +36,7 @@ public class Event implements Comparable<Event> {
     public static int countID = 0;
     private String location = "somewhere";
 
-    private final static Pattern location_pattern = Pattern.compile("#(\\w+)");
+    private final static Pattern location_pattern = Pattern.compile("@(\\w+)");
 
 
     /**
