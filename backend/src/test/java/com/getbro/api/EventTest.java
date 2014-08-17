@@ -36,9 +36,16 @@ public class EventTest extends TestCase
     public void testFromStringTags()
     {
         Event e = Event.fromString(2313213213L, "#hallo #du arsch");
+        System.out.println(e.getTags());
 
         assertTrue( e.getTags().contains("hallo") );
         assertTrue( e.getTags().contains("du") );
+    }
+
+    public void testFromStringTagsNot()
+    {
+        Event e = Event.fromString(2313213213L, "#hallo #du arsch");
+
         assertFalse( e.getTags().contains("arsch") );
     }
 
@@ -52,10 +59,13 @@ public class EventTest extends TestCase
         assertEquals(e.getDay(),  c.get(Calendar.DAY_OF_MONTH));
     }
 
+    /*
+
     public void testFromStringDayTime()
     {
         Event e = Event.fromString(2313213213L, "#hallo #du arsch tomorrow 18:00");
 
         assertEquals(18, e.getDatetime().get(Calendar.HOUR_OF_DAY));
     }
+    */
 }
