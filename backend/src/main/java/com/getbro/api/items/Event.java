@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +38,8 @@ public class Event implements Comparable<Event> {
     private String location = "somewhere";
 
     private final static Pattern location_pattern = Pattern.compile("@(\\w+)");
+    private final static Pattern number_pattern = Pattern.compile("\\+(\\d+)");
+    private final static Logger Log = Logger.getLogger(Event.class.getName());
 
 
     /**
@@ -44,22 +47,6 @@ public class Event implements Comparable<Event> {
      */
     private Event() {
         eventId = countID++;
-    }
-
-
-    /**
-     * copy constructor
-     *
-     * @param event
-     */
-    public Event(Event event) {
-        this.isPublic = event.isPublic;
-        this.raw = event.raw;
-        this.eventId = countID++;
-        this.creatorId = event.creatorId;
-        this.tags = event.tags;
-        this.invited = event.invited;
-        this.datetime = event.datetime;
     }
 
 
@@ -95,6 +82,16 @@ public class Event implements Comparable<Event> {
         Matcher location_matcher = location_pattern.matcher(raw);
         if (location_matcher.find())
             e.location = location_matcher.group(1);
+
+
+        //invite people
+        Matcher people_matcher = number_pattern.matcher(raw);
+        while (people_matcher.find()) {
+            String number = people_matcher.group(1).substring(1);
+            Log.info("new number found: " + number);
+            long user = Long.parseLong(number, 10);
+            e.invite(user, creator);
+        }
 
         if(e.tags.contains("public"))
             e.isPublic = true;

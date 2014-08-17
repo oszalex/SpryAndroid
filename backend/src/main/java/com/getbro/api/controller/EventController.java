@@ -78,22 +78,20 @@ public class EventController extends ApiStorageWrapper {
         return e;
     }
 
+
     /**
      * create new event
      *
-     * @param headers
-     * @param event
+     * @param json
      * @return
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postJsonEvent(@Context HttpHeaders headers, Event event) {
-        Event x = new Event(event);
-        x.setCreatorId(4369911602033L);
-        events.put(x.getId(), x);
+    public Response postJsonEvent(String json) {
+        JSONObject obj = new JSONObject(json);
+        Event e = Event.fromString(obj.getLong("creatorId"), obj.getString("raw"));
 
-        Log.info("Event " + x.getId());
-        return Response.status(200).entity(event).build();
+        return Response.status(200).entity(e).build();
     }
 
     /**
