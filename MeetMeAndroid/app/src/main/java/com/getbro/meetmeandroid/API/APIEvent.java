@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,7 @@ public class APIEvent {
     private int duration;
     private List<String> tags;
     private boolean stared = false;
-    private String location;
+    private String location = "sdsad";
 
     public APIEvent(long creatorID, String raw, Date time, List<String> tags, String location){
         this.creatorID = creatorID;
@@ -74,7 +75,7 @@ public class APIEvent {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
             try {
-                results.add(new APIEvent(i.creatorId, i.raw, sdf.parse(i.time),i.tags, i.location, i.duration));
+                results.add(new APIEvent(i.creatorId, i.raw, sdf.parse(i.time), Arrays.asList(i.tags), i.location, i.duration));
             } catch (ParseException e) {
                 Log.v(TAG, "could not parse timestamp");
             }

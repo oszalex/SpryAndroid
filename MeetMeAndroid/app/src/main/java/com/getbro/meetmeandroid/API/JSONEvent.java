@@ -14,7 +14,7 @@ public class JSONEvent {
     public long eventId;
     public String raw;
     public int duration;
-    public List<String> tags;
+    public String tags[];
     public String location;
 
     @SerializedName("datetime")

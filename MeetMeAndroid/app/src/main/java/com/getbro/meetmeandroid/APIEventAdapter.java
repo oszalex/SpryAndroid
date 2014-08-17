@@ -1,10 +1,5 @@
 package com.getbro.meetmeandroid;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,6 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.getbro.meetmeandroid.API.APIEvent;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chris on 28/07/14.
@@ -50,7 +50,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
      * we are overriding the getView method here - this is what defines how each
      * list item will look.
      */
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         // assign the view we are converting to a local variable
         View v = convertView;
@@ -63,7 +63,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
         }
 
 		/*
-		 * Recall that the variable position is sent in as an argument to this method.
+         * Recall that the variable position is sent in as an argument to this method.
 		 * The variable simply refers to the position of the current object in the list. (The ArrayAdapter
 		 * iterates through the list we sent it)
 		 *
@@ -80,21 +80,20 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             LinearLayout container = (LinearLayout) v.findViewById(R.id.overview);
 
 
-
-            if (creator_tv != null){
+            if (creator_tv != null) {
                 creator_tv.setText("by " + getContactName(context, String.valueOf(e.getCreatorID())));
             }
-            if (raw_tv != null){
-                raw_tv.setText(getInfo(context, e.getRaw()));
+            if (raw_tv != null) {
+                raw_tv.setText(getInfo(context, e));
             }
-            if (time_tv != null){
+            if (time_tv != null) {
                 time_tv.setText(getRelativeTimeSpan(e.getTime()));
             }
-            if (desc_tv != null){
-                desc_tv.setText(getDescription(e));
+            if (desc_tv != null) {
+                desc_tv.setText(getDescription(e.getRaw()));
             }
 
-            if(e.isStared()) {
+            if (e.isStared()) {
                 container.setBackgroundColor(getContext().getResources().getColor(R.color.light_gray_green));
                 time_tv.setText("already started");
 
@@ -118,11 +117,11 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             return null;
         }
         String contactName = null;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
 
-        if(cursor != null && !cursor.isClosed()) {
+        if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
 
@@ -130,35 +129,34 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
     }
 
 
-    public static String getRelativeTimeSpan(Date time){
+    public static String getRelativeTimeSpan(Date time) {
         long current = System.currentTimeMillis();
         long time_milli = time.getTime();
 
-        long min = 1000*60;
-        long h = min*60;
+        long min = 1000 * 60;
+        long h = min * 60;
         long d = h * 24;
-        long w = d*7;
+        long w = d * 7;
 
-        long diff =  Math.abs(current - time_milli);
+        long diff = Math.abs(current - time_milli);
 
         Log.i(TAG, "time difference: " + diff);
 
         //greater than a week
-        if(diff > w)
-            return (diff/w) + "w";
-        else if(diff > d)
-            return (diff/d) + "d";
-        else if(diff > h)
-            return (diff/h) + "h";
-        else if(diff > min)
-            return (diff/min) + "m";
+        if (diff > w)
+            return (diff / w) + "w";
+        else if (diff > d)
+            return (diff / d) + "d";
+        else if (diff > h)
+            return (diff / h) + "h";
+        else if (diff > min)
+            return (diff / min) + "m";
 
         return "just now";
     }
 
 
-
-    public static SpannableStringBuilder colorTags(Context cxt, String text){
+    public static SpannableStringBuilder colorTags(Context cxt, String text) {
         final Pattern hashtag = Pattern.compile("#\\w+");
         final Pattern at = Pattern.compile("(\\s|\\A)@(\\w+)");
         final Pattern name = Pattern.compile("(\\s|\\A)\\+(\\w+)");
@@ -195,49 +193,50 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
     }
 
 
-
-    public static SpannableStringBuilder getInfo(Context cxt, String raw){
+    public static SpannableStringBuilder getInfo(Context cxt, APIEvent e) {
         final SpannableStringBuilder spannable = new SpannableStringBuilder("");
 
-        String[] parts = raw.split(" ");
+
         int pos = 0;
 
-        for(String part: parts){
-            String p = part + " ";
+        for (String tag : e.getTags()) {
+            tag = "#" + tag + " "; //add space and hash
+            spannable.append(tag);
+            pos += tag.length();
+        }
 
-            if(part.startsWith("#")){
-                spannable.append(p);
-               // spannable.setSpan(new ForegroundColorSpan(cxt.getResources().getColor(R.color.gray)), pos, pos + part.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                pos += p.length();
-            }
-            if(part.startsWith("@")){
-                spannable.append(p);
-                spannable.setSpan(new ForegroundColorSpan(cxt.getResources().getColor(R.color.orange)), pos, pos + part.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                pos += p.length();
-            }
+        String location = "@" + e.getLocation();
 
+        if (!location.equals("@somewhere")) {
+            spannable.append(location);
+
+            spannable.setSpan(
+                    new ForegroundColorSpan(cxt.getResources().getColor(R.color.orange)),
+                    pos,
+                    pos + location.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         return spannable;
     }
 
 
-    public static String getDescription(String raw){
+    public static String getDescription(String raw) {
         String[] parts = raw.split(" ");
 
         StringBuilder description = new StringBuilder();
 
-        for(String part: parts){
+        for (String part : parts) {
 
-            if(part.length() < 2)
+            if (part.length() < 2)
                 continue;
-            if(part.startsWith("#"))
+            if (part.startsWith("#"))
                 continue;
-            if(part.startsWith("+"))
+            if (part.startsWith("+"))
                 continue;
-            if(part.startsWith("@"))
+            if (part.startsWith("@"))
                 continue;
-            if(Character.isDigit(part.charAt(0)))
+            if (Character.isDigit(part.charAt(0)))
                 continue;
 
             description.append(part.replaceAll("[^a-zA-Z]+", "") + " ");
@@ -245,21 +244,4 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
         return description.toString();
     }
-
-
-    public static String getDescription(APIEvent e){
-        StringBuilder description = new StringBuilder();
-
-        // add Tags
-        for(String t : e.getTags())
-            description.append("#" + t);
-
-        // add location
-        description.append("@" + e.getLocation());
-
-
-        return description.toString();
-    }
-
-
 }
