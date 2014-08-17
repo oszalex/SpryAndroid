@@ -91,6 +91,8 @@ public class EventController extends ApiStorageWrapper {
         JSONObject obj = new JSONObject(json);
         Event e = Event.fromString(obj.getLong("creatorId"), obj.getString("raw"));
 
+        events.put(e.getId(), e);
+
         return Response.status(200).entity(e).build();
     }
 
