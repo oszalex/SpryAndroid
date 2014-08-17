@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by chris on 28/07/14.
@@ -17,11 +18,27 @@ public class APIEvent {
     private long creatorID;
     private String raw;
     private Date time;
+    private int duration;
+    private List<String> tags;
+    private boolean stared = false;
+    private String location;
 
-    public APIEvent(long creatorID, String raw, Date time){
+    public APIEvent(long creatorID, String raw, Date time, List<String> tags, String location){
         this.creatorID = creatorID;
         this.raw = raw;
         this.time = time;
+        this.duration = 120;
+        this.tags = tags;
+        this.location = location;
+    }
+
+    public APIEvent(long creatorID, String raw, Date time, List<String> tags, String location, int duration ){
+        this.creatorID = creatorID;
+        this.raw = raw;
+        this.time = time;
+        this.duration = duration;
+        this.tags = tags;
+        this.location = location;
     }
 
     public long getCreatorID() {
@@ -52,19 +69,47 @@ public class APIEvent {
         ArrayList<APIEvent> results = new ArrayList<APIEvent>();
 
         for(JSONEvent i : items){
-            //results.add(new APIEvent(i.creatorId,i.raw,new java.util.Date(i.time)));
-            //results.add(new APIEvent(i.creatorId,i.raw, i.time.getTime()));
 
             Calendar cal = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+
             try {
-                results.add(new APIEvent(i.creatorId,i.raw, sdf.parse(i.time)));
+                results.add(new APIEvent(i.creatorId, i.raw, sdf.parse(i.time),i.tags, i.location, i.duration));
             } catch (ParseException e) {
-                Log.v(TAG, "could not parse date");
+                Log.v(TAG, "could not parse timestamp");
             }
 
         }
 
         return results;
+    }
+
+    @Override
+    public String toString() {
+        return raw;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setStared(boolean stared) {
+        this.stared = stared;
+    }
+
+    public boolean isStared() {
+        return stared;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.getbro.meetmeandroid.API.APIEvent;
@@ -76,6 +77,8 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             TextView raw_tv = (TextView) v.findViewById(R.id.raw);
             TextView time_tv = (TextView) v.findViewById(R.id.time);
             TextView desc_tv = (TextView) v.findViewById(R.id.desc);
+            LinearLayout container = (LinearLayout) v.findViewById(R.id.overview);
+
 
 
             if (creator_tv != null){
@@ -87,8 +90,14 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
             if (time_tv != null){
                 time_tv.setText(getRelativeTimeSpan(e.getTime()));
             }
-            if (time_tv != null){
-                desc_tv.setText(getDescription(e.getRaw()));
+            if (desc_tv != null){
+                desc_tv.setText(getDescription(e));
+            }
+
+            if(e.isStared()) {
+                container.setBackgroundColor(getContext().getResources().getColor(R.color.light_gray_green));
+                time_tv.setText("already started");
+
             }
 
         }
@@ -130,7 +139,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
         long d = h * 24;
         long w = d*7;
 
-        long diff =  current - time_milli;
+        long diff =  Math.abs(current - time_milli);
 
         Log.i(TAG, "time difference: " + diff);
 
@@ -233,6 +242,21 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
 
             description.append(part.replaceAll("[^a-zA-Z]+", "") + " ");
         }
+
+        return description.toString();
+    }
+
+
+    public static String getDescription(APIEvent e){
+        StringBuilder description = new StringBuilder();
+
+        // add Tags
+        for(String t : e.getTags())
+            description.append("#" + t);
+
+        // add location
+        description.append("@" + e.getLocation());
+
 
         return description.toString();
     }

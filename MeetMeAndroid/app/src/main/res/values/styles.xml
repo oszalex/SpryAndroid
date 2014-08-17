@@ -54,6 +54,7 @@
     <item name="darkorange" type="color">#FFFF8800</item>
     <item name="darkred" type="color">#FFCC0000</item>
     <item name="white" type="color">#ffffff</item>
+    <item name="light_gray_green" type="color">#E8FFE7</item>
 
     <item name="ultralightgray" type="color">#efefef</item>
 

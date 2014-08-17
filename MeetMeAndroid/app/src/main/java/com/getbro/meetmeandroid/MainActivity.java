@@ -25,6 +25,8 @@ import com.koushikdutta.ion.Ion;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 //import android.graphics.Outline;
 
@@ -65,19 +67,6 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
 
         allEvents(lv, srl);
-
-        /*
-        Button fab = (Button) findViewById(R.id.fabbutton);
-
-        Outline mOutlineCircle;
-        int shapeSize = getResources().getDimensionPixelSize(R.dimen.shape_size);
-        mOutlineCircle = new Outline();
-        mOutlineCircle.setRoundRect(0, 0, shapeSize, shapeSize, shapeSize / 2);
-
-        fab.setOutline(mOutlineCircle);
-        fab.setClipToOutline(true);
-        */
-
     }
 
     /**
@@ -129,8 +118,31 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     return;
                 }
 
+                ArrayList<APIEvent> events = APIEvent.fromJSONEvent(result);
 
-                APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, APIEvent.fromJSONEvent(result));
+                Iterator<APIEvent> i = events.iterator();
+
+                //filter all 'old' events from the past
+                while (i.hasNext()){
+                    APIEvent event = i.next();
+
+                    //FIXME: event.getDuration() instead of fixed
+                    Log.v(TAG, event.getTime().toString() + " ---");
+                    if(event.getTime().getTime() + 120 * 60000 < System.currentTimeMillis()) {
+                        Log.v(TAG, "remove element " + event.toString() + " because it's already old");
+                        i.remove();
+                    }
+
+                    if(event.getTime().getTime() < System.currentTimeMillis()) {
+                        Log.v(TAG, "event already starded " + event.toString());
+                        event.setStared(true);
+                    }
+                }
+
+                Log.i(TAG, "show " + events.size() + " events");
+
+
+                APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, events);
                 lv.setAdapter(m_adapter);
 
                 srl.setRefreshing(false);
