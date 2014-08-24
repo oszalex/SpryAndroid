@@ -1,39 +1,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="com.getbro.meetmeandroid.NewEventActivity"
-    android:background="@color/new_event_background">
+    android:background="@color/ultralightgray">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:background="@color/menuBarTopBorder"
+        android:id="@+id/menuBar">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:hint="This is just an example #fancy #party @home tomorrow 20:00!"
-        android:id="@+id/rawevent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/gray" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/menuBarTopBorder"
+            android:layout_height="8dp"/>
 
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rawevent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_below="@id/menuBar"
+        android:background="@color/menuBarTopBorder"
         android:id="@+id/relativeLayout">
-
 
 
         <Button
@@ -55,12 +51,23 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <GridView
+    <com.getbro.meetmeandroid.LabelLayout
         android:numColumns="auto_fit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/suggestionGrid"
+        android:id="@+id/auswahl"
         android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/wm_light_green"
+        android:clickable="true" />
+
+    <com.getbro.meetmeandroid.LabelLayout
+        android:numColumns="auto_fit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tagged_layout"
+        android:layout_below="@+id/auswahl"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:clickable="true" />

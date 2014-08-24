@@ -3,23 +3,20 @@ package com.getbro.meetmeandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.getbro.meetmeandroid.API.API;
+import com.getbro.meetmeandroid.suggestion.Suggestion;
+import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
@@ -28,11 +25,25 @@ import java.util.ArrayList;
 public class NewEventActivity extends Activity {
     private final String TAG = Activity.class.toString();
 
-    private ArrayList<Suggestion> s = new ArrayList<Suggestion>();
-    private SuggestionAdapter m_adapter;
+    //private SuggestionAdapter m_adapter;
     private EditText text;
+    private ArrayList<String> tags = new ArrayList<String>();
 
     private int state = 0;
+
+    private void addLabel(Suggestion suggestion){
+        final LabelLayout auswahlLayout = (LabelLayout)findViewById(R.id.auswahl);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View customView = inflater.inflate(R.layout.suggestion_element, null);
+
+        // load children and setup properties
+        TextView tv = (TextView) customView.findViewById(R.id.suggestion);
+        tv.setText(suggestion.getValue());
+        tv.setBackground(getResources().getDrawable(suggestion.getDrawableId()));
+        // add it to the layout
+        auswahlLayout.addView(customView);
+    }
 
 
     @Override
@@ -40,64 +51,111 @@ public class NewEventActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
 
-        text = (EditText) findViewById(R.id.rawevent);
+        drawSuggestions(getSuggestions(new ArrayList<Suggestion>()));
+    }
 
 
-        text.setOnKeyListener(new View.OnKeyListener() {
+    public void drawSuggestions(ArrayList<Suggestion> suggestions){
+        final LabelLayout taggedLayout = (LabelLayout)findViewById(R.id.tagged_layout);
 
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    //remove last word if suggestion
+        // remove all if there are any. might not be useful here!
+        taggedLayout.removeAllViews();
 
-                    Editable old_str = text.getText();
-                    BackgroundColorSpan[] old_spans = old_str.getSpans(0, old_str.length(), BackgroundColorSpan.class);
+        // your data. not necessarily strings...
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (Suggestion sug : suggestions) {
+            // this way you can create custom view
+            View customView = inflater.inflate(R.layout.suggestion_element, null);
+            // setup the listeners
+            setupListeners(customView);
 
-                    /*
-                    if(old_spans.length>0){
+            // load children and setup properties
+            TextView tv = (TextView) customView.findViewById(R.id.suggestion);
+            tv.setText(sug.getValue());
+            tv.setBackground(getResources().getDrawable(sug.getDrawableId()));
+            // add it to the layout
+            taggedLayout.addView(customView);
 
-                        Log.v("NEWEVENTAC", old_spans.length + );
-                        if(old_str.getSpanEnd(old_spans[old_spans.length - 1]) == old_str.length()){
-                            text.setText(old_str.toString().substring(0, old_str.toString().lastIndexOf(" ")));
-                        }
-                    }*/
+            //attach object
+            tv.setTag(sug);
+
+            // must set the margin manually! the one of the xml in the root not is not considered!
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) customView.getLayoutParams(); float dpi = getResources().getDisplayMetrics().density;
+            lp.bottomMargin = lp.topMargin = lp.leftMargin = lp.rightMargin = (int)(5 * dpi);
+        }
+    }
+
+
+    /**
+     * helper method to set label button click listener
+     *
+     * @param view
+     */
+    private void setupListeners(final View view) {
+        final LabelLayout taggedLayout = (LabelLayout)findViewById(R.id.tagged_layout);
+        /*
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                taggedLayout.removeView(view);
+                return true;
+            }
+        });*/
+        view.setOnClickListener(new View.OnClickListener() {
+
+            //boolean green = false;
+
+            @Override
+            public void onClick(View v) {
+                taggedLayout.removeView(view);
+
+                TextView tv  = (TextView) view.findViewById(R.id.suggestion);
+
+                addLabel(Suggestion.fromView(tv));
+                tags.add(tv.getText().toString());
+
+                /*
+                TextView tv  = (TextView) view.findViewById(R.id.suggestion);
+
+                if (green) {
+                    //view.setBackgroundColor(0xff449933);
+                    tv.setBackground(getResources().getDrawable(R.drawable.tag_label));
+                } else {
+                    //view.setBackgroundColor(0xff994433);
+                    tv.setBackground(getResources().getDrawable(R.drawable.tag_label));
                 }
-                return false;
+                green = !green;*/
             }
         });
-
-        setupSuggest();
     }
 
 
 
-    private ArrayList<Suggestion> updateSuggestions(){
-        //TODO: optimize
-        s.removeAll(s);
 
-        if(state == 0) {
-            s.add(new Suggestion("tomorrow", R.drawable.time_label));
-            s.add(new Suggestion("now", R.drawable.time_label));
-            s.add(new Suggestion("monday", R.drawable.time_label));
-            s.add(new Suggestion("tuesday", R.drawable.time_label));
-            s.add(new Suggestion("after work", R.drawable.time_label));
-            s.add(new Suggestion("today", R.drawable.time_label));
-            s.add(new Suggestion("never", R.drawable.time_label));
-        } else if(state == 1) {
-            s.addAll(getContactSuggestions(getApplicationContext()));
-        } else if (state == 2){
-            s.add(new Suggestion("#sometag", R.drawable.tag_label));
-            s.add(new Suggestion("#hash", R.drawable.tag_label));
-            s.add(new Suggestion("#nice", R.drawable.tag_label));
-        }
+    private ArrayList<Suggestion> getSuggestions(ArrayList<Suggestion> context){
+        ArrayList<Suggestion> s = new ArrayList<Suggestion>();
 
-        m_adapter.notifyDataSetChanged();
+        //add datetime
+        s.add(new Suggestion("tomorrow", SuggestionTypes.DATETIME));
+        s.add(new Suggestion("now", SuggestionTypes.DATETIME));
+        s.add(new Suggestion("monday", SuggestionTypes.DATETIME));
+        s.add(new Suggestion("tuesday", SuggestionTypes.DATETIME));
+        s.add(new Suggestion("after work", SuggestionTypes.DATETIME));
+        s.add(new Suggestion("today", SuggestionTypes.DATETIME));
+        s.add(new Suggestion("never", SuggestionTypes.DATETIME));
 
-        state++;
+        //add friends
+        s.addAll(getContactSuggestions(getApplicationContext()).subList(0, 3) );
+
+        //add tags
+        s.add(new Suggestion("#sometag", SuggestionTypes.TAG));
+        s.add(new Suggestion("#hash", SuggestionTypes.TAG));
+        s.add(new Suggestion("#nice", SuggestionTypes.TAG));
 
         return s;
     }
 
+    /*
     private void setupSuggest(){
         int resource;
         final GridView grid = (GridView) findViewById(R.id.suggestionGrid);
@@ -147,7 +205,7 @@ public class NewEventActivity extends Activity {
         m_adapter = new SuggestionAdapter(NewEventActivity.this, R.layout.suggestion_element, s);
         updateSuggestions();
         grid.setAdapter(m_adapter);
-    }
+    }*/
 
 
     @Override
@@ -177,17 +235,22 @@ public class NewEventActivity extends Activity {
 
 
     public void createEvent(View v){
-        EditText rawEvent = (EditText) findViewById(R.id.rawevent);
+        final LabelLayout auswahlLayout = (LabelLayout)findViewById(R.id.auswahl);
 
-        Log.v(TAG, "send event:" + rawEvent.getText().toString());
+        String rawtext = Suggestion.listToString(Suggestion.fromView(auswahlLayout));
+
+
+
+        Log.v(TAG, "send event:" + rawtext);
 
         //MeetMeAPI.createEvent(rawEvent.getText().toString());
-        API.createEvent(this, rawEvent.getText().toString()).setCallback(new FutureCallback<JsonObject>() {
+        /*
+        API.createEvent(this, rawtext).setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 finish();
             }
-        });
+        });*/
     }
 
 
@@ -203,7 +266,7 @@ public class NewEventActivity extends Activity {
 
         while (cursor.moveToNext()){
             contactName  = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            contacts.add(new Suggestion("+" + contactName, R.drawable.name_label));
+            contacts.add(new Suggestion("+" + contactName, SuggestionTypes.PERSON));
         }
 
         return contacts;

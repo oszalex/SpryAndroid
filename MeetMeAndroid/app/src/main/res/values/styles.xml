@@ -63,6 +63,6 @@
 
 
 
-    <item name="new_event_background" type="color">@color/ultralightgray</item>
+    <item name="new_event_background" type="color">@color/lightgray</item>
 
 </resources>

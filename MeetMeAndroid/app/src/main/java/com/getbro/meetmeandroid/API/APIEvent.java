@@ -22,7 +22,7 @@ public class APIEvent {
     private int duration;
     private List<String> tags;
     private boolean stared = false;
-    private String location = "sdsad";
+    private String location;
 
     public APIEvent(long creatorID, String raw, Date time, List<String> tags, String location){
         this.creatorID = creatorID;
