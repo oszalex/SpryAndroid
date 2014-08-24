@@ -87,9 +87,17 @@ public class EventController extends ApiStorageWrapper {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postJsonEvent(String json) {
+    public Response postJsonEvent(@Context HttpServletRequest request, String json) {
         JSONObject obj = new JSONObject(json);
         Event e = Event.fromString(obj.getLong("creatorId"), obj.getString("raw"));
+
+
+
+        try {
+            Long user_id = Long.parseLong(request.getParameter("username"), 10);
+        } catch (Exception exception){
+            System.out.println("wtf holy: " + exception.toString());
+        }
 
         events.put(e.getId(), e);
 

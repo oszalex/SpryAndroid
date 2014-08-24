@@ -50,6 +50,7 @@ public class AuthFilter implements ContainerRequestFilter {
         Log.info("user " + phone_username.toString() + " successful authenticated!");
         requestContext.setProperty("username", phone_username);
 
+
         /*
          * FIXME: DEBUG it!
          *
