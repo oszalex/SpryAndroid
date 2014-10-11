@@ -19,7 +19,7 @@ import java.util.List;
  * Created by chris on 11/08/14.
  */
 public class API {
-    final static String basic_url = "http://api.getbro.com/v3";
+    final static String basic_url = "http://spryv3.gattr.com";
     final static String TAG = API.class.toString();
 
     private static Builders.Any.B basicHelper(Context context, String url){
