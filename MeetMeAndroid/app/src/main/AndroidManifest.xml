@@ -27,6 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.getbro.meetmeandroid.MainActivity" />
         </activity>
+        <activity
+            android:name=".BanalAddEventActivity"
+            android:label="@string/title_activity_banal_add_event" >
+        </activity>
     </application>
 
 </manifest>

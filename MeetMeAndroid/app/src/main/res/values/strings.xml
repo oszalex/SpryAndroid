@@ -8,5 +8,6 @@
     <string name="menuitem_refresh">reload</string>
     <string name="actionbar_newevent">create event</string>
     <string name="actionbar_main"></string>
+    <string name="title_activity_banal_add_event">BanalAddEvent</string>
 
 </resources>

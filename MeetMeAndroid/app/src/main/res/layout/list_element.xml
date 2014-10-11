@@ -23,7 +23,7 @@
             android:textSize="22sp"/>
 
         <TextView
-            android:id="@+id/raw"
+            android:id="@+id/rawPost"
             android:layout_below="@+id/desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:textColor="#acacac"
         android:textSize="16sp"
         android:text="by Christian Hotz-Behofsits"
-        android:layout_below="@+id/raw"
+        android:layout_below="@+id/rawPost"
         android:textStyle="italic"/>
 
 

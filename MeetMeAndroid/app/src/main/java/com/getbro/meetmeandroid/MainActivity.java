@@ -156,7 +156,7 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
 
     public void createNewEvent(View v){
-        Intent myIntent = new Intent(MainActivity.this, NewEventActivity.class);
+        Intent myIntent = new Intent(MainActivity.this, BanalAddEventActivity.class);
         MainActivity.this.startActivity(myIntent);
     }
 

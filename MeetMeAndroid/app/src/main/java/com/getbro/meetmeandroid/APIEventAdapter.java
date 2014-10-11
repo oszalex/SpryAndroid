@@ -74,7 +74,7 @@ public class APIEventAdapter extends ArrayAdapter<APIEvent> {
         if (e != null) {
 
             TextView creator_tv = (TextView) v.findViewById(R.id.creator);
-            TextView raw_tv = (TextView) v.findViewById(R.id.raw);
+            TextView raw_tv = (TextView) v.findViewById(R.id.rawPost);
             TextView time_tv = (TextView) v.findViewById(R.id.time);
             TextView desc_tv = (TextView) v.findViewById(R.id.desc);
             LinearLayout container = (LinearLayout) v.findViewById(R.id.overview);
