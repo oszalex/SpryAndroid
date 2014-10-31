@@ -1,11 +1,10 @@
-bro
+Event App
 ===
 
 Dear C0der, 
 
 welcome to our Codebase! We have the following folders:
 
-> `andorid` includes the android app  
+> `BackEndTest` small android app from alex to test backend 
 > `ressources` logos, etc.  
-> `www` official website  
-> `server` application backend (API)  
+> `MeetMeAndroid` latest application but does not work on older devices
