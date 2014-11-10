@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:background="@color/menuBar"
+        android:id="@+id/menuBar">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/menuBarTopBorder"
+        android:layout_height="8dp"/>
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/spry"
+            android:layout_height="70dp"
+            android:layout_marginTop="-4dp"
+            android:scaleType="centerInside"/>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menuBar">
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:text="+"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:textSize="40sp"
+        android:background="@drawable/action_button_primary"
+        android:textColor="@color/white"
+        android:id="@+id/fabbutton"
+        android:fontFamily="sans-serif-light"
+        android:layout_gravity="right|bottom"
+        android:onClick="createNewEvent"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

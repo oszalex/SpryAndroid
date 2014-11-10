@@ -1,0 +1,72 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/menuBarTopBorder</item>
+        <item name="android:height">7dp</item>
+        <item name="android:icon">@android:color/transparent</item>
+    </style>
+
+
+    <!-- style sheet -->
+
+    <item name="refreshAnimimation1" type="color">@color/orange</item>
+    <item name="refreshAnimimation2" type="color">@color/wm_red</item>
+    <item name="refreshAnimimation3" type="color">@color/bittersweet_light_red</item>
+    <item name="refreshAnimimation4" type="color">@color/bittersweet_dark_red</item>
+
+    <item name="login_background" type="color">@color/wm_light_green</item>
+    <item name="login_foreground_transparent" type="color">#ddffffff</item>
+
+    <item name="menuBar" type="color">@color/wm_light_green</item>
+    <item name="menuBarTopBorder" type="color">@color/wm_dark_green</item>
+    <item name="addButton" type="color">@color/orange</item>
+    <item name="add_button_pressed" type="color">@color/orange</item>
+
+
+    <!-- color watermelon -->
+
+    <item name="wm_dark_green" type="color">#36C488</item>
+    <item name="wm_light_green" type="color">#7BE19A</item>
+    <item name="wm_light_orange" type="color">#FFA473</item>
+    <item name="wm_dark_orange" type="color">#FF825C</item>
+    <item name="wm_red" type="color">#EA6044</item>
+
+    <!-- color codes -->
+
+    <item name="gray" type="color">#333</item>
+    <item name="lightgray" type="color">#666</item>
+    <item name="lightergray" type="color">#999</item>
+    <item name="light_blue" type="color">#03a9f4</item>
+    <item name="blue" type="color">#FF33B5E5</item>
+    <item name="purple" type="color">#FFAA66CC</item>
+    <item name="green" type="color">#FF99CC00</item>
+    <item name="orange" type="color">#FFFFBB33</item>
+    <item name="red" type="color">#FFFF4444</item>
+    <item name="darkblue" type="color">#FF0099CC</item>
+    <item name="darkpurple" type="color">#FF9933CC</item>
+    <item name="darkgreen" type="color">#FF669900</item>
+    <item name="darkorange" type="color">#FFFF8800</item>
+    <item name="darkred" type="color">#FFCC0000</item>
+    <item name="white" type="color">#ffffff</item>
+    <item name="light_gray_green" type="color">#E8FFE7</item>
+
+    <item name="ultralightgray" type="color">#efefef</item>
+
+    <item name="bittersweet_light_red" type="color">#fc6e51</item>
+    <item name="bittersweet_dark_red" type="color">#e9573f</item>
+
+
+
+    <item name="new_event_background" type="color">@color/lightgray</item>
+
+</resources>
