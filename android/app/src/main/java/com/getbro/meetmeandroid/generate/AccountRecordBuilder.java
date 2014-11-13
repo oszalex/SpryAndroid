@@ -21,9 +21,9 @@ package com.getbro.meetmeandroid.generate;
 import at.pasra.record.RecordBuilder;
 import android.database.sqlite.SQLiteDatabase;
 
-public class SettingsRecordBuilder extends RecordBuilder<Account>{
-    public SettingsRecordBuilder(SQLiteDatabase db){
-        super("settings", new String[] { "number", "secret", "_id" }, db);
+public class AccountRecordBuilder extends RecordBuilder<Account>{
+    public AccountRecordBuilder(SQLiteDatabase db){
+        super("accounts", new String[] { "number", "secret", "_id" }, db);
     }
     @Override
     public java.util.List<Account> all(android.database.Cursor c){

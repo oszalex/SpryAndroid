@@ -17,8 +17,8 @@
  */
 package com.getbro.meetmeandroid.generate;
 
-public class Settings extends AbstractSettings {
-    public Settings(){
+public class Account extends AbstractAccount {
+    public Account(){
         super(null);
     }
     

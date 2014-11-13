@@ -14,6 +14,7 @@ public abstract class RemoteState implements RemoteCallback {
 
     public RemoteState(AppCtx ctx) {
         context = ctx;
+        app = context.getApplication();
     }
 
     public abstract RemoteRequest invoke();

@@ -20,12 +20,12 @@ package com.getbro.meetmeandroid.generate;
 
 import at.pasra.record.RecordBuilder;
 
-public class AbstractSettings{
+public class AbstractAccount{
     protected java.lang.String mNumber;
     protected java.lang.String mSecret;
     protected java.lang.Long mId;
     
-    public AbstractSettings(java.lang.Long id){
+    public AbstractAccount(java.lang.Long id){
         this.mId = id;
         this.mNumber = "";
         this.mSecret = "";
@@ -37,8 +37,8 @@ public class AbstractSettings{
     public void setSecret(java.lang.String value) { mSecret = value; }
     public java.lang.Long getId() { return mId; }
     public void setId(java.lang.Long value) { mId = value; }
-    public static Settings fromCursor(android.database.Cursor cursor){
-        Settings record = new Settings();
+    public static Account fromCursor(android.database.Cursor cursor){
+        Account record = new Account();
         record.setNumber(cursor.getString(cursor.getColumnIndex("number")));
         record.setSecret(cursor.getString(cursor.getColumnIndex("secret")));
         record.setId(cursor.getLong(cursor.getColumnIndex("_id")));

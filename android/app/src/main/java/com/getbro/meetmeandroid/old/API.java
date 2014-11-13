@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid.API;
+package com.getbro.meetmeandroid.old;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,10 +9,6 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.builder.Builders;
 import com.koushikdutta.ion.future.ResponseFuture;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

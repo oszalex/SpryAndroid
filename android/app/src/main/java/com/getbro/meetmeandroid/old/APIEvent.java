@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid.API;
+package com.getbro.meetmeandroid.old;
 
 import android.util.Log;
 
@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by chris on 28/07/14.

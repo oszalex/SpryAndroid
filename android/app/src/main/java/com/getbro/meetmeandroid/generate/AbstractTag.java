@@ -19,28 +19,37 @@
 package com.getbro.meetmeandroid.generate;
 
 import at.pasra.record.RecordBuilder;
-import android.database.sqlite.SQLiteDatabase;
 
-public class SettingsRecordBuilder extends RecordBuilder<Account>{
-    public SettingsRecordBuilder(SQLiteDatabase db){
-        super("settings", new String[] { "number", "secret", "_id" }, db);
+public class AbstractTag{
+    protected java.lang.String mText;
+    protected java.lang.Long mEventId;
+    protected java.lang.Long mId;
+    
+    public AbstractTag(java.lang.Long id){
+        this.mId = id;
+        this.mText = "";
+        this.mEventId = new Long(0L);
     }
-    @Override
-    public java.util.List<Account> all(android.database.Cursor c){
-        java.util.List<Account> list = new java.util.ArrayList<Account>();
-        while (c.moveToNext()){
-            list.add(Account.fromCursor(c));
-        }
-        return list;
+    
+    public java.lang.String getText() { return mText; }
+    public void setText(java.lang.String value) { mText = value; }
+    public java.lang.Long getEventId() { return mEventId; }
+    public void setEventId(java.lang.Long value) { mEventId = value; }
+    public java.lang.Long getId() { return mId; }
+    public void setId(java.lang.Long value) { mId = value; }
+    public Event loadEvent(LocalSession session){
+        return session.findEvent(this.getId());
     }
-    @Override
-    public Account first(android.database.Cursor c){
-        if (c.moveToFirst()){
-            Account record = Account.fromCursor(c);
-            c.close();
-            return record;
-        }
-        c.close();
-        return null;
+    public static Tag of(Event obj0){
+        Tag obj = new Tag();
+        obj.setEventId(obj0.getId());
+        return obj;
+    }
+    public static Tag fromCursor(android.database.Cursor cursor){
+        Tag record = new Tag();
+        record.setText(cursor.getString(cursor.getColumnIndex("text")));
+        record.setEventId(cursor.getLong(cursor.getColumnIndex("event_id")));
+        record.setId(cursor.getLong(cursor.getColumnIndex("_id")));
+        return record;
     }
 }

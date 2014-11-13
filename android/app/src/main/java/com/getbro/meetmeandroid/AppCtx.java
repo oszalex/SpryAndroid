@@ -1,8 +1,6 @@
 package com.getbro.meetmeandroid;
 
-import android.content.SharedPreferences;
-
-import com.getbro.meetmeandroid.generate.Settings;
+import com.getbro.meetmeandroid.generate.Account;
 import com.getbro.meetmeandroid.remote.RemoteRequest;
 import com.getbro.meetmeandroid.remote.RemoteState;
 
@@ -18,16 +16,16 @@ public class AppCtx {
 
     private final HttpHost host;
     private HttpClient client;
-    private MeetMeApp app;
+    private MeetMeApp application;
 
     public AppCtx(MeetMeApp app) {
-        this.app = app;
+        this.application = app;
         client = new DefaultHttpClient();
         host = new HttpHost("api.gospry.com", 8080, "http");
     }
 
     public boolean isAuthenticated() {
-        Settings settings = app.getSession().querySettings().first();
+        Account settings = application.getSession().queryAccounts().first();
         return settings != null && !"".equals(settings.getNumber());
     }
 
@@ -44,5 +42,9 @@ public class AppCtx {
 
     public HttpClient getClient() {
         return client;
+    }
+
+    public MeetMeApp getApplication() {
+        return application;
     }
 }

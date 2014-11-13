@@ -11,9 +11,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.getbro.meetmeandroid.MainActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".EventActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,10 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.getbro.meetmeandroid.BanalAddEventActivity"
-            android:label="@string/title_activity_banal_add_event" >
-        </activity>
-        <activity
+            android:theme="@style/AppThemeNoActionBar"
             android:name="com.getbro.meetmeandroid.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateHidden" >

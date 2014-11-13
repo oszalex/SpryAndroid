@@ -1,7 +1,9 @@
 package com.getbro.meetmeandroid;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,24 +16,29 @@ import android.widget.Toast;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 
-import com.getbro.meetmeandroid.API.API;
-import com.getbro.meetmeandroid.API.APIEvent;
-import com.getbro.meetmeandroid.API.JSONEvent;
+import com.getbro.meetmeandroid.adapter.EventAdapter;
+import com.getbro.meetmeandroid.generate.LocalSession;
+import com.getbro.meetmeandroid.old.API;
+import com.getbro.meetmeandroid.old.APIEvent;
+import com.getbro.meetmeandroid.old.BanalAddEventActivity;
+import com.getbro.meetmeandroid.old.JSONEvent;
+import com.getbro.meetmeandroid.touch.SwipeDismissListViewTouchListener;
+import com.getbro.meetmeandroid.util.C;
 import com.koushikdutta.async.future.FutureCallback;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
-    private final static String TAG = MainActivity.class.toString();
+public class EventActivity extends ListActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private final static String TAG = EventActivity.class.toString();
+    private EventAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ListView lv = (ListView) findViewById(R.id.list);
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
         srl.setColorSchemeColors(
@@ -42,8 +49,7 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
         srl.setOnRefreshListener(this);
 
-
-        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -52,24 +58,55 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int topRowVerticalPosition =
-                        (lv == null || lv.getChildCount() == 0) ?
-                                0 : lv.getChildAt(0).getTop();
+                        (getListView() == null || getListView().getChildCount() == 0) ?
+                                0 : getListView().getChildAt(0).getTop();
                 srl.setEnabled(topRowVerticalPosition >= 0);
             }
         });
 
+        MeetMeApp app = (MeetMeApp)getApplication();
+        LocalSession session = app.getSession();
+        if (checkAuth()) {
+            // authed -> reload
+            Cursor cursor = session.queryEvents().cursor();
+            adapter = new EventAdapter(EventActivity.this, cursor, false);
+            getListView().setAdapter(adapter);
+        }
 
-        //allEvents(lv, srl);
+        SwipeDismissListViewTouchListener listener = new SwipeDismissListViewTouchListener(getListView(), new SwipeDismissListViewTouchListener.DismissCallbacks() {
+            @Override
+            public boolean canDismiss(int position) {
+                return true;
+            }
 
-        checkAuth();
+            @Override
+            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+
+            }
+
+            @Override
+            public void onSwipeLeft(ListView listView, int[] reverseSortedPositions) {
+                Toast.makeText(EventActivity.this, "DECLINE", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onSwipeRight(ListView listView, int[] reverseSortedPositions) {
+                Toast.makeText(EventActivity.this, "ACCEPT", Toast.LENGTH_LONG).show();
+
+            }
+        });
+        getListView().setOnTouchListener(listener);
+        getListView().setOnScrollListener(listener.makeScrollListener());
     }
 
-    private void checkAuth() {
+    private boolean checkAuth() {
         MeetMeApp app = (MeetMeApp)getApplication();
         if (!app.getCtx().isAuthenticated()) {
             Intent it = new Intent(this, LoginActivity.class);
             startActivityForResult(it, C.REQ_LOGIN);
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -110,75 +147,13 @@ public class MainActivity extends Activity implements SwipeRefreshLayout.OnRefre
         return super.onOptionsItemSelected(item);
     }
 
-
-    /* auszüge aus dem Backendtest */
-
     public void allEvents() {
-        final ListView lv = (ListView) findViewById(R.id.list);
+        final ListView lv = (ListView) findViewById(android.R.id.list);
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
         allEvents(lv, srl);
     }
 
     public void allEvents(final ListView lv,final SwipeRefreshLayout srl) {
-
-        API.getEvents(this).setCallback(new FutureCallback<List<JSONEvent>>() {
-            @Override
-            public void onCompleted(Exception e, List<JSONEvent> result) {
-
-                if(result == null){
-                    Log.e(TAG, "shit. no events found!");
-                    srl.setRefreshing(false);
-                    return;
-                }
-
-                ArrayList<APIEvent> events = APIEvent.fromJSONEvent(result);
-
-                Iterator<APIEvent> i = events.iterator();
-
-                //filter all 'old' events from the past
-                while (i.hasNext()){
-                    APIEvent event = i.next();
-
-                    //FIXME: event.getDuration() instead of fixed
-                    Log.v(TAG, event.getTime().toString() + " ---");
-                    if(event.getTime().getTime() + 120 * 60000 < System.currentTimeMillis()) {
-                        Log.v(TAG, "remove element " + event.toString() + " because it's already old");
-                        i.remove();
-                    }
-
-                    if(event.getTime().getTime() < System.currentTimeMillis()) {
-                        Log.v(TAG, "event already starded " + event.toString());
-                        event.setStared(true);
-                    }
-                }
-
-                Log.i(TAG, "show " + events.size() + " events");
-
-
-                APIEventAdapter m_adapter = new APIEventAdapter(MainActivity.this, R.layout.list_element, events);
-                lv.setAdapter(m_adapter);
-
-                srl.setRefreshing(false);
-                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
     }
-
-
-    public void createNewEvent(View v){
-        Intent myIntent = new Intent(MainActivity.this, BanalAddEventActivity.class);
-        MainActivity.this.startActivity(myIntent);
-    }
-
-    public boolean refresh(MenuItem v){
-        allEvents();
-
-        Toast.makeText(this,"refreshed", Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
 }

@@ -15,32 +15,12 @@
  *
  * This copyright notice must not be modified or deleted.
  */
-// This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.getbro.meetmeandroid.generate;
 
-import at.pasra.record.RecordBuilder;
-import android.database.sqlite.SQLiteDatabase;
-
-public class SettingsRecordBuilder extends RecordBuilder<Account>{
-    public SettingsRecordBuilder(SQLiteDatabase db){
-        super("settings", new String[] { "number", "secret", "_id" }, db);
+public class Tag extends AbstractTag {
+    public Tag(){
+        super(null);
     }
-    @Override
-    public java.util.List<Account> all(android.database.Cursor c){
-        java.util.List<Account> list = new java.util.ArrayList<Account>();
-        while (c.moveToNext()){
-            list.add(Account.fromCursor(c));
-        }
-        return list;
-    }
-    @Override
-    public Account first(android.database.Cursor c){
-        if (c.moveToFirst()){
-            Account record = Account.fromCursor(c);
-            c.close();
-            return record;
-        }
-        c.close();
-        return null;
-    }
+    
+    // add your code here
 }

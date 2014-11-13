@@ -21,12 +21,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public class SettingsRecord{
-    private final java.util.Map<Long, Settings> primaryKeyCache = new java.util.HashMap<Long, Settings>();
+public class AccountRecord{
+    private final java.util.Map<Long, Account> primaryKeyCache = new java.util.HashMap<Long, Account>();
     public void clearCache(){
         primaryKeyCache.clear();
     }
-    public void save(SQLiteDatabase db, AbstractSettings record){
+    public void save(SQLiteDatabase db, AbstractAccount record){
         if (record.getId() == null){
             insert(db, record);
         }
@@ -34,22 +34,22 @@ public class SettingsRecord{
             update(db, record);
         }
     }
-    public void insert(SQLiteDatabase db, AbstractSettings record){
+    public void insert(SQLiteDatabase db, AbstractAccount record){
         ContentValues values = new ContentValues(2);
         values.put("number", record.getNumber());
         values.put("secret", record.getSecret());
-        long id = db.insert("settings", null, values);
+        long id = db.insert("accounts", null, values);
         record.setId(id);
-        primaryKeyCache.put(id, (Settings)record);
+        primaryKeyCache.put(id, (Account)record);
     }
-    public Settings load(SQLiteDatabase db, long id){
-        Settings cached = primaryKeyCache.get(id);
+    public Account load(SQLiteDatabase db, long id){
+        Account cached = primaryKeyCache.get(id);
         if (cached != null){
             return cached;
         }
-        Cursor c = db.rawQuery("select number, secret, _id from settings where _id = ?;", new String[] { Long.toString(id) });
+        Cursor c = db.rawQuery("select number, secret, _id from accounts where _id = ?;", new String[] { Long.toString(id) });
         if (c.moveToFirst()){
-            Settings record = new Settings();
+            Account record = new Account();
             record.setNumber(c.getString(c.getColumnIndex("number")));
             record.setSecret(c.getString(c.getColumnIndex("secret")));
             record.setId(c.getLong(c.getColumnIndex("_id")));
@@ -59,14 +59,14 @@ public class SettingsRecord{
         return null;
     }
     public void delete(SQLiteDatabase db, long id){
-        db.execSQL("delete from settings where  _id = ?;", new String[] { Long.toString(id) });
+        db.execSQL("delete from accounts where  _id = ?;", new String[] { Long.toString(id) });
         primaryKeyCache.remove(id);
     }
-    public void update(SQLiteDatabase db, AbstractSettings record){
+    public void update(SQLiteDatabase db, AbstractAccount record){
         ContentValues values = new ContentValues(2);
         values.put("number", record.getNumber());
         values.put("secret", record.getSecret());
         long id = record.getId();
-        db.update("settings", values, "_id = ?", new String[] { Long.toString(id) });
+        db.update("accounts", values, "_id = ?", new String[] { Long.toString(id) });
     }
 }

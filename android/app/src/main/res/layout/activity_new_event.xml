@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.getbro.meetmeandroid.NewEventActivity"
+    tools:context="com.getbro.meetmeandroid.old.NewEventActivity"
     android:background="@color/ultralightgray">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,7 +51,7 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <com.getbro.meetmeandroid.LabelLayout
+    <com.getbro.meetmeandroid.old.LabelLayout
         android:numColumns="auto_fit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:background="@color/wm_light_green"
         android:clickable="true" />
 
-    <com.getbro.meetmeandroid.LabelLayout
+    <com.getbro.meetmeandroid.old.LabelLayout
         android:numColumns="auto_fit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

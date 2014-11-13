@@ -1,12 +1,10 @@
-package com.getbro.meetmeandroid;
+package com.getbro.meetmeandroid.old;
 
 import android.app.Activity;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.EditText;
-
-import com.getbro.meetmeandroid.API.APIEvent;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,7 +24,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * Created by Alex on 25.07.2014.

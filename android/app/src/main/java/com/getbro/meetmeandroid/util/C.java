@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid;
+package com.getbro.meetmeandroid.util;
 
 /**
  * rich

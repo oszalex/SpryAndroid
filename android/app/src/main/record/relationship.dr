@@ -1,1 +1,9 @@
 // Insert your model relationships here! See http://record.pasra.at/droid_record#relations
+
+event {
+  has_many '#keyword'
+}
+
+keyword {
+  belongs_to 'event'
+}

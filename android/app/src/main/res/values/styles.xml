@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar">
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
 
         <item name="android:actionBarStyle">@style/MyActionBar</item>
@@ -9,13 +9,13 @@
     </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/menuBarTopBorder</item>
-        <item name="android:height">7dp</item>
-        <item name="android:icon">@android:color/transparent</item>
+        <item name="android:icon">@drawable/spry</item>
     </style>
 
+    <style name="AppThemeNoActionBar" parent="android:Theme.Holo.Light.NoActionBar">
+    </style>
 
     <!-- style sheet -->
 
@@ -64,8 +64,6 @@
 
     <item name="bittersweet_light_red" type="color">#fc6e51</item>
     <item name="bittersweet_dark_red" type="color">#e9573f</item>
-
-
 
     <item name="new_event_background" type="color">@color/lightgray</item>
 

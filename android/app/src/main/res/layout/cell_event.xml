@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@color/green"
+            android:id="@+id/leftView"
+            android:padding="25dp"
+            android:text="LET'S GO"
+            android:textAppearance="?android:textAppearanceLargeInverse"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_height="match_parent"
+            android:id="@+id/rightView"
+            android:background="@color/red"
+            android:padding="25dp"
+            android:text="DECLINE"
+            android:textAppearance="?android:textAppearanceLargeInverse"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:id="@+id/cell"
+        android:background="@color/white"
+        android:paddingRight="10dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray"
+                android:text="eat something now"
+                android:textStyle="bold"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/rawPost"
+                android:layout_below="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightergray"
+                android:text="#hunger #essen @vapiano"
+                android:textSize="18sp"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/time"
+                android:layout_toStartOf="@+id/time" />
+
+            <TextView
+                android:id="@+id/time"
+                android:textColor="#acacac"
+                android:layout_below="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2w"
+                android:textSize="18sp"
+                android:layout_gravity="right"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/creator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#acacac"
+            android:textSize="16sp"
+            android:text="by Christian Hotz-Behofsits"
+            android:layout_below="@+id/rawPost"
+            android:textStyle="italic"/>
+
+
+
+    </LinearLayout>
+</FrameLayout>

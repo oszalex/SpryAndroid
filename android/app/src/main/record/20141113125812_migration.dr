@@ -1,7 +1,30 @@
 create_table {
-  name 'settings'
+  name 'account'
   fields {
     number 'string'
     secret 'string'
+  }
+}
+
+create_table {
+  name 'event'
+  fields {
+    name 'string'
+    user 'string'
+    start_time 'date'
+    description 'string'
+    duration 'integer'
+    max_attending 'integer'
+    min_attending 'integer'
+    price 'integer'
+    is_public 'boolean'
+  }
+}
+
+create_table {
+  name 'keyword'
+  fields {
+    text 'string'
+    event_id 'long'
   }
 }

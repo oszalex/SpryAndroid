@@ -21,22 +21,22 @@ package com.getbro.meetmeandroid.generate;
 import at.pasra.record.RecordBuilder;
 import android.database.sqlite.SQLiteDatabase;
 
-public class SettingsRecordBuilder extends RecordBuilder<Account>{
-    public SettingsRecordBuilder(SQLiteDatabase db){
-        super("settings", new String[] { "number", "secret", "_id" }, db);
+public class TagRecordBuilder extends RecordBuilder<Tag>{
+    public TagRecordBuilder(SQLiteDatabase db){
+        super("tags", new String[] { "text", "event_id", "_id" }, db);
     }
     @Override
-    public java.util.List<Account> all(android.database.Cursor c){
-        java.util.List<Account> list = new java.util.ArrayList<Account>();
+    public java.util.List<Tag> all(android.database.Cursor c){
+        java.util.List<Tag> list = new java.util.ArrayList<Tag>();
         while (c.moveToNext()){
-            list.add(Account.fromCursor(c));
+            list.add(Tag.fromCursor(c));
         }
         return list;
     }
     @Override
-    public Account first(android.database.Cursor c){
+    public Tag first(android.database.Cursor c){
         if (c.moveToFirst()){
-            Account record = Account.fromCursor(c);
+            Tag record = Tag.fromCursor(c);
             c.close();
             return record;
         }

@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid;
+package com.getbro.meetmeandroid.old;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,11 +14,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.API.API;
+import com.getbro.meetmeandroid.R;
+import com.getbro.meetmeandroid.old.LabelLayout;
 import com.getbro.meetmeandroid.suggestion.Suggestion;
 import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 
 import java.util.ArrayList;
 

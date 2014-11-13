@@ -1,11 +1,9 @@
 package com.getbro.meetmeandroid.suggestion;
 
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.LabelLayout;
-import com.getbro.meetmeandroid.R;
+import com.getbro.meetmeandroid.old.LabelLayout;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid;
+package com.getbro.meetmeandroid.old;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.API.API;
+import com.getbro.meetmeandroid.R;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 

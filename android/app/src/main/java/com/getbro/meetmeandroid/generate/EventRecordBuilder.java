@@ -21,22 +21,22 @@ package com.getbro.meetmeandroid.generate;
 import at.pasra.record.RecordBuilder;
 import android.database.sqlite.SQLiteDatabase;
 
-public class SettingsRecordBuilder extends RecordBuilder<Account>{
-    public SettingsRecordBuilder(SQLiteDatabase db){
-        super("settings", new String[] { "number", "secret", "_id" }, db);
+public class EventRecordBuilder extends RecordBuilder<Event>{
+    public EventRecordBuilder(SQLiteDatabase db){
+        super("events", new String[] { "name", "user", "start_time", "description", "duration", "max_attending", "min_attending", "price", "is_public", "_id" }, db);
     }
     @Override
-    public java.util.List<Account> all(android.database.Cursor c){
-        java.util.List<Account> list = new java.util.ArrayList<Account>();
+    public java.util.List<Event> all(android.database.Cursor c){
+        java.util.List<Event> list = new java.util.ArrayList<Event>();
         while (c.moveToNext()){
-            list.add(Account.fromCursor(c));
+            list.add(Event.fromCursor(c));
         }
         return list;
     }
     @Override
-    public Account first(android.database.Cursor c){
+    public Event first(android.database.Cursor c){
         if (c.moveToFirst()){
-            Account record = Account.fromCursor(c);
+            Event record = Event.fromCursor(c);
             c.close();
             return record;
         }

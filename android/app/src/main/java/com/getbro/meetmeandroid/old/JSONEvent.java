@@ -1,9 +1,6 @@
-package com.getbro.meetmeandroid.API;
+package com.getbro.meetmeandroid.old;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by chris on 11/08/14.

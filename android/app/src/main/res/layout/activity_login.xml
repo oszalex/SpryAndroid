@@ -15,13 +15,6 @@
         android:layout_height="140dp"
         android:src="@drawable/spry" />
 
-    <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_alignTop="@+id/scrollView"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="8dp" android:visibility="gone" />
-
     <ScrollView android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
@@ -37,7 +30,7 @@
                 android:layout_height="wrap_content" android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/contry_spinner"
+                    android:id="@+id/country_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 </Spinner>
@@ -50,7 +43,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/countryPhoneCode"
+                        android:id="@+id/country_phone_prefix"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:text="+43" />
 
