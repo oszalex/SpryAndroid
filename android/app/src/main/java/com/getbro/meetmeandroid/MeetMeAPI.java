@@ -34,8 +34,6 @@ import java.util.ArrayList;
 public class MeetMeAPI {
     private static final String URI = "http://api.getbro.com/v1";
 
-
-
     public static JSONObject JSONcreator(Activity main, String[] field)
     {
         EditText x;

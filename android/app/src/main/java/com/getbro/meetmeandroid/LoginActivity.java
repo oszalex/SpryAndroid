@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
@@ -21,6 +23,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbro.meetmeandroid.generate.LocalSession;
+import com.getbro.meetmeandroid.generate.Settings;
 import com.getbro.meetmeandroid.remote.state.AuthState;
 import com.getbro.meetmeandroid.remote.state.RegisterState;
 import com.getbro.meetmeandroid.remote.RemoteCallback;
@@ -30,19 +34,6 @@ import com.getbro.meetmeandroid.remote.coord.SequenceState;
 
 public class LoginActivity extends Activity {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPhoneField;
     private View mProgressView;
@@ -56,12 +47,15 @@ public class LoginActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
 
+        mLoginFormView = findViewById(R.id.login_form);
+
         mPhoneField = (EditText) findViewById(R.id.password);
         mPhoneField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                String phoneNumber = getPhoneNumber();
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptLogin(phoneNumber);
                     return true;
                 }
                 return false;
@@ -72,50 +66,71 @@ public class LoginActivity extends Activity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                String phoneNumber = getPhoneNumber();
+                attemptLogin(phoneNumber);
             }
         });
     }
 
+    public String getPhoneNumber() {
+        return "436643947462";
+    }
 
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * Attempt to login using the phone number
      */
-    public void attemptLogin() {
+    public void attemptLogin(String phoneNumber) {
 
         MeetMeApp app = (MeetMeApp)getApplication();
 
-        RegisterState login = new RegisterState("436643947462", app.getCtx());
-        AuthState auth = new AuthState(app.getCtx());
-        SequenceState state = new SequenceState(app.getCtx(), login, auth);
-        state.setCallback(loginCallback);
-        app.getCtx().invoke(state);
+        RegisterState register = new RegisterState(phoneNumber, app.getCtx());
+        register.setCallback(registerCallback);
+        app.getCtx().invoke(register);
+
+        showProgress(true);
     }
 
-    private RemoteCallback loginCallback = new RemoteCallback() {
+    private RemoteCallback registerCallback = new RemoteCallback() {
+        @Override
+        public void onRequestOk(RemoteResponse response) {
+
+            try { Thread.sleep(2000); } catch (InterruptedException e) {}
+
+            MeetMeApp app = (MeetMeApp)getApplication();
+            AuthState auth = new AuthState(getPhoneNumber(), "1234", app.getCtx());
+            auth.setCallback(authCallback);
+            app.getCtx().invoke(auth);
+        }
+
+        @Override
+        public void onRequestFailed(RemoteResponse response) {
+            showProgress(false);
+            Toast.makeText(LoginActivity.this, "failed to register!", Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private RemoteCallback authCallback = new RemoteCallback() {
         @Override
         public void onRequestOk(RemoteResponse response) {
             MeetMeApp app = (MeetMeApp)getApplication();
-            SharedPreferences prefs = app.getPrefs();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(C.PREF_LOGGED_IN, true);
-            editor.commit();
+            LocalSession session = app.getSession();
+            Settings settings = new Settings();
+            settings.setNumber("aaa");
+            settings.setSecret("1234aaa");
+            session.saveSettings(settings);
+
+            showProgress(false);
+
             finish();
         }
 
         @Override
         public void onRequestFailed(RemoteResponse response) {
-            Toast.makeText(LoginActivity.this, "failed to login!", Toast.LENGTH_LONG).show();
+            showProgress(false);
+            Toast.makeText(LoginActivity.this, "failed to auth!", Toast.LENGTH_LONG).show();
         }
     };
-
-    private boolean isPhoneValid(String phone) {
-        //TODO: Replace this with your own logic
-        return phone.contains("@");
-    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -150,59 +165,6 @@ public class LoginActivity extends Activity {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPhoneField.setError(getString(R.string.error_incorrect_password));
-                mPhoneField.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
         }
     }
 }

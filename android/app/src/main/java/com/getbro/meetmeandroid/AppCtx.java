@@ -2,6 +2,7 @@ package com.getbro.meetmeandroid;
 
 import android.content.SharedPreferences;
 
+import com.getbro.meetmeandroid.generate.Settings;
 import com.getbro.meetmeandroid.remote.RemoteRequest;
 import com.getbro.meetmeandroid.remote.RemoteState;
 
@@ -26,12 +27,11 @@ public class AppCtx {
     }
 
     public boolean isAuthenticated() {
-        SharedPreferences prefs = app.getPrefs();
-        return prefs.getBoolean(C.PREF_LOGGED_IN, false);
+        Settings settings = app.getSession().querySettings().first();
+        return "".equals(settings.getNumber());
     }
 
     public void invoke(RemoteState state) {
-
         RemoteRequest request = state.invoke();
         if (request != null) {
             request.execute();

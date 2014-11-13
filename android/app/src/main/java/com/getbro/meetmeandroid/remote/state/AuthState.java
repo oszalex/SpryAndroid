@@ -10,8 +10,11 @@ import com.getbro.meetmeandroid.remote.RemoteState;
  */
 public class AuthState extends RemoteState {
 
-    public AuthState(AppCtx ctx) {
+    private final String token;
+
+    public AuthState(String phoneNumber, String token, AppCtx ctx) {
         super(ctx);
+        this.token = token;
     }
 
     @Override
