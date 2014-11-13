@@ -24,7 +24,7 @@ public class RemoteRequest extends AsyncTask<Void, Void, Void> {
     private final HttpMethod method;
     private final RemoteState state;
 
-    public RemoteRequest(HttpMethod method, String route, Map<String,String> bindings, RemoteState state) {
+    public RemoteRequest(HttpMethod method, String route, RemoteState state) {
         this.method = method;
         this.route = route;
         this.context = state.context;

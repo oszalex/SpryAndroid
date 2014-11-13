@@ -22,7 +22,7 @@ public class RegisterState extends RemoteState {
 
     @Override
     public RemoteRequest invoke() {
-        return new RemoteRequest(HttpMethod.GET, "/register/"+phoneNumber, Collections.singletonMap("phone", phoneNumber), this);
+        return new RemoteRequest(HttpMethod.GET, "/register/"+phoneNumber, this);
     }
 
 

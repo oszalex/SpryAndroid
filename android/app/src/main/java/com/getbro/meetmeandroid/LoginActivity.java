@@ -30,6 +30,9 @@ import com.getbro.meetmeandroid.remote.state.RegisterState;
 import com.getbro.meetmeandroid.remote.RemoteCallback;
 import com.getbro.meetmeandroid.remote.RemoteResponse;
 import com.getbro.meetmeandroid.remote.coord.SequenceState;
+import com.google.gson.JsonObject;
+
+import java.util.Random;
 
 
 public class LoginActivity extends Activity {
@@ -48,8 +51,9 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
 
-        mPhoneField = (EditText) findViewById(R.id.password);
+        mPhoneField = (EditText) findViewById(R.id.phoneNumber);
         mPhoneField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -62,6 +66,10 @@ public class LoginActivity extends Activity {
             }
         });
 
+        if (BuildConfig.DEBUG) {
+            mPhoneField.setText("43664" + Integer.toString(1000 + new Random().nextInt(1000)));
+        }
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -73,9 +81,12 @@ public class LoginActivity extends Activity {
     }
 
     public String getPhoneNumber() {
-        return "436643947462";
+        return mPhoneField.getText().toString();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 
     /**
      * Attempt to login using the phone number
@@ -113,14 +124,18 @@ public class LoginActivity extends Activity {
     private RemoteCallback authCallback = new RemoteCallback() {
         @Override
         public void onRequestOk(RemoteResponse response) {
+
+            JsonObject object = response.getJsonObject();
+
             MeetMeApp app = (MeetMeApp)getApplication();
             LocalSession session = app.getSession();
             Settings settings = new Settings();
-            settings.setNumber("aaa");
+            settings.setNumber(getPhoneNumber());
             settings.setSecret("1234aaa");
             session.saveSettings(settings);
 
             showProgress(false);
+
 
             finish();
         }
@@ -140,32 +155,37 @@ public class LoginActivity extends Activity {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        mLoginFormView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+                    int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+                    mLoginFormView.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
+                    mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                            show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                                                          @Override
+                                                          public void onAnimationEnd(Animator animation) {
+                            mLoginFormView.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
+                    }
+                        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                    mProgressView.animate().setDuration(shortAnimTime).alpha(
+                            show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                                                          @Override
+                                                          public void onAnimationEnd(Animator animation) {
+                            mProgressView.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                    }
+                        });
+                } else {
+                    // The ViewPropertyAnimator APIs are not available, so simply show
+                    // and hide the relevant UI components.
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+                    mLoginFormView.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
                 }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+            }
+        });
     }
 }
 

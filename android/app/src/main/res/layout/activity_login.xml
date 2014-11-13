@@ -15,40 +15,50 @@
         android:layout_height="140dp"
         android:src="@drawable/spry" />
 
-    <!-- Login progress -->
     <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignTop="@+id/scrollView"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="8dp" android:visibility="gone" />
 
-    <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
+    <ScrollView android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
         android:layout_below="@+id/logo"
         android:padding="@dimen/login_panel_padding"
         android:background="@color/login_foreground_transparent">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:id="@+id/login_form"
             android:orientation="vertical">
 
             <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/contry_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </Spinner>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <Spinner
-                        android:id="@+id/contry_spinner"
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:minWidth="25dp"
-                        android:layout_height="wrap_content">
-                    </Spinner>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/countryPhoneCode"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:text="+43" />
 
-                    <EditText android:id="@+id/password" android:layout_width="0dp" android:layout_weight="1"
+                    <EditText android:id="@+id/phoneNumber" android:layout_width="0dp" android:layout_weight="1"
                         android:layout_height="wrap_content" android:hint="@string/phone_number"
                         android:imeActionId="@+id/login"
                         android:imeActionLabel="@string/action_sign_in_short"
-                        android:imeOptions="actionUnspecified" android:inputType="textPassword"
+                        android:imeOptions="actionUnspecified" android:inputType="phone"
                         android:maxLines="1" android:singleLine="true" />
 
                     </LinearLayout>

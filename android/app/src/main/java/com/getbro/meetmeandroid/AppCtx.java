@@ -28,7 +28,7 @@ public class AppCtx {
 
     public boolean isAuthenticated() {
         Settings settings = app.getSession().querySettings().first();
-        return "".equals(settings.getNumber());
+        return settings != null && !"".equals(settings.getNumber());
     }
 
     public void invoke(RemoteState state) {
