@@ -9,14 +9,13 @@ create_table {
 create_table {
   name 'event'
   fields {
-    name 'string'
     user 'string'
-    start_time 'date'
+    start_time 'long'
     description 'string'
     duration 'integer'
     max_attending 'integer'
     min_attending 'integer'
-    price 'integer'
+    price 'double'
     is_public 'boolean'
   }
 }

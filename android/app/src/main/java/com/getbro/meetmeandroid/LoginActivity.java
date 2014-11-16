@@ -67,7 +67,6 @@ public class LoginActivity extends Activity {
         phoneText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                String phoneNumber = getPhoneNumber();
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     phoneNumber = phoneText.getText().toString();
                     attemptLogin();
@@ -152,7 +151,7 @@ public class LoginActivity extends Activity {
     }
 
     public String getPhoneNumber() {
-        return prefix.replaceAll("\\+","") + phoneNumber;
+        return (prefix.replaceAll("\\+","") + phoneNumber).trim();
     }
 
     @Override
@@ -207,29 +206,17 @@ public class LoginActivity extends Activity {
         }
     };
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        loginFormView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (show) {
-                    progressDialog = new ProgressDialog(LoginActivity.this);
-                    progressDialog.setMessage(getString(R.string.signin_please_wait));
-                    progressDialog.show();
-                } else {
-                    if (progressDialog != null) {
-                        progressDialog.dismiss();
-                        progressDialog = null;
-                    }
-                }
+        if (show) {
+            progressDialog = new ProgressDialog(LoginActivity.this);
+            progressDialog.setMessage(getString(R.string.signin_please_wait));
+            progressDialog.show();
+        } else {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
             }
-        });
+        }
     }
 }
 

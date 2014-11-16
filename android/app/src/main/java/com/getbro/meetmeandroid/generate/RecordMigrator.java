@@ -57,7 +57,7 @@ public class RecordMigrator implements Migrator{
         db.execSQL("insert or replace into android_record_configs (key,value) values ('generator_version','0.1.0')");
         if (currentVersion < targetVersion && currentVersion < 20141113125812L){
             db.execSQL("create table accounts (number text , secret text , _id integer primary key);");
-            db.execSQL("create table events (name text , user text , start_time integer , description text , duration integer , max_attending integer , min_attending integer , price integer , is_public integer , _id integer primary key);");
+            db.execSQL("create table events (user text , start_time integer , description text , duration integer , max_attending integer , min_attending integer , price long , is_public integer , _id integer primary key);");
             db.execSQL("create table keywords (text text , event_id integer , _id integer primary key);");
             currentVersion = 20141113125812L;
         }

@@ -11,14 +11,21 @@ import java.util.Map;
  */
 public class EventSerializer extends BaseSerializer<Event> {
 
-    public EventSerializer(Event target) {
-        super(target);
-    }
-
     @Override
     protected Map<String, String> getRemoteResolutionMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("description","description");
+        map.put("description","mDescription");
+        map.put("start_time","mStartTime");
+        map.put("duration","mDuration");
+        map.put("isPublic","mIsPublic");
+        map.put("max_attending","mMaxAttending");
+        map.put("min_attending","mMinAttending");
+        map.put("price","mPrice");
         return map;
+    }
+
+    @Override
+    protected Event newObject() {
+        return new Event();
     }
 }

@@ -2,6 +2,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
@@ -12,22 +13,27 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:background="@color/green"
             android:id="@+id/leftView"
+            android:gravity="center|left"
+            android:textSize="32dp"
             android:padding="25dp"
-            android:text="LET'S GO"
+            android:tag="yes"
+            android:text="✓"
+            android:textStyle="bold"
             android:textAppearance="?android:textAppearanceLargeInverse"
             />
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:gravity="right"
+            android:gravity="right|center"
             android:layout_height="match_parent"
             android:id="@+id/rightView"
-            android:background="@color/red"
             android:padding="25dp"
-            android:text="DECLINE"
+            android:tag="no"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            android:text="x"
             android:textAppearance="?android:textAppearanceLargeInverse"
             />
 

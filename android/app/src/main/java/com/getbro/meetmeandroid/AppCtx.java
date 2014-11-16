@@ -25,7 +25,7 @@ public class AppCtx {
     }
 
     public boolean isAuthenticated() {
-        Account settings = application.getSession().queryAccounts().first();
+        Account settings = application.getAccount();
         return settings != null && !"".equals(settings.getNumber());
     }
 

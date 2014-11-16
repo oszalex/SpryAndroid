@@ -1,5 +1,6 @@
 package com.getbro.meetmeandroid.remote;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,19 +23,21 @@ public class RemoteResponse {
 
     public RemoteResponse(HttpResponse httpResponse) {
         this.response = httpResponse;
-        try {
-            InputStream inputStream = this.response.getEntity().getContent();
-            BufferedInputStream bin = new BufferedInputStream(inputStream);
-            byte[] tmp = new byte[512];
-            int read = 0;
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            while ((read = bin.read(tmp)) != -1) {
-                output.write(tmp, 0, read);
-            }
+        if (response != null) {
+            try {
+                InputStream inputStream = this.response.getEntity().getContent();
+                BufferedInputStream bin = new BufferedInputStream(inputStream);
+                byte[] tmp = new byte[512];
+                int read = 0;
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                while ((read = bin.read(tmp)) != -1) {
+                    output.write(tmp, 0, read);
+                }
 
-            bytes = output.toByteArray();
-        } catch (IOException e) {
-            bytes = new byte[0];
+                bytes = output.toByteArray();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -46,9 +49,17 @@ public class RemoteResponse {
         }
     }
 
-    public JsonObject getJsonObject() {
+    public JsonElement getJson() {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(new String(bytes));
-        return element.getAsJsonObject();
+        return element;
+    }
+
+    public JsonObject getJsonObject() {
+        return getJson().getAsJsonObject();
+    }
+
+    public JsonArray getJsonArray() {
+        return getJson().getAsJsonArray();
     }
 }

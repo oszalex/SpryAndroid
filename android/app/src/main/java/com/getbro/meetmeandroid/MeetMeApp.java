@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import com.getbro.meetmeandroid.generate.Account;
 import com.getbro.meetmeandroid.generate.Event;
 import com.getbro.meetmeandroid.generate.LocalSession;
 import com.getbro.meetmeandroid.generate.RecordMigrator;
@@ -35,16 +36,6 @@ public class MeetMeApp extends Application {
         new RecordMigrator(db).migrate();
         session = new LocalSession(db);
 
-        if (session.queryEvents().count() < 20) {
-            Event event = new Event();
-            event.setDescription("a jausn beim wirtn");
-            event.setMinAttending(0);
-            event.setMaxAttending(4);
-            event.setPrice(0);
-            event.setStartTime(new Date(DateTime.now().withPeriodAdded(Days.FIVE,1).getMillis()));
-            session.saveEvent(event);
-        }
-
         ctx = new AppCtx(this);
     }
 
@@ -58,5 +49,22 @@ public class MeetMeApp extends Application {
 
     public LocalSession getSession() {
         return session;
+    }
+
+    public void resetApp() {
+        Account acc = getAccount();
+        if (acc != null) {
+            session.destroyAccount(acc);
+        }
+    }
+
+    public Account getAccount() {
+        Account acc = session.queryAccounts().first();
+        return acc;
+    }
+
+    public String getBasicAuth() {
+        Account acc = getAccount();
+        return String.format("%s:%s",acc.getNumber(),acc.getSecret());
     }
 }

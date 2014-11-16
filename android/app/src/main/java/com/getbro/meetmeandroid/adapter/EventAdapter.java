@@ -55,7 +55,7 @@ public class EventAdapter extends CursorAdapter {
 
         creator.setText("by unkown");
         desc.setText(event.getDescription());
-        time.setText(getRelativeTimeSpan(event.getStartTime()));
+        time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));
     }
 
     public static String getRelativeTimeSpan(Date time) {

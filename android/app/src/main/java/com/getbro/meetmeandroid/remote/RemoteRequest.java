@@ -1,23 +1,21 @@
 package com.getbro.meetmeandroid.remote;
 
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import com.getbro.meetmeandroid.AppCtx;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Created by rich on 10.11.14.
  */
-public class RemoteRequest extends AsyncTask<Void, Void, Void> {
+public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
 
     private final String route;
     private final AppCtx context;
@@ -32,23 +30,28 @@ public class RemoteRequest extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected RemoteResponse doInBackground(Void... params) {
 
         HttpRequestBase httpRequest = method.freshRequest(route);
+
+        if (state.useAuth) {
+            httpRequest.setHeader("Authorization", "Basic " + basicAuthBase64(context.getApplication().getBasicAuth()));
+        }
 
         try {
             final HttpHost host = context.getHost();
             final HttpClient client = context.getClient();
             HttpResponse httpResponse = client.execute(host, httpRequest);
 
-            RemoteResponse response = new RemoteResponse(httpResponse);
-
-            respond(response);
+            return new RemoteResponse(httpResponse);
         } catch (IOException e) {
-            respond(new RemoteResponse(null));
         }
 
         return null;
+    }
+
+    private String basicAuthBase64(String basicAuth) {
+        return Base64.encodeToString(basicAuth.getBytes(), Base64.DEFAULT);
     }
 
     private void respond(RemoteResponse response) {
@@ -66,5 +69,11 @@ public class RemoteRequest extends AsyncTask<Void, Void, Void> {
         }
     }
 
-
+    @Override
+    protected void onPostExecute(RemoteResponse response) {
+        if (response == null) {
+            response = new RemoteResponse(null);
+        }
+        respond(response);
+    }
 }
