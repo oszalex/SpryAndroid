@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class NewEventActivity extends Activity {
     private final String TAG = Activity.class.toString();
 
+    /*
     //private SuggestionAdapter m_adapter;
     private EditText text;
     private ArrayList<String> tags = new ArrayList<String>();
@@ -39,7 +40,7 @@ public class NewEventActivity extends Activity {
         // load children and setup properties
         TextView tv = (TextView) customView.findViewById(R.id.suggestion);
         tv.setText(suggestion.getValue());
-        tv.setBackground(getResources().getDrawable(suggestion.getDrawableId()));
+        tv.setBackgroundDrawable(getResources().getDrawable(suggestion.getDrawableId()));
         // add it to the layout
         auswahlLayout.addView(customView);
     }
@@ -85,21 +86,19 @@ public class NewEventActivity extends Activity {
     }
 
 
-    /**
      * helper method to set label button click listener
      *
      * @param view
-     */
+    private void setupListeners(final View view) {
     private void setupListeners(final View view) {
         final LabelLayout taggedLayout = (LabelLayout)findViewById(R.id.tagged_layout);
-        /*
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 taggedLayout.removeView(view);
                 return true;
             }
-        });*/
+        });
         view.setOnClickListener(new View.OnClickListener() {
 
             //boolean green = false;
@@ -113,7 +112,6 @@ public class NewEventActivity extends Activity {
                 addLabel(Suggestion.fromView(tv));
                 tags.add(tv.getText().toString());
 
-                /*
                 TextView tv  = (TextView) view.findViewById(R.id.suggestion);
 
                 if (green) {
@@ -123,7 +121,7 @@ public class NewEventActivity extends Activity {
                     //view.setBackgroundColor(0xff994433);
                     tv.setBackground(getResources().getDrawable(R.drawable.tag_label));
                 }
-                green = !green;*/
+                green = !green;
             }
         });
     }
@@ -154,7 +152,6 @@ public class NewEventActivity extends Activity {
         return s;
     }
 
-    /*
     private void setupSuggest(){
         int resource;
         final GridView grid = (GridView) findViewById(R.id.suggestionGrid);
@@ -204,7 +201,7 @@ public class NewEventActivity extends Activity {
         m_adapter = new SuggestionAdapter(NewEventActivity.this, R.layout.suggestion_element, s);
         updateSuggestions();
         grid.setAdapter(m_adapter);
-    }*/
+    }
 
 
     @Override
@@ -243,21 +240,15 @@ public class NewEventActivity extends Activity {
         Log.v(TAG, "send event:" + rawtext);
 
         //MeetMeAPI.createEvent(rawEvent.getText().toString());
-        /*
         API.createEvent(this, rawtext).setCallback(new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 finish();
             }
-        });*/
+        });
     }
 
 
-    /**
-     * get all contact names with trailing '+' sign
-     * @param ctx
-     * @return
-     */
     private static ArrayList<Suggestion> getContactSuggestions(Context ctx){
         String contactName = null;
         ArrayList<Suggestion> contacts = new ArrayList<Suggestion>();
@@ -270,4 +261,5 @@ public class NewEventActivity extends Activity {
 
         return contacts;
     }
+    */
 }

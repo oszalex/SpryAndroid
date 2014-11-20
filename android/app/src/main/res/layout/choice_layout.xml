@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+
+        <com.getbro.meetmeandroid.util.ItemSelector
+            android:id="@+id/item_selector"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:minHeight="35dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/content_view"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+        </com.getbro.meetmeandroid.util.ItemSelector>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignTop="@+id/item_selector"
+            android:layout_height="wrap_content"
+            android:text="▼"
+            android:layout_marginTop="-5dp"
+            android:textSize="24dp"
+            />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/custom_btn"
+        android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="other"/>
+
+</LinearLayout>
