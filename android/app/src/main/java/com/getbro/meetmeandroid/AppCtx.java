@@ -1,12 +1,36 @@
 package com.getbro.meetmeandroid;
 
+import android.content.Context;
+
 import com.getbro.meetmeandroid.generate.Account;
 import com.getbro.meetmeandroid.remote.RemoteRequest;
 import com.getbro.meetmeandroid.remote.RemoteState;
+import com.getbro.meetmeandroid.util.UNSAFEHttpClient;
 
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.SingleClientConnManager;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * rich
@@ -20,9 +44,11 @@ public class AppCtx {
 
     public AppCtx(MeetMeApp app) {
         this.application = app;
-        client = new DefaultHttpClient();
-        host = new HttpHost("api.gospry.com", 8080, "http");
+        client = new UNSAFEHttpClient(app); // XXX try to setup your certificate right
+        host = new HttpHost("api.gospry.com", 443, "https");
     }
+
+
 
     public boolean isAuthenticated() {
         Account settings = application.getAccount();

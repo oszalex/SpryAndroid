@@ -62,4 +62,8 @@ public class RemoteResponse {
     public JsonArray getJsonArray() {
         return getJson().getAsJsonArray();
     }
+
+    public String getString() {
+        return new String(bytes);
+    }
 }

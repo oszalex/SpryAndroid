@@ -1,14 +1,23 @@
-package com.getbro.meetmeandroid.old;
+package com.getbro.meetmeandroid.util;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.database.DataSetObserver;
+import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.getbro.meetmeandroid.R;
+import com.getbro.meetmeandroid.suggestion.Suggestion;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 18/08/14.
@@ -18,22 +27,127 @@ import android.widget.LinearLayout;
  * A linear layout that wraps around it's children if there is not enough space!
  */
 
+public class TagListView extends LinearLayout {
 
+    public static class Tag {
+        private Suggestion object;
+        private boolean activated;
 
+        public Tag(Suggestion object) {
+            this.object = object;
+        }
 
-public class LabelLayout extends LinearLayout {
+        public Suggestion getObject() {
+            return object;
+        }
 
+        public String getText() {
+            return object.getValue();
+        }
 
-    public LabelLayout(Context context) {
+        public int getColor() {
+            if (isActivated()) {
+                return R.color.gray;
+            }
+            return object.getType().getColorRes();
+        }
+
+        public void setActivated(boolean activated) {
+            this.activated = activated;
+        }
+
+        public boolean isActivated() {
+            return activated;
+        }
+
+    }
+
+    public static interface OnTagClickListener {
+        public void onTagClick(Tag tag);
+    }
+
+    private OnTagClickListener listener;
+    private List<Tag> tagList = new ArrayList<>();
+    private List<View> convertViewList = new LinkedList<>();
+
+    public TagListView(Context context) {
         super(context);
     }
 
-    public LabelLayout(Context context, AttributeSet attrs) {
+    public TagListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LabelLayout(Context context, AttributeSet attrs, int defStyle) {
+    public TagListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public void setListener(OnTagClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void addTag(Tag tag) {
+        int pos = tagList.size();
+        tagList.add(tag);
+        View view= null;
+        if (convertViewList.size() > 0) {
+            view = convertViewList.get(0);
+        }
+        view = getView(pos, view, tag);
+        view.setOnClickListener(childClickListener);
+        view.setTag(tag);
+
+        LinearLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        float dpi = getResources().getDisplayMetrics().density;
+        lp.bottomMargin = lp.topMargin = lp.leftMargin = lp.rightMargin = (int)(5 * dpi);
+
+        addView(view, lp);
+    }
+
+    private View getView(int pos, View view, Tag tag) {
+        view = LayoutInflater.from(getContext()).inflate(R.layout.tag_layout, null);
+
+        view.setTag(tag);
+
+        TextView tv = (TextView)view;
+        tv.setText(tag.getText());
+        tv.setBackgroundColor(getResources().getColor(tag.getColor()));
+
+        return view;
+    }
+
+    private OnClickListener childClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Tag tag = (Tag) v.getTag();
+            if (listener != null) {
+                listener.onTagClick(tag);
+            }
+        }
+    };
+
+    public void removeTag(Tag tag) {
+        int index = tagList.indexOf(tag);
+        if (index == -1) {
+            return;
+        }
+        tagList.remove(index);
+        View view = getChildAt(index);
+        removeViewAt(index);
+        //convertViewList.add(view);
+    }
+
+    public void clearTags() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            //convertViewList.add(child);
+        }
+        removeAllViews();
+        tagList.clear();
+    }
+
+    public List<Tag> getTags() {
+        return tagList;
     }
 
     @Override

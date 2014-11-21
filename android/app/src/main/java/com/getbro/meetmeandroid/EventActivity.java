@@ -103,6 +103,11 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
             case C.REQ_LOGIN:
                 checkAuth();
                 break;
+            case C.REQ_NEW_EVENT:
+                if (resultCode == RESULT_OK) {
+                    onRefresh();
+                }
+                break;
         }
     }
 
@@ -136,13 +141,10 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_add) {
             Intent it = new Intent(this, NewEventActivity.class);
-            startActivity(it);
+            startActivityForResult(it, C.REQ_NEW_EVENT);
             return true;
         }
         return super.onOptionsItemSelected(item);

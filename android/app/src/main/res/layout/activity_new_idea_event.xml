@@ -1,0 +1,88 @@
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context="com.getbro.meetmeandroid.old.NewEventActivity"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:typeface="monospace"
+            android:textColor="@color/wm_dark_orange"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="When?"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/wm_dark_orange"
+            />
+
+
+        <include layout="@layout/choice_layout" android:id="@+id/when" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:typeface="monospace"
+            android:textColor="@color/wm_dark_orange"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="Whom?"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/wm_dark_orange"
+            />
+
+        <include layout="@layout/choice_layout" android:id="@+id/whom" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:typeface="monospace"
+            android:textColor="@color/wm_dark_orange"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="Where?"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/wm_dark_orange"
+            />
+
+        <include layout="@layout/choice_layout" android:id="@+id/where" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Done"
+            android:layout_gravity="center"
+            android:minWidth="200dp"
+            android:gravity="center"
+            android:id="@+id/suggestion"
+            android:background="@drawable/name_label"
+            android:textColor="@color/white"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+</ScrollView>

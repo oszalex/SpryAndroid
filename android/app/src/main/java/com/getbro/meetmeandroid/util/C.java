@@ -6,6 +6,10 @@ package com.getbro.meetmeandroid.util;
  */
 public class C {
     public static final int REQ_LOGIN = 0x100;
+    public static final int REQ_NEW_EVENT = 0x101;
+
     public static final String SHARED_PREFS = "general_app_prefs";
     public static final String PREF_LOGGED_IN = "logged_in";
+    public static final String EXTRA_LAST_ADDED = "last_added";
+    public static final String EXTRA_LAST_REMOVED = "last_rem";
 }

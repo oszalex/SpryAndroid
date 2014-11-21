@@ -35,4 +35,12 @@ public abstract class RemoteState implements RemoteCallback {
     public RemoteCallback getUserCallback() {
         return userCallback;
     }
+
+    @Override
+    public void onRequestOk(RemoteResponse response) {
+    }
+
+    @Override
+    public void onRequestFailed(RemoteResponse response) {
+    }
 }

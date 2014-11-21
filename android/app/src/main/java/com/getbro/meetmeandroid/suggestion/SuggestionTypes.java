@@ -7,21 +7,18 @@ import com.getbro.meetmeandroid.R;
 import java.util.UnknownFormatConversionException;
 
 public enum SuggestionTypes{
-    PERSON, DATETIME, TAG;
+    PERSON(R.color.green),
+    DATETIME(R.color.bittersweet_dark_red),
+    PLACE(R.color.blue),
+    TAG(R.color.purple);
 
+    private final int colorRes;
 
-    public static SuggestionTypes getSuggestionTypefromDrawable(Drawable drawable){
-        return SuggestionTypes.DATETIME;
+    SuggestionTypes(int colorRes) {
+        this.colorRes = colorRes;
     }
 
-    public int getDrawableId(){
-        switch (this){
-            case PERSON:
-                return R.drawable.name_label;
-            case DATETIME:
-                return R.drawable.time_label;
-        }
-
-        return R.drawable.tag_label;
+    public int getColorRes() {
+        return colorRes;
     }
 }

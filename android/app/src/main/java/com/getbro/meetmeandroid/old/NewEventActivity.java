@@ -1,25 +1,6 @@
 package com.getbro.meetmeandroid.old;
 
 import android.app.Activity;
-import android.content.Context;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.getbro.meetmeandroid.R;
-import com.getbro.meetmeandroid.old.LabelLayout;
-import com.getbro.meetmeandroid.suggestion.Suggestion;
-import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
-
-import java.util.ArrayList;
 
 public class NewEventActivity extends Activity {
     private final String TAG = Activity.class.toString();
@@ -49,7 +30,7 @@ public class NewEventActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_event);
+        setContentView(R.layout.activity_new_idea_event);
 
         drawSuggestions(getSuggestions(new ArrayList<Suggestion>()));
     }

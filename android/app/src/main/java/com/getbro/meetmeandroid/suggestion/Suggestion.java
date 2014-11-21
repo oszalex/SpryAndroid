@@ -1,9 +1,11 @@
 package com.getbro.meetmeandroid.suggestion;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.old.LabelLayout;
+import com.getbro.meetmeandroid.util.TagListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 /**
  * Created by chris on 04/08/14.
  */
-public class Suggestion {
+public class Suggestion implements Parcelable {
     private String value;
     private SuggestionTypes type;
 
@@ -36,7 +38,7 @@ public class Suggestion {
 
 
 
-    public static ArrayList<Suggestion> fromView(LabelLayout ll){
+    public static ArrayList<Suggestion> fromView(TagListView ll){
         ArrayList<Suggestion> suggestions = new ArrayList<Suggestion>();
 
         for (int i = 0; i < ll.getChildCount(); ++i) {
@@ -61,10 +63,6 @@ public class Suggestion {
         return sb.toString();
     }
 
-    public int getDrawableId(){
-        return type.getDrawableId();
-    }
-
     public String getValue() {
         return value;
     }
@@ -79,6 +77,16 @@ public class Suggestion {
 
     public void setType(SuggestionTypes type) {
         this.type = type;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }
 

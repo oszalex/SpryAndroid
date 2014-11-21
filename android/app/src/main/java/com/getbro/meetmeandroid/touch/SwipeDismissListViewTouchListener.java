@@ -271,7 +271,14 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                 }
 
 
+                final float velocityX = Math.abs(mVelocityTracker.getXVelocity());
                 final float deltaX = motionEvent.getRawX() - mDownX;
+                if (velocityX > mMinFlingVelocity && velocityX < mMaxFlingVelocity) {
+                    mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
+                    swipe(deltaX > 0, false);
+                }
+
+                /*
                 if (Math.abs(deltaX) > mThresholdDistance) {
                     mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
                     float mul = 1;
@@ -288,7 +295,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     mParentView.setBackgroundColor(getColor(deltaX, mThresholdDistance));
                 } else {
                     resetTranslation();
-                }
+                }*/
 
                 if (mDownView != null) {
                     Rect rect = new Rect();
@@ -404,6 +411,30 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
             return other.position - position;
         }
     }
+
+    private void swipe(boolean left, final boolean half) {
+        final ViewGroup.LayoutParams lp = mDownView.getLayoutParams();
+        ValueAnimator heightAnim = ValueAnimator.ofInt(mDownView.getHeight(), 1).setDuration(mAnimationTime);
+        heightAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+        heightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                lp.height = (Integer) valueAnimator.getAnimatedValue();
+                mDownView.setLayoutParams(lp);
+            }
+        });
+
+        final float width = mDownView.getWidth();
+        mDownView.animate()
+                .translationX(left ? -width : width)
+                .setDuration(mAnimationTime);
+    }
+
 
     public void setmSwipeRefreshLayout(SwipeRefreshLayout mSwipeRefreshLayout) {
         this.mSwipeRefreshLayout = mSwipeRefreshLayout;
