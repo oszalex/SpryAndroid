@@ -84,7 +84,9 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
 
             @Override
             public void detail(int index) {
+                Event event = (Event) adapter.getItem(index);
                 Intent it = new Intent(EventActivity.this, EventDetailActivity.class);
+                it.putExtra(C.EXTRA_EVENT_ID, event.getId());
                 startActivity(it);
             }
         });

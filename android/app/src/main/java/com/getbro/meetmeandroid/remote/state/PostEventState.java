@@ -43,12 +43,12 @@ public class PostEventState extends RemoteState {
         //  "description":"Das ist bis zu 140 Zeichen lang",
         //  "isPublic":"true",
         //  "keywords":["LULU","kw2"]}
-        object.addProperty("start_time", String.valueOf(DateTime.now().getMillis()+40*100*20000));
-        object.addProperty("min_attending", String.valueOf(0));
-        object.addProperty("isPublic", String.valueOf(true));
-        object.addProperty("price", String.valueOf(0));
-        object.addProperty("description", "desc...?");
-        object.addProperty("duration", String.valueOf(180));
+        object.addProperty("start_time", DateTime.now().getMillis()+40*100*20000);
+        object.addProperty("min_attending", 0);
+        object.addProperty("isPublic", true);
+        object.addProperty("price", 0);
+        object.addProperty("description", "desc...");
+        object.addProperty("duration", 180);
         JsonArray keyWords = new JsonArray();
         int count = 0;
         for (Suggestion sel : selectionList) {

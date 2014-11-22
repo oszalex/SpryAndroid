@@ -21,4 +21,15 @@ public enum SuggestionTypes{
     public int getColorRes() {
         return colorRes;
     }
+
+    public static SuggestionTypes of(String text) {
+        if (text.startsWith("#")) {
+            return TAG;
+        } else if (text.startsWith("%")) {
+            return DATETIME;
+        } else if (text.startsWith("@")) {
+            return PLACE;
+        }
+        return PERSON;
+    }
 }
