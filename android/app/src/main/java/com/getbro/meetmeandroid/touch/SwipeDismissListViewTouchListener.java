@@ -265,6 +265,11 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 
                 final float velocityX = Math.abs(mVelocityTracker.getXVelocity());
                 final float deltaX = motionEvent.getRawX() - mDownX;
+
+                if (mDownView != null && Math.abs(deltaX) < 25) {
+                    mCallbacks.detail(mChildIndex);
+                }
+
                 if (deltaX < 0 && Math.abs(deltaX) > 100) {
                     mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
                     swipe(mChildIndex,false, Math.abs(deltaX) < mThresholdDistance);
@@ -275,22 +280,6 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     resetTranslation();
                 }
 
-                if (mDownView != null) {
-                    Rect rect = new Rect();
-                    int[] listViewCoords = new int[2];
-                    mListView.getLocationOnScreen(listViewCoords);
-                    int x = (int) motionEvent.getRawX() - listViewCoords[0];
-                    int y = (int) motionEvent.getRawY() - listViewCoords[1];
-                    View parent = (View) mDownView.getParent();
-                    mDownView.getHitRect(rect);
-                    rect.top += parent.getTop();
-                    rect.bottom += parent.getTop();
-                    if (rect.contains(x, y)) {
-                        if (mState == SwipeState.NONE) {
-                            mCallbacks.detail(mChildIndex);
-                        }
-                    }
-                }
 
                 resetSwipe();
                 break;

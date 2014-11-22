@@ -8,6 +8,7 @@
         <!-- Customize your theme here. -->
 
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:statusBarColor">@color/menuBarTopBorder</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
