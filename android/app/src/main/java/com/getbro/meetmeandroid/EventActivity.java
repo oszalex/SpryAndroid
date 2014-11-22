@@ -13,10 +13,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 
 import com.getbro.meetmeandroid.adapter.EventAdapter;
+import com.getbro.meetmeandroid.generate.Event;
 import com.getbro.meetmeandroid.generate.LocalSession;
 import com.getbro.meetmeandroid.remote.RemoteCallback;
 import com.getbro.meetmeandroid.remote.RemoteResponse;
-import com.getbro.meetmeandroid.remote.state.EventsGetState;
+import com.getbro.meetmeandroid.remote.state.GetEventsState;
+import com.getbro.meetmeandroid.remote.state.PostInvitationState;
 import com.getbro.meetmeandroid.touch.SwipeDismissListViewTouchListener;
 import com.getbro.meetmeandroid.util.C;
 
@@ -48,25 +50,42 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
 
         checkAuth();
 
+        final AppCtx appCtx = app.getCtx();
         SwipeDismissListViewTouchListener listener = new SwipeDismissListViewTouchListener(getListView(), new SwipeDismissListViewTouchListener.SwipeCallback() {
             @Override
-            public void swipe(boolean left, View view) {
+            public void accept(int index) {
+                Event event = (Event) adapter.getItem(index);
+                event.setAcceptState(C.EVENT_STATE_ATTENDIN);
+                app.getSession().saveEvent(event);
+                reloadAdapter();
+
+                new PostInvitationState(appCtx, event).start();
             }
 
             @Override
-            public void accept(int index) {
-                Toast.makeText(EventActivity.this, "ACCEPT " + index, Toast.LENGTH_SHORT).show();
+            public void maybe(int index) {
+                Event event = (Event) adapter.getItem(index);
+                event.setAcceptState(C.EVENT_STATE_MAYBE);
+                app.getSession().saveEvent(event);
+                reloadAdapter();
+
+                new PostInvitationState(appCtx, event).start();
             }
 
             @Override
             public void decline(int index) {
-                Toast.makeText(EventActivity.this, "DECLINE " + index, Toast.LENGTH_SHORT).show();
+                Event event = (Event) adapter.getItem(index);
+                event.setAcceptState(C.EVENT_STATE_NOT_ATTENDING);
+                app.getSession().saveEvent(event);
+                reloadAdapter();
+
+                new PostInvitationState(appCtx, event).start();
             }
 
             @Override
             public void detail(int index) {
-                Toast.makeText(EventActivity.this, "DETAIL " + index, Toast.LENGTH_SHORT).show();
-
+                Intent it = new Intent(EventActivity.this, EventDetailActivity.class);
+                startActivity(it);
             }
         });
         listener.setmSwipeRefreshLayout(swipeRefreshLayout);
@@ -90,8 +109,8 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
     }
 
     private void reloadAdapter() {
-        Cursor cursor = session.queryEvents().cursor();
-        adapter = new EventAdapter(EventActivity.this, cursor, false);
+        Cursor cursor = session.queryEvents().where("accept_state != 'NOT_ATTENDING'").cursor();
+        adapter = new EventAdapter(app, cursor, false);
         getListView().setAdapter(adapter);
     }
 
@@ -116,7 +135,7 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
      */
     @Override
     public void onRefresh() {
-        EventsGetState state = new EventsGetState(app.getCtx());
+        GetEventsState state = new GetEventsState(app.getCtx());
         state.setCallback(new RemoteCallback() {
             @Override
             public void onRequestOk(RemoteResponse response) {

@@ -94,7 +94,6 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
     private int mViewWidth = 1; // 1 and not 0 to prevent dividing by zero
 
     // Transient properties
-    private List<PendingDismissData> mPendingDismisses = new ArrayList<PendingDismissData>();
     private int mDismissAnimationRefCount = 0;
     private float mDownX;
     private float mDownY;
@@ -105,8 +104,6 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
     private View mDownView;
     private View mParentView;
     private boolean mPaused;
-    private View mLeft;
-    private View mRight;
     private SwipeState mState = SwipeState.NONE;
     private int mChildIndex;
 
@@ -114,17 +111,16 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
     /**
      * The distance when the touch cancels
      */
-    private float mThresholdDistance = 150;
+    private float mThresholdDistance = 250;
 
     /**
      * The callback interface used by {@link SwipeDismissListViewTouchListener} to inform its client
      * about a successful dismissal of one or more list item positions.
      */
     public interface SwipeCallback {
-
-        void swipe(boolean left, View view);
-
         void accept(int index);
+
+        void maybe(int index);
 
         void decline(int index);
 
@@ -207,21 +203,17 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     child.getHitRect(rect);
                     if (rect.contains(x, y)) {
                         mChildIndex = mListView.pointToPosition(x,y);
-                        Log.d("CHILD", "at " + i);
                         mDownView = child;
                         if (mDownView.findViewById(R.id.cell) != null) {
                             mDownView = mDownView.findViewById(R.id.cell);
                         }
+                        mParentView = child.findViewById(R.id.text1);
                         mParentView = child.findViewById(R.id.background);
-                        mLeft = child.findViewWithTag("yes");
-                        mRight = child.findViewWithTag("no");
                         break;
                     }
                 }
 
-
                 if (mDownView != null) {
-
                     mDownX = motionEvent.getRawX();
                     mDownY = motionEvent.getRawY();
                     mDownPosition = mListView.getPositionForView(mDownView);
@@ -236,6 +228,8 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                 }
 
                 mVelocityTracker.addMovement(motionEvent);
+                mVelocityTracker.computeCurrentVelocity(1000);
+
                 final float deltaX = motionEvent.getRawX() - mDownX;
                 float deltaY = motionEvent.getRawY() - mDownY;
                 if (Math.abs(deltaX) > mSlop && Math.abs(deltaY) < Math.abs(deltaX) * 2) {
@@ -257,8 +251,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                 }
 
                 if (mSwiping) {
-                    mDownView.setTranslationX(deltaX - mSwipingSlop);
-                    mParentView.setBackgroundColor(getColor(deltaX, mThresholdDistance));
+                    onSwipe(deltaX);
                     return true;
                 }
 
@@ -270,32 +263,17 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     break;
                 }
 
-
                 final float velocityX = Math.abs(mVelocityTracker.getXVelocity());
                 final float deltaX = motionEvent.getRawX() - mDownX;
-                if (velocityX > mMinFlingVelocity && velocityX < mMaxFlingVelocity) {
+                if (deltaX < 0 && Math.abs(deltaX) > 100) {
                     mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
-                    swipe(deltaX > 0, false);
-                }
-
-                /*
-                if (Math.abs(deltaX) > mThresholdDistance) {
+                    swipe(mChildIndex,false, Math.abs(deltaX) < mThresholdDistance);
+                } else if (deltaX > 0 && velocityX > mMinFlingVelocity && velocityX < mMaxFlingVelocity) {
                     mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
-                    float mul = 1;
-                    if (deltaX < 0) { mul = -1; }
-                    mDownView.animate()
-                            .translationX(mThresholdDistance * mul)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    mCallbacks.swipe(deltaX > 0, mParentView);
-                                }
-                            })
-                            .setDuration(mAnimationTime);
-                    mParentView.setBackgroundColor(getColor(deltaX, mThresholdDistance));
+                    swipe(mChildIndex,true, false);
                 } else {
                     resetTranslation();
-                }*/
+                }
 
                 if (mDownView != null) {
                     Rect rect = new Rect();
@@ -310,19 +288,6 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     if (rect.contains(x, y)) {
                         if (mState == SwipeState.NONE) {
                             mCallbacks.detail(mChildIndex);
-                        }
-                    } else {
-                        mLeft.getHitRect(rect);
-                        rect.top += parent.getTop();
-                        rect.bottom += parent.getTop();
-                        if (rect.contains(x, y)) {
-                            mCallbacks.accept(mChildIndex);
-                        }
-                        mRight.getHitRect(rect);
-                        rect.top += parent.getTop();
-                        rect.bottom += parent.getTop();
-                        if (rect.contains(x, y)) {
-                            mCallbacks.decline(mChildIndex);
                         }
                     }
                 }
@@ -354,20 +319,29 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
         return false;
     }
 
-    private int getColor(float deltaX, float mThresholdDistance) {
+    private void onSwipe(float deltaX) {
+        mDownView.setTranslationX(deltaX - mSwipingSlop);
+        mParentView.setBackgroundColor(getColor(deltaX, mDownView.getWidth()*((float)3/4)));
+    }
+
+    private int getColor(float deltaX, float threshold) {
         int color = Color.GREEN;
+        int from = Color.WHITE;
         if (deltaX < 0) {
-            color = Color.RED;
+            if (Math.abs(deltaX) > mThresholdDistance) {
+                color = Color.RED;
+            } else {
+                color = 0xfffa5000;
+            }
+            from = Color.YELLOW;
         }
 
-        float fraction = Math.abs(deltaX) / mThresholdDistance;
+        float fraction = Math.abs(deltaX) / threshold;
         if (fraction > 1) {
             fraction = 1;
         }
         ArgbEvaluator eval = new ArgbEvaluator();
-        Integer out =(Integer) eval.evaluate(fraction, Color.WHITE, color);
-
-        return out;
+        return (Integer) eval.evaluate(fraction, from, color);
     }
 
     private void resetTranslation() {
@@ -412,27 +386,48 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
         }
     }
 
-    private void swipe(boolean left, final boolean half) {
-        final ViewGroup.LayoutParams lp = mDownView.getLayoutParams();
-        ValueAnimator heightAnim = ValueAnimator.ofInt(mDownView.getHeight(), 1).setDuration(mAnimationTime);
-        heightAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-            }
-        });
-        heightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                lp.height = (Integer) valueAnimator.getAnimatedValue();
-                mDownView.setLayoutParams(lp);
-            }
-        });
+    private void swipe(final int index, final boolean left, final boolean half) {
+        final View view = mDownView;
+        final View parentView = mParentView;
+        final ViewGroup.LayoutParams lp = parentView.getLayoutParams();
+        if (!left && !half) {
+            ValueAnimator heightAnim = ValueAnimator.ofInt(parentView.getHeight(), 1).setDuration(mAnimationTime);
+            heightAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (left) {
+                        mCallbacks.accept(index);
+                    } else {
+                        if (half) {
+                            mCallbacks.maybe(index);
+                        } else {
+                            mCallbacks.decline(index);
+                        }
+                    }
+                }
+            });
+            heightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    lp.height = (Integer) valueAnimator.getAnimatedValue();
+                    parentView.setLayoutParams(lp);
+                }
+            });
+            heightAnim.start();
 
-        final float width = mDownView.getWidth();
-        mDownView.animate()
-                .translationX(left ? -width : width)
-                .setDuration(mAnimationTime);
+            final float width = view.getWidth();
+            view.animate()
+                    .translationX(width)
+                    .setDuration(mAnimationTime);
+        } else {
+            resetTranslation();
+            if (left) {
+                mCallbacks.accept(index);
+            } else {
+                mCallbacks.maybe(index);
+            }
+        }
+
     }
 
 

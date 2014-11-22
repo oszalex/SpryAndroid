@@ -27,7 +27,7 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
     private final AppCtx context;
     private final HttpMethod method;
     private final RemoteState state;
-    private String body;
+    private String body = null;
 
     public RemoteRequest(HttpMethod method, String route, RemoteState state) {
         this.method = method;
@@ -50,13 +50,13 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
         }
 
         httpRequest.setHeader("Content-Type", "application/json");
-        httpRequest.setHeader("Accept", "*/*");
+        httpRequest.setHeader("Accept", "application/json");
 
         if (body != null) {
-            HttpPost req = (HttpPost)httpRequest;
+            HttpEntityEnclosingRequestBase req = (HttpEntityEnclosingRequestBase)httpRequest;
             try {
                 StringEntity entity = new StringEntity(body);
-                req.setEntity(new ByteArrayEntity(body.getBytes()));
+                req.setEntity(entity);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -67,6 +67,7 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
             final HttpClient client = context.getClient();
             Log.d("HTTP", "request: " + httpRequest.getRequestLine().toString());
             HttpResponse httpResponse = client.execute(host, httpRequest);
+            Log.d("HTTP", "response: " + httpResponse.getStatusLine().toString());
 
             return new RemoteResponse(httpResponse);
         } catch (IOException e) {
@@ -77,7 +78,7 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
     }
 
     private String basicAuthBase64(String basicAuth) {
-        return Base64.encodeToString(basicAuth.getBytes(), Base64.DEFAULT);
+        return Base64.encodeToString(basicAuth.getBytes(), Base64.DEFAULT).trim();
     }
 
     private void respond(RemoteResponse response) {

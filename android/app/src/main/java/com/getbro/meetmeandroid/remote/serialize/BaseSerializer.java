@@ -31,6 +31,7 @@ public abstract class BaseSerializer<T> {
                 setObjectProperty(entry.getValue(), typed);
             }
         }
+        onDeserialize(target, object);
         return target;
     }
 
@@ -40,8 +41,12 @@ public abstract class BaseSerializer<T> {
         for (Map.Entry<String, String> entry : remoteResolutionMap.entrySet()) {
             object.add(entry.getKey(), getObjectProperty(entry.getValue()));
         }
+        onSerialize(target, object);
         return object;
     }
+
+    public abstract void onSerialize(T target, JsonObject data);
+    public abstract void onDeserialize(T target, JsonObject data);
 
     /**
      * Resolves

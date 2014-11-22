@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid.util;
+package com.getbro.meetmeandroid.view;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.getbro.meetmeandroid.R;
 import com.getbro.meetmeandroid.suggestion.Suggestion;
+import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,7 +43,15 @@ public class TagListView extends LinearLayout {
         }
 
         public String getText() {
-            return object.getValue();
+            String prefix = "";
+            if (object.getType() == SuggestionTypes.PLACE) {
+                prefix = "@";
+            } else if (object.getType() == SuggestionTypes.DATETIME) {
+                prefix = "%";
+            } else if (object.getType() == SuggestionTypes.TAG) {
+                prefix = "#";
+            }
+            return prefix + object.getValue();
         }
 
         public int getColor() {

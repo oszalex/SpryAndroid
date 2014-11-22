@@ -1,31 +1,23 @@
 package com.getbro.meetmeandroid.adapter;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.getbro.meetmeandroid.MeetMeApp;
 import com.getbro.meetmeandroid.R;
 import com.getbro.meetmeandroid.generate.Event;
-import com.getbro.meetmeandroid.generate.LocalSession;
-import com.getbro.meetmeandroid.old.APIEvent;
+import com.getbro.meetmeandroid.generate.Keyword;
+import com.getbro.meetmeandroid.util.C;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  * Created by chris on 28/07/14.
@@ -35,8 +27,11 @@ import java.util.regex.Pattern;
 public class EventAdapter extends CursorAdapter {
     final static String TAG = EventAdapter.class.toString();
 
-    public EventAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
+    private MeetMeApp app;
+
+    public EventAdapter(MeetMeApp app, Cursor c, boolean autoRequery) {
+        super(app, c, autoRequery);
+        this.app = app;
     }
 
     @Override
@@ -50,10 +45,34 @@ public class EventAdapter extends CursorAdapter {
         TextView creator = (TextView) view.findViewById(R.id.creator);
         TextView time = (TextView) view.findViewById(R.id.time);
         TextView desc= (TextView) view.findViewById(R.id.desc);
+        TextView keywords = (TextView) view.findViewById(R.id.keywords);
+
+        TextView state = (TextView) view.findViewById(R.id.state);
 
         Event event = Event.fromCursor(cursor);
 
-        creator.setText("by unkown");
+        List<Keyword> keywordList = event.loadKeywords(app.getSession()).all();
+        StringBuilder builder = new StringBuilder();
+        for (Keyword keyword : keywordList) {
+            builder.append(keyword.getText());
+            builder.append(" ");
+        }
+        keywords.setText(builder.toString());
+
+        if (C.EVENT_STATE_ATTENDIN.equals(event.getAcceptState())) {
+            state.setTextColor(Color.GREEN);
+            state.setText("i'm in");
+        } else if (C.EVENT_STATE_NOT_ATTENDING.equals(event.getAcceptState())) {
+            state.setTextColor(Color.RED);
+            state.setText("i'm out");
+        } else if (C.EVENT_STATE_MAYBE.equals(event.getAcceptState())) {
+            state.setTextColor(0xfffa5000);
+            state.setText("dunno");
+        } else {
+            state.setText(null);
+        }
+
+        creator.setText("by " + event.getUser());
         desc.setText(event.getDescription());
         time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));
     }
@@ -82,5 +101,11 @@ public class EventAdapter extends CursorAdapter {
             return (diff / min) + "m";
 
         return "just now";
+    }
+
+    @Override
+    public Object getItem(int position) {
+        Event event = Event.fromCursor((Cursor)super.getItem(position));
+        return event;
     }
 }

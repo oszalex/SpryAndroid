@@ -21,17 +21,17 @@ import java.util.List;
 /**
  * Created by rich on 21.11.14.
  */
-public class NewEventState extends RemoteState {
+public class PostEventState extends RemoteState {
 
     private final List<Suggestion> selectionList;
 
-    public NewEventState(AppCtx ctx, List<Suggestion> tags) {
+    public PostEventState(AppCtx ctx, List<Suggestion> tags) {
         super(ctx, true);
         this.selectionList = tags;
     }
 
     @Override
-    public RemoteRequest invoke() {
+    public RemoteRequest prepare() {
         RemoteRequest request = new RemoteRequest(HttpMethod.POST, "/happening/", this);
         JsonObject object = new JsonObject();
         // {"start_time":"1415827547072",

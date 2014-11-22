@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid;
+package com.getbro.meetmeandroid.old;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.getbro.meetmeandroid.util.ItemSelector;
+import com.getbro.meetmeandroid.R;
+import com.getbro.meetmeandroid.view.HorizontalItemSelector;
 
 
 public class NewEventIdeaActivity extends Activity {
@@ -58,10 +59,10 @@ public class NewEventIdeaActivity extends Activity {
 
     private static class SelectorViewHolder {
 
-        ItemSelector itemSelector;
+        HorizontalItemSelector itemSelector;
 
         public SelectorViewHolder(View view) {
-            itemSelector = (ItemSelector) view.findViewById(R.id.item_selector);
+            itemSelector = (HorizontalItemSelector) view.findViewById(R.id.item_selector);
         }
 
         public void addAll(String ... args) {

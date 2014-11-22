@@ -12,6 +12,6 @@
     <string name="phone_number">Phone number</string>
     <string name="action_add">Add</string>
     <string name="signin_please_wait">Sign up...</string>
-    <string name="title_activity_event_detail">MeetMe</string>
+    <string name="title_activity_event_detail"> </string>
 
 </resources>

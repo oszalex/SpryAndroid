@@ -1,7 +1,9 @@
 package com.getbro.meetmeandroid.remote;
 
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
@@ -10,14 +12,16 @@ import org.apache.http.client.methods.HttpRequestBase;
 public enum HttpMethod {
     GET,
     POST,
-    UPDATE,
-    DELETE;
+    DELETE,
+    PUT;
 
     public HttpRequestBase freshRequest(String url) {
         switch (this) {
             case GET: return new HttpGet(url);
             case POST: return new HttpPost(url);
-            default: return null;
+            case PUT: return new HttpPut(url);
+            case DELETE: return new HttpDelete(url);
+            default: throw new IllegalArgumentException("you forgot to implement me");
         }
     }
 

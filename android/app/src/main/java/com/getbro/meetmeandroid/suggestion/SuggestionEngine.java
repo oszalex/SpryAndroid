@@ -70,6 +70,7 @@ public class SuggestionEngine {
         if (args == null) {
             args = new Bundle();
         }
+
         //Suggestion lastAdded = args.getParcelable(C.EXTRA_LAST_ADDED);
         //Suggestion lastRemoved = args.getParcelable(C.EXTRA_LAST_REMOVED);
 

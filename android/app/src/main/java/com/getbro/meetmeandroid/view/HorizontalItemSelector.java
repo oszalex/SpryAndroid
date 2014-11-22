@@ -1,4 +1,4 @@
-package com.getbro.meetmeandroid.util;
+package com.getbro.meetmeandroid.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by rich on 20.11.14.
  */
-public class ItemSelector extends HorizontalScrollView {
+public class HorizontalItemSelector extends HorizontalScrollView {
 
     public static interface SelectionCallback {
         void onSelection(int index, Object object);
@@ -35,12 +35,12 @@ public class ItemSelector extends HorizontalScrollView {
     private boolean selectedOne = false;
     private SelectionCallback callback;
 
-    public ItemSelector(Context context, AttributeSet attrs) {
+    public HorizontalItemSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ItemSelector(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public HorizontalItemSelector(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

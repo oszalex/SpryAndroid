@@ -23,7 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class EventRecordBuilder extends RecordBuilder<Event>{
     public EventRecordBuilder(SQLiteDatabase db){
-        super("events", new String[] { "user", "start_time", "description", "duration", "max_attending", "min_attending", "price", "is_public", "_id" }, db);
+        super("events", new String[] { "user", "start_time", "remote_id", "description", "duration", "max_attending", "min_attending", "price", "is_public", "accept_state", "_id" }, db);
     }
     @Override
     public java.util.List<Event> all(android.database.Cursor c){

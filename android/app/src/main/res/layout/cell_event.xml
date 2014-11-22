@@ -2,42 +2,21 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/background"
     android:layout_width="match_parent"
+    android:id="@+id/background"
     android:layout_height="wrap_content">
-    <LinearLayout
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/text1"
+        android:padding="25dp"
+        android:tag="no"
+        android:textStyle="bold"
+        android:text=""
+        android:textAppearance="?android:textAppearanceLargeInverse"
+        />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/leftView"
-            android:gravity="center|left"
-            android:textSize="32dp"
-            android:padding="25dp"
-            android:tag="yes"
-            android:text="✓"
-            android:textStyle="bold"
-            android:textAppearance="?android:textAppearanceLargeInverse"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="right|center"
-            android:layout_height="match_parent"
-            android:id="@+id/rightView"
-            android:padding="25dp"
-            android:tag="no"
-            android:textSize="32dp"
-            android:textStyle="bold"
-            android:text="x"
-            android:textAppearance="?android:textAppearanceLargeInverse"
-            />
-
-    </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -53,20 +32,10 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/gray"
-                android:text="eat something now"
-                android:textStyle="bold"
-                android:textSize="22sp"/>
-
-            <TextView
-                android:id="@+id/rawPost"
-                android:layout_below="@+id/desc"
+                android:id="@+id/keywords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/lightergray"
+                android:textColor="@color/gray"
                 android:text="#hunger #essen @vapiano"
                 android:textSize="18sp"
                 android:layout_alignParentLeft="true"
@@ -74,9 +43,17 @@
                 android:layout_toStartOf="@+id/time" />
 
             <TextView
+                android:id="@+id/desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/keywords"
+                android:textColor="@color/lightergray"
+                android:text="eat something now"
+                android:textSize="22sp"/>
+
+            <TextView
                 android:id="@+id/time"
                 android:textColor="#acacac"
-                android:layout_below="@+id/desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2w"
@@ -85,19 +62,29 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
+            <TextView
+                android:id="@+id/creator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#acacac"
+                android:textSize="16sp"
+                android:text="by Christian Hotz-Behofsits"
+                android:layout_below="@+id/desc"
+                android:layout_toLeftOf="@+id/state"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:id="@+id/state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="ok"
+                android:layout_below="@+id/desc"
+                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@+id/state"
+                android:textStyle="italic"/>
 
         </RelativeLayout>
-        <TextView
-            android:id="@+id/creator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#acacac"
-            android:textSize="16sp"
-            android:text="by Christian Hotz-Behofsits"
-            android:layout_below="@+id/rawPost"
-            android:textStyle="italic"/>
-
-
 
     </LinearLayout>
 </FrameLayout>

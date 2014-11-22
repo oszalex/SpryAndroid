@@ -35,15 +35,17 @@ public class EventRecord{
         }
     }
     public void insert(SQLiteDatabase db, AbstractEvent record){
-        ContentValues values = new ContentValues(8);
+        ContentValues values = new ContentValues(10);
         values.put("user", record.getUser());
         values.put("start_time", record.getStartTime());
+        values.put("remote_id", record.getRemoteId());
         values.put("description", record.getDescription());
         values.put("duration", record.getDuration());
         values.put("max_attending", record.getMaxAttending());
         values.put("min_attending", record.getMinAttending());
         values.put("price", Double.doubleToLongBits(record.getPrice()));
         values.put("is_public", record.getIsPublic());
+        values.put("accept_state", record.getAcceptState());
         long id = db.insert("events", null, values);
         record.setId(id);
         primaryKeyCache.put(id, (Event)record);
@@ -53,17 +55,19 @@ public class EventRecord{
         if (cached != null){
             return cached;
         }
-        Cursor c = db.rawQuery("select user, start_time, description, duration, max_attending, min_attending, price, is_public, _id from events where _id = ?;", new String[] { Long.toString(id) });
+        Cursor c = db.rawQuery("select user, start_time, remote_id, description, duration, max_attending, min_attending, price, is_public, accept_state, _id from events where _id = ?;", new String[] { Long.toString(id) });
         if (c.moveToFirst()){
             Event record = new Event();
             record.setUser(c.getString(c.getColumnIndex("user")));
             record.setStartTime(c.getLong(c.getColumnIndex("start_time")));
+            record.setRemoteId(c.getLong(c.getColumnIndex("remote_id")));
             record.setDescription(c.getString(c.getColumnIndex("description")));
             record.setDuration(c.getInt(c.getColumnIndex("duration")));
             record.setMaxAttending(c.getInt(c.getColumnIndex("max_attending")));
             record.setMinAttending(c.getInt(c.getColumnIndex("min_attending")));
             record.setPrice(Double.longBitsToDouble(c.getLong(c.getColumnIndex("price"))));
             record.setIsPublic((c.getInt(c.getColumnIndex("is_public")) != 0));
+            record.setAcceptState(c.getString(c.getColumnIndex("accept_state")));
             record.setId(c.getLong(c.getColumnIndex("_id")));
             primaryKeyCache.put(id, record);
             return record;
@@ -75,15 +79,17 @@ public class EventRecord{
         primaryKeyCache.remove(id);
     }
     public void update(SQLiteDatabase db, AbstractEvent record){
-        ContentValues values = new ContentValues(8);
+        ContentValues values = new ContentValues(10);
         values.put("user", record.getUser());
         values.put("start_time", record.getStartTime());
+        values.put("remote_id", record.getRemoteId());
         values.put("description", record.getDescription());
         values.put("duration", record.getDuration());
         values.put("max_attending", record.getMaxAttending());
         values.put("min_attending", record.getMinAttending());
         values.put("price", Double.doubleToLongBits(record.getPrice()));
         values.put("is_public", record.getIsPublic());
+        values.put("accept_state", record.getAcceptState());
         long id = record.getId();
         db.update("events", values, "_id = ?", new String[] { Long.toString(id) });
     }

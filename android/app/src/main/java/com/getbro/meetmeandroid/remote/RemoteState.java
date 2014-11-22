@@ -26,7 +26,7 @@ public abstract class RemoteState implements RemoteCallback {
         this.useAuth = useAuth;
     }
 
-    public abstract RemoteRequest invoke();
+    public abstract RemoteRequest prepare();
 
     public void setCallback(RemoteCallback callback) {
         this.userCallback = callback;
@@ -34,6 +34,11 @@ public abstract class RemoteState implements RemoteCallback {
 
     public RemoteCallback getUserCallback() {
         return userCallback;
+    }
+
+
+    public void start() {
+        context.invoke(this);
     }
 
     @Override

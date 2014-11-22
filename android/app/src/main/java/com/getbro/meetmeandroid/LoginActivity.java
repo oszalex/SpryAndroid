@@ -1,11 +1,8 @@
 package com.getbro.meetmeandroid;
 
-import android.annotation.TargetApi;
-
 import android.app.Activity;
 
 import android.app.ProgressDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,8 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.remote.state.AuthState;
-import com.getbro.meetmeandroid.remote.state.RegisterState;
+import com.getbro.meetmeandroid.remote.state.PostAuthState;
+import com.getbro.meetmeandroid.remote.state.PostRegisterState;
 import com.getbro.meetmeandroid.remote.RemoteCallback;
 import com.getbro.meetmeandroid.remote.RemoteResponse;
 import com.neovisionaries.i18n.CountryCode;
@@ -165,7 +162,7 @@ public class LoginActivity extends Activity {
 
         MeetMeApp app = (MeetMeApp)getApplication();
 
-        RegisterState register = new RegisterState(getPhoneNumber(), app.getCtx());
+        PostRegisterState register = new PostRegisterState(getPhoneNumber(), app.getCtx());
         register.setCallback(registerCallback);
         app.getCtx().invoke(register);
 
@@ -182,7 +179,7 @@ public class LoginActivity extends Activity {
 
 
             MeetMeApp app = (MeetMeApp)getApplication();
-            AuthState auth = new AuthState(getPhoneNumber(), token, app.getCtx());
+            PostAuthState auth = new PostAuthState(getPhoneNumber(), token, app.getCtx());
             auth.setCallback(authCallback);
             app.getCtx().invoke(auth);
         }

@@ -12,19 +12,19 @@ import com.google.gson.JsonObject;
 /**
  * Created by rich on 10.11.14.
  */
-public class AuthState extends RemoteState {
+public class PostAuthState extends RemoteState {
 
     private final String token;
     private final String phoneNumber;
 
-    public AuthState(String phoneNumber, String token, AppCtx ctx) {
+    public PostAuthState(String phoneNumber, String token, AppCtx ctx) {
         super(ctx);
         this.token = token;
         this.phoneNumber = phoneNumber;
     }
 
     @Override
-    public RemoteRequest invoke() {
+    public RemoteRequest prepare() {
         return new RemoteRequest(HttpMethod.POST, "/activate/"+phoneNumber+"/"+token, this);
     }
 

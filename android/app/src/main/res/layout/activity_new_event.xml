@@ -16,23 +16,23 @@
         android:text="Go a head and select your tags"
         />
 
-    <com.getbro.meetmeandroid.util.TagListView
+    <com.getbro.meetmeandroid.view.TagListView
         android:id="@+id/selected_list_view"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/textView"
         android:layout_height="wrap_content">
 
-    </com.getbro.meetmeandroid.util.TagListView>
+    </com.getbro.meetmeandroid.view.TagListView>
 
-    <com.getbro.meetmeandroid.util.TagListView
+    <com.getbro.meetmeandroid.view.TagListView
         android:id="@+id/proposed_list_view"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_below="@id/selected_list_view"
         android:layout_height="wrap_content">
 
-    </com.getbro.meetmeandroid.util.TagListView>
+    </com.getbro.meetmeandroid.view.TagListView>
 
     <Button
         android:layout_width="match_parent"

@@ -1,10 +1,8 @@
 package com.getbro.meetmeandroid;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
-import android.content.CursorLoader;
 import android.content.Loader;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +11,11 @@ import android.widget.Toast;
 import com.getbro.meetmeandroid.remote.RemoteCallback;
 import com.getbro.meetmeandroid.remote.RemoteResponse;
 import com.getbro.meetmeandroid.remote.RemoteState;
-import com.getbro.meetmeandroid.remote.state.NewEventState;
+import com.getbro.meetmeandroid.remote.state.PostEventState;
 import com.getbro.meetmeandroid.suggestion.Suggestion;
 import com.getbro.meetmeandroid.suggestion.SuggestionEngine;
-import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
 import com.getbro.meetmeandroid.util.C;
-import com.getbro.meetmeandroid.util.TagListView;
+import com.getbro.meetmeandroid.view.TagListView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -108,7 +105,7 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             suggestions.add(tag.getObject());
         }
         MeetMeApp app = (MeetMeApp) getApplication();
-        RemoteState state = new NewEventState(app.getCtx(), suggestions);
+        RemoteState state = new PostEventState(app.getCtx(), suggestions);
         state.setCallback(new RemoteCallback() {
             @Override
             public void onRequestOk(RemoteResponse response) {

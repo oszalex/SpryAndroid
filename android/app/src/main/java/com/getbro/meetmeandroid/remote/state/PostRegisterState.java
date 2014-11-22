@@ -11,17 +11,17 @@ import java.util.Collections;
 /**
  * Created by rich on 10.11.14.
  */
-public class RegisterState extends RemoteState {
+public class PostRegisterState extends RemoteState {
 
     private String phoneNumber;
 
-    public RegisterState(String phoneNumber, AppCtx context) {
+    public PostRegisterState(String phoneNumber, AppCtx context) {
         super(context);
         this.phoneNumber = phoneNumber;
     }
 
     @Override
-    public RemoteRequest invoke() {
+    public RemoteRequest prepare() {
         return new RemoteRequest(HttpMethod.POST, "/register/"+phoneNumber, this);
     }
 
