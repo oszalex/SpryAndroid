@@ -1,8 +1,11 @@
 package com.getbro.meetmeandroid.adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,33 +64,33 @@ public class EventAdapter extends CursorAdapter {
 
         if (C.EVENT_STATE_ATTENDIN.equals(event.getAcceptState())) {
             state.setTextColor(Color.GREEN);
-            state.setText("i'm in");
+            state.setText("ATTENDING");
         } else if (C.EVENT_STATE_NOT_ATTENDING.equals(event.getAcceptState())) {
             state.setTextColor(Color.RED);
             state.setText("i'm out");
         } else if (C.EVENT_STATE_MAYBE.equals(event.getAcceptState())) {
             state.setTextColor(0xfffa5000);
-            state.setText("dunno");
+            state.setText("MAYBE");
         } else {
             state.setText(null);
         }
-        long creatorID = event.getId();
-        String creatorname = getContactName(creatorID);
-        creator.setText("by " + );
+        String creatorID = event.getUser();
+        String creatorname = getContactName(context, creatorID);
+        creator.setText("by " + creatorname);
         desc.setText(event.getDescription());
         time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));
     }
     //http://stackoverflow.com/questions/3079365/android-retrieve-contact-name-from-phone-number
     public static String getContactName(Context context, String phoneNumber) {
         ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{PhoneLookup.DISPLAY_NAME}, null, null, null);
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor == null) {
             return null;
         }
         String contactName = null;
         if(cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
 
         if(cursor != null && !cursor.isClosed()) {

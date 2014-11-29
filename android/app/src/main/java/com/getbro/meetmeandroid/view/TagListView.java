@@ -44,13 +44,14 @@ public class TagListView extends LinearLayout {
 
         public String getText() {
             String prefix = "";
-            if (object.getType() == SuggestionTypes.PLACE) {
+            //FIXME: Prefixes auskommentiert, brauch ma die?
+            /*if (object.getType() == SuggestionTypes.PLACE) {
                 prefix = "@";
             } else if (object.getType() == SuggestionTypes.DATETIME) {
                 prefix = "%";
             } else if (object.getType() == SuggestionTypes.TAG) {
                 prefix = "#";
-            }
+            }*/
             return prefix + object.getValue();
         }
 

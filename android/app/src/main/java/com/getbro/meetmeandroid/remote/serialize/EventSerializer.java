@@ -23,6 +23,8 @@ public class EventSerializer extends BaseSerializer<Event> {
         map.put("min_attending","mMinAttending");
         map.put("price","mPrice");
         map.put("id","mRemoteId");
+        map.put("creatorID","mUser");
+        //map.put("location","mLocation");
         return map;
     }
 
