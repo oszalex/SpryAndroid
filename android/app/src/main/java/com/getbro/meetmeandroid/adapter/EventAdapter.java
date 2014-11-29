@@ -71,10 +71,30 @@ public class EventAdapter extends CursorAdapter {
         } else {
             state.setText(null);
         }
-
-        creator.setText("by " + event.getUser());
+        long creatorID = event.getId();
+        String creatorname = getContactName(creatorID);
+        creator.setText("by " + );
         desc.setText(event.getDescription());
         time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));
+    }
+    //http://stackoverflow.com/questions/3079365/android-retrieve-contact-name-from-phone-number
+    public static String getContactName(Context context, String phoneNumber) {
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        String contactName = null;
+        if(cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+        }
+
+        if(cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return contactName;
     }
 
     public static String getRelativeTimeSpan(Date time) {
