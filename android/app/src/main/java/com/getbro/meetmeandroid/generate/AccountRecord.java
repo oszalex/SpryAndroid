@@ -1,6 +1,6 @@
 /* Copyright (c) 2013, Richard Plangger <rich@pasra.at> All rights reserved.
  *
- * Android Record version 0.1.0 generated this file. For more
+ * Android Record version 0.1.4 generated this file. For more
  * information see http://record.pasra.at/
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
@@ -20,6 +20,7 @@ package com.getbro.meetmeandroid.generate;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
+import com.getbro.meetmeandroid.generate.Account;
 
 public class AccountRecord{
     private final java.util.Map<Long, Account> primaryKeyCache = new java.util.HashMap<Long, Account>();

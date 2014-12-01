@@ -1,0 +1,26 @@
+/* AUTO GENERATED. DO NOT MODIFY
+ * This file has the sole purpose of displaying the current database layout.
+ */
+create_table account{
+  number { type 'string', default '""'}
+  secret { type 'string', default '""'}
+  _id { type 'long', default 'new Long(0L)'}
+}
+create_table event{
+  user { type 'string', default '""'}
+  start_time { type 'long', default 'new Long(0L)'}
+  remote_id { type 'long', default 'new Long(0L)'}
+  description { type 'string', default '""'}
+  duration { type 'integer', default 'new Integer(0)'}
+  max_attending { type 'integer', default 'new Integer(0)'}
+  min_attending { type 'integer', default 'new Integer(0)'}
+  price { type 'double', default '0.0'}
+  is_public { type 'boolean', default 'new Boolean(false)'}
+  accept_state { type 'string', default '""'}
+  _id { type 'long', default 'new Long(0L)'}
+}
+create_table keyword{
+  text { type 'string', default '""'}
+  event_id { type 'long', default 'new Long(0L)'}
+  _id { type 'long', default 'new Long(0L)'}
+}

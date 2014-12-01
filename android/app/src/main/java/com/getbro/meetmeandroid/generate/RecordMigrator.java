@@ -1,6 +1,6 @@
 /* Copyright (c) 2013, Richard Plangger <rich@pasra.at> All rights reserved.
  *
- * Android Record version 0.1.0 generated this file. For more
+ * Android Record version 0.1.4 generated this file. For more
  * information see http://record.pasra.at/
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
@@ -54,7 +54,7 @@ public class RecordMigrator implements Migrator{
     }
     @Override
     public void migrate(long currentVersion, long targetVersion){
-        db.execSQL("insert or replace into android_record_configs (key,value) values ('generator_version','0.1.0')");
+        db.execSQL("insert or replace into android_record_configs (key,value) values ('generator_version','0.1.4')");
         if (currentVersion < targetVersion && currentVersion < 20141113125812L){
             db.execSQL("create table accounts (number text , secret text , _id integer primary key);");
             db.execSQL("create table events (user text , start_time integer , remote_id integer , description text , duration integer , max_attending integer , min_attending integer , price long , is_public integer , accept_state text , _id integer primary key);");

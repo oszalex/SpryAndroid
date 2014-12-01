@@ -35,7 +35,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'joda-time:joda-time:2.5'
     compile 'com.koushikdutta.ion:ion:1.3.8'
-    compile 'at.pasra.record.library:library:0.1.3@aar'
+    compile 'at.pasra.record.library:library:0.1.4@aar'
     compile 'org.apache.commons:commons-csv:1.0'
     compile 'com.neovisionaries:nv-i18n:1.14'
     //compile 'com.android.support:support-v4:21.0.1'

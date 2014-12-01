@@ -18,31 +18,11 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.getbro.meetmeandroid.generate;
 
-import com.getbro.meetmeandroid.generate.Account;
-import at.pasra.record.RecordBuilder;
+import com.getbro.meetmeandroid.generate.Keyword;
 
-public class AbstractAccount{
-    protected java.lang.String mNumber;
-    protected java.lang.String mSecret;
-    protected java.lang.Long mId;
+public class KeywordConverter{
     
-    public AbstractAccount(java.lang.Long id){
-        this.mId = id;
-        this.mNumber = "";
-        this.mSecret = "";
+    public static void serialize(Keyword entity){
     }
     
-    public java.lang.String getNumber() { return mNumber; }
-    public void setNumber(java.lang.String value) { mNumber = value; }
-    public java.lang.String getSecret() { return mSecret; }
-    public void setSecret(java.lang.String value) { mSecret = value; }
-    public java.lang.Long getId() { return mId; }
-    public void setId(java.lang.Long value) { mId = value; }
-    public static Account fromCursor(android.database.Cursor cursor){
-        Account record = new Account();
-        record.setNumber(cursor.getString(cursor.getColumnIndex("number")));
-        record.setSecret(cursor.getString(cursor.getColumnIndex("secret")));
-        record.setId(cursor.getLong(cursor.getColumnIndex("_id")));
-        return record;
-    }
 }
