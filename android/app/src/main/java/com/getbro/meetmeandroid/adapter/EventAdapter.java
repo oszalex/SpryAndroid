@@ -28,7 +28,7 @@ import java.util.List;
 
 
 public class EventAdapter extends CursorAdapter {
-    final static String TAG = EventAdapter.class.toString();
+    final static String TAG = "EVENT";
 
     private MeetMeApp app;
 
@@ -110,8 +110,6 @@ public class EventAdapter extends CursorAdapter {
         long w = d * 7;
 
         long diff = Math.abs(current - time_milli);
-
-        Log.i(TAG, "time difference: " + diff);
 
         //greater than a week
         if (diff > w)

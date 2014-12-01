@@ -22,7 +22,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.os.SystemClock;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -30,16 +29,11 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewPropertyAnimator;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.getbro.meetmeandroid.R;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A {@link View.OnTouchListener} that makes the list items in a {@link ListView}
@@ -87,6 +81,10 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
     private long mAnimationTime;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private int previousFirstVisibleItem = 0;
+    private long previousEventTime = 0;
+    private double scrollSpeed = 0;
+    private boolean mStoppedScrolling = false;
 
     // Fixed properties
     private ListView mListView;
@@ -171,7 +169,20 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
             }
 
             @Override
-            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalVisibleItemCount) {
+                if (previousFirstVisibleItem != firstVisibleItem){
+                    long currTime = System.currentTimeMillis();
+                    long timeToScrollOneElement = currTime - previousEventTime;
+                    scrollSpeed = ((double)1/timeToScrollOneElement)*1000;
+
+                    if (scrollSpeed < 0.2) {
+                        scrollSpeed = 0;
+                    }
+
+                    previousFirstVisibleItem = firstVisibleItem;
+                    previousEventTime = currTime;
+
+                }
             }
         };
     }
@@ -189,6 +200,15 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                 }
 
                 mState = SwipeState.NONE;
+                mStoppedScrolling = false;
+
+                Log.d("TOUCH", "scroll velocity is: ");
+
+                if (getScrollSpeed() > 0)  {
+                    mListView.scrollTo(mListView.getScrollX(), mListView.getScrollY());
+                    scrollSpeed = 0;
+                    mStoppedScrolling = true;
+                }
 
                 // Find the child view that was touched (perform a hit test)
                 Rect rect = new Rect();
@@ -202,7 +222,7 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                     child = mListView.getChildAt(i);
                     child.getHitRect(rect);
                     if (rect.contains(x, y)) {
-                        mChildIndex = mListView.pointToPosition(x,y);
+                        mChildIndex = mListView.pointToPosition(x, y);
                         mDownView = child;
                         if (mDownView.findViewById(R.id.cell) != null) {
                             mDownView = mDownView.findViewById(R.id.cell);
@@ -266,16 +286,17 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
                 final float velocityX = Math.abs(mVelocityTracker.getXVelocity());
                 final float deltaX = motionEvent.getRawX() - mDownX;
 
-                if (mDownView != null && Math.abs(deltaX) < 25) {
+                if (mDownView != null && Math.abs(deltaX) < 5 && !mStoppedScrolling) {
                     mCallbacks.detail(mChildIndex);
                 }
 
                 if (deltaX < 0 && Math.abs(deltaX) > 100) {
                     mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
-                    swipe(mChildIndex,false, Math.abs(deltaX) < mThresholdDistance);
-                } else if (deltaX > 0 && velocityX > mMinFlingVelocity && velocityX < mMaxFlingVelocity) {
+                    swipe(mChildIndex, false, Math.abs(deltaX) < mThresholdDistance);
+                //} else if (deltaX > 0 && velocityX > mMinFlingVelocity && velocityX < mMaxFlingVelocity) { // this enforces a certain amount of force to be applyed to the left
+                } else if (deltaX > 0 && Math.abs(deltaX) > 100) {
                     mState = deltaX > 0 ? SwipeState.LEFT : SwipeState.RIGHT;
-                    swipe(mChildIndex,true, false);
+                    swipe(mChildIndex, true, false);
                 } else {
                     resetTranslation();
                 }
@@ -359,22 +380,6 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
         mSwiping = false;
     }
 
-    class PendingDismissData implements Comparable<PendingDismissData> {
-        public int position;
-        public View view;
-
-        public PendingDismissData(int position, View view) {
-            this.position = position;
-            this.view = view;
-        }
-
-        @Override
-        public int compareTo(PendingDismissData other) {
-            // Sort by descending position
-            return other.position - position;
-        }
-    }
-
     private void swipe(final int index, final boolean left, final boolean half) {
         final View view = mDownView;
         final View parentView = mParentView;
@@ -422,6 +427,10 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
 
     public void setmSwipeRefreshLayout(SwipeRefreshLayout mSwipeRefreshLayout) {
         this.mSwipeRefreshLayout = mSwipeRefreshLayout;
+    }
+
+    public double getScrollSpeed() {
+        return scrollSpeed;
     }
 }
 
