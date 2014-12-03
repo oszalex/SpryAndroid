@@ -58,7 +58,8 @@ public class SuggestionEngine {
         friends.addAll(MeetMeApp.getfavcontacts());
         //25 TOP Kontakte laden TODO: check ob genug da sind? Auftelung im View geht besser
         //TODO: Gruppen hinzufügen und nach erstellen fragen ob Gruppe erstellt werden soll
-        friends = friends.subList(0, 25);
+
+        friends = friends.subList(0, Math.min(25, friends.size()));
         defaultSuggestions.put(SuggestionTypes.PERSON, friends);
 
         List<Suggestion> tags = new LinkedList<Suggestion>();

@@ -135,7 +135,7 @@ public class SwipeDismissListViewTouchListener extends ShowHideOnScroll implemen
      *                  dismiss one or more list items.
      */
     public SwipeDismissListViewTouchListener(ListView listView, SwipeCallback callbacks, FloatingActionButton fab) {
-        super(fab);
+        super(fab, R.anim.floating_action_button_show, R.anim.floating_action_button_hide);
         ViewConfiguration vc = ViewConfiguration.get(listView.getContext());
         mSlop = vc.getScaledTouchSlop();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity() * 16;
@@ -338,7 +338,7 @@ public class SwipeDismissListViewTouchListener extends ShowHideOnScroll implemen
     }
 
     private int getColor(float deltaX, float threshold) {
-        int color = Color.GREEN;
+        int color = 0x008BC34A; //Color.GREEN;
         int from = Color.WHITE;
         if (deltaX < 0) {
             if (Math.abs(deltaX) > mThresholdDistance) {
