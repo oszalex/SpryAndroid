@@ -1,16 +1,16 @@
 package com.getbro.meetmeandroid.suggestion;
 
-import android.app.Application;
 import android.os.Bundle;
 
 import com.getbro.meetmeandroid.MeetMeApp;
-import com.getbro.meetmeandroid.generate.LocalSession;
 import com.getbro.meetmeandroid.util.C;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,51 +19,61 @@ import java.util.Map;
  */
 public class SuggestionEngine {
     private static SuggestionEngine instance;
+    private Map<SuggestionTypes, List<Suggestion>> defaultSuggestions = new HashMap<>();
+
+    public SuggestionEngine() {
+        //TODO: other Date class?
+        DateTime now = new DateTime();
+        long current_time = now.getSecondOfDay();
+        long current_date = now.getMillis() / 1000 - current_time;
+
+        //TODO:Ohne List gehts nicht?!
+        List<Suggestion> dates = new LinkedList<Suggestion>();
+        dates.add(new SuggestionDate("today", SuggestionTypes.DATE, current_date));
+        dates.add(new SuggestionDate("tomorrow", SuggestionTypes.DATE, current_date + 86400));
+        dates.add(new SuggestionDate("in 2 days", SuggestionTypes.DATE, current_date + 172800));
+        defaultSuggestions.put(SuggestionTypes.DATE, dates);
+
+        //TODO: Uhrzeiten automatisch hinzufügen je nach aktueller Uhrzeit und Datum
+        List<Suggestion> times = new LinkedList<Suggestion>();
+        times.add(new SuggestionTime("now", SuggestionTypes.TIME, current_time));
+        times.add(new SuggestionTime("in 30min", SuggestionTypes.TIME, current_time + 1800));
+        times.add(new SuggestionTime("in 1h", SuggestionTypes.TIME, current_time + 3600));
+        times.add(new SuggestionTime("in 2h", SuggestionTypes.TIME, current_time + 7200));
+        defaultSuggestions.put(SuggestionTypes.TIME, times);
+
+        //TODO: Was wird angezeigt? was wird intern verwendet?
+        List<Suggestion> locations = new LinkedList<Suggestion>();
+        locations.add(new SuggestionLocation("school", SuggestionTypes.PLACE, "Schule?"));
+        locations.add(new SuggestionLocation("Volksgarten", SuggestionTypes.PLACE, "Volksgarten"));
+        locations.add(new SuggestionLocation("Westbahnhof", SuggestionTypes.PLACE, "U3 Westbahnhof"));
+        defaultSuggestions.put(SuggestionTypes.PLACE, locations);
+
+        List<Suggestion> friends = new LinkedList<Suggestion>();
+        friends.add(new SuggestionContact("Adi", SuggestionTypes.PERSON, 436802118978L));
+        friends.add(new SuggestionContact("Chris", SuggestionTypes.PERSON, 436991234567L));
+        friends.add(new SuggestionContact("Benni", SuggestionTypes.PERSON, 4368123445L));
+        friends.add(new SuggestionContact("Rich", SuggestionTypes.PERSON, 43664123456789L));
+        //Automatische Kontakte
+        friends.addAll(MeetMeApp.getfavcontacts());
+        //25 TOP Kontakte laden TODO: check ob genug da sind? Auftelung im View geht besser
+        //TODO: Gruppen hinzufügen und nach erstellen fragen ob Gruppe erstellt werden soll
+        friends = friends.subList(0, 25);
+        defaultSuggestions.put(SuggestionTypes.PERSON, friends);
+
+        List<Suggestion> tags = new LinkedList<Suggestion>();
+        tags.add(new SuggestionTag("sport", SuggestionTypes.TAG, "sport"));
+        tags.add(new SuggestionTag("chill", SuggestionTypes.TAG, "chill"));
+        tags.add(new SuggestionTag("eat", SuggestionTypes.TAG, "eat"));
+        tags.add(new SuggestionTag("other", SuggestionTypes.TAG, "other"));
+        defaultSuggestions.put(SuggestionTypes.TAG, tags);
+    }
 
     public static SuggestionEngine getInstance() {
         if (instance == null) {
             instance = new SuggestionEngine();
         }
         return instance;
-    }
-
-    private Map<SuggestionTypes, List<Suggestion>> defaultSuggestions = new HashMap<>();
-
-    public SuggestionEngine() {
-        defaultSuggestions.put(SuggestionTypes.DATETIME,
-                Arrays.asList(
-                        new Suggestion("now",SuggestionTypes.DATETIME),
-                        new Suggestion("30min",SuggestionTypes.DATETIME),
-                        new Suggestion("1h",SuggestionTypes.DATETIME),
-                        new Suggestion("2h",SuggestionTypes.DATETIME),
-                        new Suggestion("afternoon",SuggestionTypes.DATETIME),
-                        new Suggestion("monday",SuggestionTypes.DATETIME),
-                        new Suggestion("saturday",SuggestionTypes.DATETIME),
-                        new Suggestion("sunday",SuggestionTypes.DATETIME)
-                ));
-        defaultSuggestions.put(SuggestionTypes.PLACE,
-                Arrays.asList(
-                        new Suggestion("school",SuggestionTypes.PLACE),
-                        new Suggestion("cafe",SuggestionTypes.PLACE),
-                        new Suggestion("restaurant",SuggestionTypes.PLACE),
-                        new Suggestion("park",SuggestionTypes.PLACE),
-                        new Suggestion("nerd zone",SuggestionTypes.PLACE),
-                        new Suggestion("university",SuggestionTypes.PLACE)
-                ));
-        defaultSuggestions.put(SuggestionTypes.PERSON,
-                Arrays.asList(
-                        new Suggestion("max",SuggestionTypes.PERSON),
-                        new Suggestion("alex",SuggestionTypes.PERSON),
-                        new Suggestion("rich",SuggestionTypes.PERSON),
-                        new Suggestion("moritz",SuggestionTypes.PERSON)
-                ));
-        defaultSuggestions.put(SuggestionTypes.TAG,
-                Arrays.asList(
-                        new Suggestion("coffee",SuggestionTypes.TAG),
-                        new Suggestion("banana",SuggestionTypes.TAG),
-                        new Suggestion("cool stuff",SuggestionTypes.TAG),
-                        new Suggestion("other",SuggestionTypes.TAG)
-                ));
     }
 
     public List<Suggestion> provideSuggestions(MeetMeApp app, Bundle args) {
@@ -80,12 +90,30 @@ public class SuggestionEngine {
 
         List<Suggestion> suggestions = new ArrayList<>();
 
-        for (List<Suggestion> suggestions1 : defaultSuggestions.values()) {
+        /*for (List<Suggestion> suggestions1 : defaultSuggestions.values()) {
             suggestions.addAll(suggestions1);
         }
-
+      */
+        suggestions.addAll(defaultSuggestions.get(getType(args.getInt(C.SUGGESTIONTYPE))));
         Collections.shuffle(suggestions);
-
         return suggestions;
     }
+
+    private SuggestionTypes getType(int type) {
+        switch (type) {
+            case C.NEWEVENT_DATE_RANK:
+                return SuggestionTypes.DATE;
+            case C.NEWEVENT_TIME_RANK:
+                return SuggestionTypes.TIME;
+            case C.NEWEVENT_LOCATION_RANK:
+                return SuggestionTypes.PLACE;
+            case C.NEWEVENT_TAG_RANK:
+                return SuggestionTypes.PERSON;
+            case C.NEWEVENT_FRIENDS_RANK:
+                return SuggestionTypes.PERSON;
+            default:
+                return SuggestionTypes.PERSON;
+        }
+    }
+
 }

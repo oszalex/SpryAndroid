@@ -1,20 +1,15 @@
 package com.getbro.meetmeandroid.view;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.getbro.meetmeandroid.R;
 import com.getbro.meetmeandroid.suggestion.Suggestion;
-import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,64 +17,27 @@ import java.util.List;
 
 /**
  * 18/08/14.
+ *
  * @author Richard Plangger
  * @year 2014
- *
+ * <p/>
  * A linear layout that wraps around it's children if there is not enough space!
  */
 
 public class TagListView extends LinearLayout {
 
-    public static class Tag {
-        private Suggestion object;
-        private boolean activated;
-
-        public Tag(Suggestion object) {
-            this.object = object;
-        }
-
-        public Suggestion getObject() {
-            return object;
-        }
-
-        public String getText() {
-            String prefix = "";
-            //FIXME: Prefixes auskommentiert, brauch ma die?
-            /*if (object.getType() == SuggestionTypes.PLACE) {
-                prefix = "@";
-            } else if (object.getType() == SuggestionTypes.DATETIME) {
-                prefix = "%";
-            } else if (object.getType() == SuggestionTypes.TAG) {
-                prefix = "#";
-            }*/
-            return prefix + object.getValue();
-        }
-
-        public int getColor() {
-            if (isActivated()) {
-                return R.color.gray;
-            }
-            return object.getType().getColorRes();
-        }
-
-        public void setActivated(boolean activated) {
-            this.activated = activated;
-        }
-
-        public boolean isActivated() {
-            return activated;
-        }
-
-    }
-
-    public static interface OnTagClickListener {
-        public void onTagClick(Tag tag);
-    }
-
     private OnTagClickListener listener;
+    private OnClickListener childClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Tag tag = (Tag) v.getTag();
+            if (listener != null) {
+                listener.onTagClick(tag);
+            }
+        }
+    };
     private List<Tag> tagList = new ArrayList<>();
     private List<View> convertViewList = new LinkedList<>();
-
     public TagListView(Context context) {
         super(context);
     }
@@ -99,7 +57,7 @@ public class TagListView extends LinearLayout {
     public void addTag(Tag tag) {
         int pos = tagList.size();
         tagList.add(tag);
-        View view= null;
+        View view = null;
         if (convertViewList.size() > 0) {
             view = convertViewList.get(0);
         }
@@ -109,7 +67,7 @@ public class TagListView extends LinearLayout {
 
         LinearLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         float dpi = getResources().getDisplayMetrics().density;
-        lp.bottomMargin = lp.topMargin = lp.leftMargin = lp.rightMargin = (int)(5 * dpi);
+        lp.bottomMargin = lp.topMargin = lp.leftMargin = lp.rightMargin = (int) (5 * dpi);
 
         addView(view, lp);
     }
@@ -119,22 +77,12 @@ public class TagListView extends LinearLayout {
 
         view.setTag(tag);
 
-        TextView tv = (TextView)view;
+        TextView tv = (TextView) view;
         tv.setText(tag.getText());
         tv.setBackgroundColor(getResources().getColor(tag.getColor()));
 
         return view;
     }
-
-    private OnClickListener childClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Tag tag = (Tag) v.getTag();
-            if (listener != null) {
-                listener.onTagClick(tag);
-            }
-        }
-    };
 
     public void removeTag(Tag tag) {
         int index = tagList.indexOf(tag);
@@ -174,7 +122,7 @@ public class TagListView extends LinearLayout {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
 
-            LayoutParams lp =  (LinearLayout.LayoutParams) child.getLayoutParams();
+            LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
 
             int R = L + lp.leftMargin + child.getMeasuredWidth();
             int B = T + lp.topMargin + child.getMeasuredHeight();
@@ -215,7 +163,7 @@ public class TagListView extends LinearLayout {
             View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
 
-            LayoutParams lp =  (LinearLayout.LayoutParams) child.getLayoutParams();
+            LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
 
             final int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             final int childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
@@ -252,5 +200,51 @@ public class TagListView extends LinearLayout {
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    }
+
+    public static interface OnTagClickListener {
+        public void onTagClick(Tag tag);
+    }
+
+    public static class Tag {
+        private Suggestion object;
+        private boolean activated;
+
+        public Tag(Suggestion object) {
+            this.object = object;
+        }
+
+        public Suggestion getObject() {
+            return object;
+        }
+
+        public String getText() {
+            String prefix = "";
+            //FIXME: Prefixes auskommentiert, brauch ma die?
+            /*if (object.getType() == SuggestionTypes.PLACE) {
+                prefix = "@";
+            } else if (object.getType() == SuggestionTypes.DATETIME) {
+                prefix = "%";
+            } else if (object.getType() == SuggestionTypes.TAG) {
+                prefix = "#";
+            }*/
+            return prefix + object.getValue();
+        }
+
+        public int getColor() {
+            if (isActivated()) {
+                return R.color.gray;
+            }
+            return object.getType().getColorRes();
+        }
+
+        public boolean isActivated() {
+            return activated;
+        }
+
+        public void setActivated(boolean activated) {
+            this.activated = activated;
+        }
+
     }
 }

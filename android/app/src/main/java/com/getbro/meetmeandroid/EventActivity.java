@@ -4,13 +4,9 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import android.support.v4.widget.SwipeRefreshLayout;
-
 
 import com.getbro.meetmeandroid.adapter.EventAdapter;
 import com.getbro.meetmeandroid.generate.Event;
@@ -33,7 +29,7 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        app = (MeetMeApp)getApplication();
+        app = (MeetMeApp) getApplication();
         session = app.getSession();
 
         setTitle(null);
@@ -111,7 +107,9 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
     }
 
     private void reloadAdapter() {
+        //TODO: i think here somewhere change the order of the Events
         Cursor cursor = session.queryEvents().where("accept_state != 'NOT_ATTENDING'").cursor();
+
         adapter = new EventAdapter(app, cursor, false);
         getListView().setAdapter(adapter);
     }

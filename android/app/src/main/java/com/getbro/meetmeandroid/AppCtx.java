@@ -1,9 +1,9 @@
 package com.getbro.meetmeandroid;
 
 import com.getbro.meetmeandroid.generate.Account;
+import com.getbro.meetmeandroid.remote.MySSLSocketFactory;
 import com.getbro.meetmeandroid.remote.RemoteRequest;
 import com.getbro.meetmeandroid.remote.RemoteState;
-import com.getbro.meetmeandroid.remote.MySSLSocketFactory;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpVersion;

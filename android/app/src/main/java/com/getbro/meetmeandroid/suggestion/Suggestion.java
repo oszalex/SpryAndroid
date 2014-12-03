@@ -7,12 +7,28 @@ import android.os.Parcelable;
  * Created by chris on 04/08/14.
  */
 public class Suggestion implements Parcelable {
+    public static final Creator<Suggestion> CREATOR = new Creator<Suggestion>() {
+        @Override
+        public Suggestion createFromParcel(Parcel source) {
+            return new Suggestion(source);
+        }
+
+        @Override
+        public Suggestion[] newArray(int size) {
+            return new Suggestion[size];
+        }
+    };
     private String value;
     private SuggestionTypes type;
 
-    public Suggestion(String value, SuggestionTypes type){
+    public Suggestion(String value, SuggestionTypes type) {
         this.value = value;
         this.type = type;
+    }
+
+    private Suggestion(Parcel in) {
+        value = in.readString();
+        type = (SuggestionTypes) in.readSerializable();
     }
 
     public String getValue() {
@@ -40,22 +56,6 @@ public class Suggestion implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(value);
         dest.writeSerializable(type);
-    }
-     public static final Creator<Suggestion> CREATOR = new Creator<Suggestion>() {
-         @Override
-         public Suggestion createFromParcel(Parcel source) {
-             return new Suggestion(source);
-         }
-
-         @Override
-         public Suggestion[] newArray(int size) {
-             return new Suggestion[size];
-         }
-     };
-
-    private Suggestion(Parcel in) {
-        value = in.readString();
-        type = (SuggestionTypes) in.readSerializable();
     }
 
 }

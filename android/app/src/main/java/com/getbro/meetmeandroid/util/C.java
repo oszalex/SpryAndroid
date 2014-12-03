@@ -18,4 +18,13 @@ public class C {
     public static final String EVENT_STATE_MAYBE = "MAYBE";
     public static final String EVENT_STATE_NOT_ATTENDING = "NOT_ATTENDING";
 
+    public static final int NEWEVENT_DATE_RANK = 1;
+    public static final int NEWEVENT_TIME_RANK = 2;
+    public static final int NEWEVENT_LOCATION_RANK = 3;
+    public static final int NEWEVENT_TAG_RANK = 4;
+    public static final int NEWEVENT_FRIENDS_RANK = 5;
+
+    public static final String SUGGESTIONTYPE = "suggestiontype";
+
+
 }

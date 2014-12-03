@@ -32,7 +32,7 @@ public class NewEventIdeaActivity extends Activity {
 
         whereViewHolder.addAll("my place", "your place", "school", "university", "that bar");
         whomViewHolder.addAll("Max Mustermann", "Richard", "That Guy", "Chrisiii", "Alex");
-        whenViewHolder.addAll("now!","30min","1h", "afternoon", "after lunch" ,"tomorrow");
+        whenViewHolder.addAll("now!", "30min", "1h", "afternoon", "after lunch", "tomorrow");
     }
 
     @Override
@@ -65,7 +65,7 @@ public class NewEventIdeaActivity extends Activity {
             itemSelector = (HorizontalItemSelector) view.findViewById(R.id.item_selector);
         }
 
-        public void addAll(String ... args) {
+        public void addAll(String... args) {
             itemSelector.addAll(args);
         }
     }

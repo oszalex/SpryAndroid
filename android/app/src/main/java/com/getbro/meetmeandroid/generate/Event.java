@@ -17,10 +17,61 @@
  */
 package com.getbro.meetmeandroid.generate;
 
+import com.getbro.meetmeandroid.suggestion.Suggestion;
+import com.getbro.meetmeandroid.suggestion.SuggestionDate;
+import com.getbro.meetmeandroid.suggestion.SuggestionLocation;
+import com.getbro.meetmeandroid.suggestion.SuggestionTime;
+
 public class Event extends AbstractEvent {
-    public Event(){
+
+
+    private String Location;
+
+    public Event() {
         super(null);
     }
-    
-    // add your code here
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    // je nachdem welcher Tag ausgewählt wurde wird im Event die entsprechende Variable gesetzt
+    // Personen werden extra eingeladen
+    public void set(Suggestion suggest) {   //TODO: CAST is not so nice
+        switch (suggest.getType()) {
+            case PERSON:
+                return;
+            case TIME:
+                SuggestionTime time = (SuggestionTime) suggest;
+                this.setStartTime(time.getStarttime());
+                return;
+
+            case DATE:
+                SuggestionDate date = (SuggestionDate) suggest;
+                this.setStartTime(date.getStartdate());
+                return;
+
+            case PLACE:
+                SuggestionLocation location = (SuggestionLocation) suggest;
+                this.setLocation(location.getLocation());
+                return;
+           /* case TAG: SuggestionTag tag = (SuggestionTag) suggest;
+                this.setTag(tag.getTag()); return;
+                */
+            default:
+                return;
+        }
+    }
+
+    @Override
+    public void setStartTime(java.lang.Long value) {
+        if (mStartTime == 0L) mStartTime = value;
+        else mStartTime += value;
+    }
+
+
 }

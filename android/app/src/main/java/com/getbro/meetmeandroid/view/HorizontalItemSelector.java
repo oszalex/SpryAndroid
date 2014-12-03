@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,10 +21,6 @@ import java.util.List;
  */
 public class HorizontalItemSelector extends HorizontalScrollView {
 
-    public static interface SelectionCallback {
-        void onSelection(int index, Object object);
-    }
-
     public List<String> item = new ArrayList<>();
     private View loff;
     private View roff;
@@ -34,7 +29,6 @@ public class HorizontalItemSelector extends HorizontalScrollView {
     private int index = 0;
     private boolean selectedOne = false;
     private SelectionCallback callback;
-
     public HorizontalItemSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -51,7 +45,7 @@ public class HorizontalItemSelector extends HorizontalScrollView {
         roff = new View(getContext());
     }
 
-    public void addAll(String ... args) {
+    public void addAll(String... args) {
         for (String str : args) {
             item.add(str);
         }
@@ -70,7 +64,7 @@ public class HorizontalItemSelector extends HorizontalScrollView {
             if (Math.abs(xDistance - ev.getRawX()) > 40) {
                 selectNearestItem();
             }
-            int w_2 = getWidth()/2;
+            int w_2 = getWidth() / 2;
             if (ev.getX() < w_2) {
                 selectNextBy(-1);
             } else if (ev.getX() > w_2) {
@@ -88,7 +82,7 @@ public class HorizontalItemSelector extends HorizontalScrollView {
         if (index < 0) {
             index = 0;
         } else if (index >= item.size()) {
-            index = item.size()-1;
+            index = item.size() - 1;
         }
 
         selectItem(index, true);
@@ -98,7 +92,7 @@ public class HorizontalItemSelector extends HorizontalScrollView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        loff.setLayoutParams(new LinearLayout.LayoutParams(w/2,h));
+        loff.setLayoutParams(new LinearLayout.LayoutParams(w / 2, h));
         roff.setLayoutParams(new LinearLayout.LayoutParams(w / 2, h));
     }
 
@@ -122,15 +116,16 @@ public class HorizontalItemSelector extends HorizontalScrollView {
     public void selectItem(int index) {
         selectItem(index, true);
     }
+
     public void selectItem(int index, boolean animated) {
         if (item.size() == 0) {
             return;
         }
         View item = layout.getChildAt(index + 1);
-        int w_2 = getWidth()/2;
+        int w_2 = getWidth() / 2;
         int l = item.getLeft();
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) item.getLayoutParams();
-        int iw_2 = item.getWidth()/2 + lp.leftMargin;
+        int iw_2 = item.getWidth() / 2 + lp.leftMargin;
 
         int x = (l - w_2) + iw_2;
         if (animated) {
@@ -144,12 +139,12 @@ public class HorizontalItemSelector extends HorizontalScrollView {
 
     private void selectNearestItem() {
         int scrollX = getScrollX();
-        int w_2 = getWidth()/2;
+        int w_2 = getWidth() / 2;
         int index = -1;
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
-            if (scrollX >= (child.getLeft()-w_2) && scrollX <= (child.getRight()-w_2)) {
-                index = i-1;
+            if (scrollX >= (child.getLeft() - w_2) && scrollX <= (child.getRight() - w_2)) {
+                index = i - 1;
                 break;
             }
         }
@@ -170,21 +165,25 @@ public class HorizontalItemSelector extends HorizontalScrollView {
         }
     }
 
+    public void setCallback(SelectionCallback callback) {
+        this.callback = callback;
+    }
+
+    public static interface SelectionCallback {
+        void onSelection(int index, Object object);
+    }
+
     private static class SelectionViewHolder {
         private final View target;
         private final TextView textView;
 
         public SelectionViewHolder(View view) {
             this.target = view;
-            this.textView = (TextView)view.findViewById(android.R.id.text1);
+            this.textView = (TextView) view.findViewById(android.R.id.text1);
         }
 
         public void setText(String str) {
             textView.setText(str);
         }
-    }
-
-    public void setCallback(SelectionCallback callback) {
-        this.callback = callback;
     }
 }

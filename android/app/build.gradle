@@ -38,6 +38,7 @@ dependencies {
     compile 'at.pasra.record.library:library:0.1.4@aar'
     compile 'org.apache.commons:commons-csv:1.0'
     compile 'com.neovisionaries:nv-i18n:1.14'
+    compile 'com.googlecode.libphonenumber:libphonenumber:7.0.1'
     //compile 'com.android.support:support-v4:21.0.1'
     //compile 'com.android.support:appcompat-v7:21.0.0'
 }

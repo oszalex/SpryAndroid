@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,50 @@ public class EventAdapter extends CursorAdapter {
         this.app = app;
     }
 
+    //http://stackoverflow.com/questions/3079365/android-retrieve-contact-name-from-phone-number
+    public static String getContactName(Context context, String phoneNumber) {
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        String contactName = null;
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return contactName;
+    }
+
+    public static String getRelativeTimeSpan(Date time) {
+        long current = System.currentTimeMillis();
+        long time_milli = time.getTime();
+
+        long min = 1000 * 60;
+        long h = min * 60;
+        long d = h * 24;
+        long w = d * 7;
+
+        long diff = Math.abs(current - time_milli);
+
+        //greater than a week
+        if (diff > w)
+            return (diff / w) + "w";
+        else if (diff > d)
+            return (diff / d) + "d";
+        else if (diff > h)
+            return (diff / h) + "h";
+        else if (diff > min)
+            return (diff / min) + "m";
+
+        return "just now";
+    }
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.cell_event, null);
@@ -47,7 +90,7 @@ public class EventAdapter extends CursorAdapter {
 
         TextView creator = (TextView) view.findViewById(R.id.creator);
         TextView time = (TextView) view.findViewById(R.id.time);
-        TextView desc= (TextView) view.findViewById(R.id.desc);
+        TextView desc = (TextView) view.findViewById(R.id.desc);
         TextView keywords = (TextView) view.findViewById(R.id.keywords);
 
         TextView state = (TextView) view.findViewById(R.id.state);
@@ -80,53 +123,10 @@ public class EventAdapter extends CursorAdapter {
         desc.setText(event.getDescription());
         time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));
     }
-    //http://stackoverflow.com/questions/3079365/android-retrieve-contact-name-from-phone-number
-    public static String getContactName(Context context, String phoneNumber) {
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        String contactName = null;
-        if(cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-        }
-
-        if(cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-
-        return contactName;
-    }
-
-    public static String getRelativeTimeSpan(Date time) {
-        long current = System.currentTimeMillis();
-        long time_milli = time.getTime();
-
-        long min = 1000 * 60;
-        long h = min * 60;
-        long d = h * 24;
-        long w = d * 7;
-
-        long diff = Math.abs(current - time_milli);
-
-        //greater than a week
-        if (diff > w)
-            return (diff / w) + "w";
-        else if (diff > d)
-            return (diff / d) + "d";
-        else if (diff > h)
-            return (diff / h) + "h";
-        else if (diff > min)
-            return (diff / min) + "m";
-
-        return "just now";
-    }
 
     @Override
     public Object getItem(int position) {
-        Event event = Event.fromCursor((Cursor)super.getItem(position));
+        Event event = Event.fromCursor((Cursor) super.getItem(position));
         return event;
     }
 }

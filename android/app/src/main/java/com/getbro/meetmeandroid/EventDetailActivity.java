@@ -2,7 +2,6 @@ package com.getbro.meetmeandroid;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.getbro.meetmeandroid.suggestion.SuggestionTypes;
 import com.getbro.meetmeandroid.util.C;
 import com.getbro.meetmeandroid.view.TagListView;
 
-import java.security.Key;
 import java.util.List;
 
 
@@ -32,7 +30,7 @@ public class EventDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
 
-        MeetMeApp app = (MeetMeApp)getApplication();
+        MeetMeApp app = (MeetMeApp) getApplication();
         context = app.getCtx();
 
         Long eventId = getIntent().getLongExtra(C.EXTRA_EVENT_ID, -1);

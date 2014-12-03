@@ -3,6 +3,7 @@ package com.getbro.meetmeandroid.remote.state;
 import android.text.Selection;
 
 import com.getbro.meetmeandroid.AppCtx;
+import com.getbro.meetmeandroid.generate.Event;
 import com.getbro.meetmeandroid.remote.HttpMethod;
 import com.getbro.meetmeandroid.remote.RemoteRequest;
 import com.getbro.meetmeandroid.remote.RemoteResponse;
@@ -24,10 +25,12 @@ import java.util.List;
 public class PostEventState extends RemoteState {
 
     private final List<Suggestion> selectionList;
+    private final Event event;
 
-    public PostEventState(AppCtx ctx, List<Suggestion> tags) {
+    public PostEventState(AppCtx ctx, List<Suggestion> tags, Event event) {
         super(ctx, true);
         this.selectionList = tags;
+        this.event = event;
     }
 
     @Override
@@ -43,7 +46,8 @@ public class PostEventState extends RemoteState {
         //  "description":"Das ist bis zu 140 Zeichen lang",
         //  "isPublic":"true",
         //  "keywords":["LULU","kw2"]}
-        object.addProperty("start_time", DateTime.now().getMillis()+40*100*20000);
+        object.addProperty("start_time", event.getStartTime());
+        object.addProperty("location", event.getLocation());
         object.addProperty("min_attending", 0);
         object.addProperty("isPublic", true);
         object.addProperty("price", 0);
@@ -53,9 +57,10 @@ public class PostEventState extends RemoteState {
         int count = 0;
         for (Suggestion sel : selectionList) {
             keyWords.add(new JsonPrimitive(sel.getValue()));
-            if (sel.getType() == SuggestionTypes.PERSON) {
+           /* if (sel.getType() == SuggestionTypes.PERSON) {
                 count++;
             }
+            */
         }
         object.addProperty("max_attending", count);
         object.add("keywords", keyWords);
