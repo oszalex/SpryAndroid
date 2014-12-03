@@ -34,6 +34,8 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.gospry.R;
+import com.shamanland.fab.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 
 /**
  * A {@link View.OnTouchListener} that makes the list items in a {@link ListView}
@@ -69,7 +71,7 @@ import com.gospry.R;
  * <p>This class Requires API level 12 or later due to use of {@link
  * ViewPropertyAnimator}.</p>
  */
-public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
+public class SwipeDismissListViewTouchListener extends ShowHideOnScroll implements View.OnTouchListener {
     private static enum SwipeState {
         LEFT, RIGHT, SCROLL, NONE;
     }
@@ -132,7 +134,8 @@ public class SwipeDismissListViewTouchListener implements View.OnTouchListener {
      * @param callbacks The callback to trigger when the user has indicated that she would like to
      *                  dismiss one or more list items.
      */
-    public SwipeDismissListViewTouchListener(ListView listView, SwipeCallback callbacks) {
+    public SwipeDismissListViewTouchListener(ListView listView, SwipeCallback callbacks, FloatingActionButton fab) {
+        super(fab);
         ViewConfiguration vc = ViewConfiguration.get(listView.getContext());
         mSlop = vc.getScaledTouchSlop();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity() * 16;

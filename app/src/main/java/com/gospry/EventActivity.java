@@ -52,6 +52,22 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
 
         checkAuth();
 
+        /**
+         * setup FAB Button to add events
+         */
+
+        FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
+        ListView listView = (ListView) findViewById(android.R.id.list);
+        //listView.setOnTouchListener(new ShowHideOnScroll(fab));
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(EventActivity.this, NewEventActivity.class);
+                startActivityForResult(it, C.REQ_NEW_EVENT);
+            }
+        });
+
         final AppCtx appCtx = app.getCtx();
         SwipeDismissListViewTouchListener listener = new SwipeDismissListViewTouchListener(getListView(), new SwipeDismissListViewTouchListener.SwipeCallback() {
             @Override
@@ -91,27 +107,14 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
                 it.putExtra(C.EXTRA_EVENT_ID, event.getId());
                 startActivity(it);
             }
-        });
+        }, fab);
         listener.setmSwipeRefreshLayout(swipeRefreshLayout);
         getListView().setOnTouchListener(listener);
         getListView().setOnScrollListener(listener.makeScrollListener());
 
 
-        /**
-         * setup FAB Button to add events
-         */
 
-        FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
-        ListView listView = (ListView) findViewById(android.R.id.list);
-        listView.setOnTouchListener(new ShowHideOnScroll(fab));
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(EventActivity.this, NewEventActivity.class);
-                startActivityForResult(it, C.REQ_NEW_EVENT);
-            }
-        });
 
     }
 
