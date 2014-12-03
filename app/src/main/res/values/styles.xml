@@ -13,7 +13,7 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/menuBarTopBorder</item>
-        <item name="android:icon">@drawable/spry</item>
+       <!-- <item name="android:icon">@drawable/spry</item> -->
     </style>
 
     <style name="AppThemeNoActionBar" parent="android:Theme.Holo.Light.NoActionBar">

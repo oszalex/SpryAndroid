@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.gospry.R;
 import com.gospry.adapter.EventAdapter;
@@ -95,9 +97,22 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         getListView().setOnScrollListener(listener.makeScrollListener());
 
 
+        /**
+         * setup FAB Button to add events
+         */
+
         FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setOnTouchListener(new ShowHideOnScroll(fab));
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(EventActivity.this, NewEventActivity.class);
+                startActivityForResult(it, C.REQ_NEW_EVENT);
+            }
+        });
+
     }
 
     @Override
@@ -169,12 +184,14 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*
         int id = item.getItemId();
         if (id == R.id.action_add) {
             Intent it = new Intent(this, NewEventActivity.class);
             startActivityForResult(it, C.REQ_NEW_EVENT);
             return true;
         }
+        */
         return super.onOptionsItemSelected(item);
     }
 }
