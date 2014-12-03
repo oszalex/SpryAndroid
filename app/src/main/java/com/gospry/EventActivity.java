@@ -112,9 +112,7 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         getListView().setOnTouchListener(listener);
         getListView().setOnScrollListener(listener.makeScrollListener());
 
-
-
-
+        reloadAdapter();
 
     }
 
@@ -135,7 +133,7 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
 
     private void reloadAdapter() {
         //TODO: i think here somewhere change the order of the Events
-        Cursor cursor = session.queryEvents().where("accept_state != 'NOT_ATTENDING'").cursor();
+        Cursor cursor = session.queryEvents().where("accept_state != 'NOT_ATTENDING'").orderBy("start_time desc").cursor();
 
         adapter = new EventAdapter(app, cursor, false);
         getListView().setAdapter(adapter);
