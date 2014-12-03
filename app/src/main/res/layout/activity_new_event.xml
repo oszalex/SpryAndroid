@@ -1,0 +1,44 @@
+<RelativeLayout
+    tools:context="com.gospry.NewEventActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:gravity="center"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="Go a head and select your tags"
+        />
+
+    <com.gospry.view.TagListView
+        android:id="@+id/selected_list_view"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textView"
+        android:layout_height="wrap_content">
+
+    </com.gospry.view.TagListView>
+
+    <com.gospry.view.TagListView
+        android:id="@+id/proposed_list_view"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/selected_list_view"
+        android:layout_height="wrap_content">
+
+    </com.gospry.view.TagListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="createEvent"
+        android:text="done" />
+
+</RelativeLayout>

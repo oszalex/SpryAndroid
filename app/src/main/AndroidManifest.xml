@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.getbro.meetmeandroid" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name="com.gospry.MeetMeApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name="com.gospry.EventActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.gospry.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.gospry.EventDetailActivity"
+            android:label="@string/title_activity_event_detail"
+            android:parentActivityName="com.gospry.EventActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.getbro.meetmeandroid.EventActivity" />
+        </activity>
+        <activity
+            android:name="com.gospry.NewEventActivity"
+            android:label="@string/title_activity_new_event" >
+        </activity>
+    </application>
+
+</manifest>
