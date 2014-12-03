@@ -17,41 +17,39 @@
  */
 package com.gospry.generate;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import com.gospry.generate.Account;
 
-public class AccountRecord {
+public class AccountRecord{
     private final java.util.Map<Long, Account> primaryKeyCache = new java.util.HashMap<Long, Account>();
-
-    public void clearCache() {
+    public void clearCache(){
         primaryKeyCache.clear();
     }
-
-    public void save(SQLiteDatabase db, AbstractAccount record) {
-        if (record.getId() == null) {
+    public void save(SQLiteDatabase db, AbstractAccount record){
+        if (record.getId() == null){
             insert(db, record);
-        } else {
+        }
+        else{
             update(db, record);
         }
     }
-
-    public void insert(SQLiteDatabase db, AbstractAccount record) {
+    public void insert(SQLiteDatabase db, AbstractAccount record){
         ContentValues values = new ContentValues(2);
         values.put("number", record.getNumber());
         values.put("secret", record.getSecret());
         long id = db.insert("accounts", null, values);
         record.setId(id);
-        primaryKeyCache.put(id, (Account) record);
+        primaryKeyCache.put(id, (Account)record);
     }
-
-    public Account load(SQLiteDatabase db, long id) {
+    public Account load(SQLiteDatabase db, long id){
         Account cached = primaryKeyCache.get(id);
-        if (cached != null) {
+        if (cached != null){
             return cached;
         }
-        Cursor c = db.rawQuery("select number, secret, _id from accounts where _id = ?;", new String[]{Long.toString(id)});
-        if (c.moveToFirst()) {
+        Cursor c = db.rawQuery("select number, secret, _id from accounts where _id = ?;", new String[] { Long.toString(id) });
+        if (c.moveToFirst()){
             Account record = new Account();
             record.setNumber(c.getString(c.getColumnIndex("number")));
             record.setSecret(c.getString(c.getColumnIndex("secret")));
@@ -61,17 +59,15 @@ public class AccountRecord {
         }
         return null;
     }
-
-    public void delete(SQLiteDatabase db, long id) {
-        db.execSQL("delete from accounts where  _id = ?;", new String[]{Long.toString(id)});
+    public void delete(SQLiteDatabase db, long id){
+        db.execSQL("delete from accounts where  _id = ?;", new String[] { Long.toString(id) });
         primaryKeyCache.remove(id);
     }
-
-    public void update(SQLiteDatabase db, AbstractAccount record) {
+    public void update(SQLiteDatabase db, AbstractAccount record){
         ContentValues values = new ContentValues(2);
         values.put("number", record.getNumber());
         values.put("secret", record.getSecret());
         long id = record.getId();
-        db.update("accounts", values, "_id = ?", new String[]{Long.toString(id)});
+        db.update("accounts", values, "_id = ?", new String[] { Long.toString(id) });
     }
 }

@@ -33,7 +33,7 @@ import android.view.ViewPropertyAnimator;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 
 /**
  * A {@link View.OnTouchListener} that makes the list items in a {@link ListView}

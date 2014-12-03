@@ -5,6 +5,14 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
 
+    sourceSets {
+        main {
+            java.srcDirs 'src/main/java'
+            res.srcDirs 'src/main/res'
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+        }
+    }
+
     defaultConfig {
         applicationId "com.getbro.meetmeandroid"
         minSdkVersion 14
@@ -22,6 +30,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_7
         targetCompatibility = JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     packagingOptions {
@@ -41,6 +51,8 @@ dependencies {
     compile 'com.googlecode.libphonenumber:libphonenumber:7.0.1'
     //compile 'com.android.support:support-v4:21.0.1'
     //compile 'com.android.support:appcompat-v7:21.0.0'
+    //compile 'com.melnykov:floatingactionbutton:1.0.9'
+    compile 'com.shamanland:fab:0.0.6'
 }
 
 droid_record {

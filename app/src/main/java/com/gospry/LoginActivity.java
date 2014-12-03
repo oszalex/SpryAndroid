@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.BuildConfig;
-import com.getbro.meetmeandroid.R;
+import com.gospry.BuildConfig;
+import com.gospry.R;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
 import com.gospry.remote.state.PostAuthState;

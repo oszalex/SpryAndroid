@@ -19,111 +19,97 @@
 package com.gospry.generate;
 
 import android.database.sqlite.SQLiteDatabase;
+import at.pasra.record.RecordBuilder;
+import com.gospry.generate.Account;
+import com.gospry.generate.Event;
+import com.gospry.generate.Keyword;
 
-public class LocalSession {
+public class LocalSession{
     private SQLiteDatabase mDB;
     private final AccountRecord account_record = new AccountRecord();
     private final EventRecord event_record = new EventRecord();
     private final KeywordRecord keyword_record = new KeywordRecord();
-
-    public LocalSession(SQLiteDatabase database) {
+    public LocalSession(SQLiteDatabase database){
         this.mDB = database;
     }
-
-    public void saveAccount(Account obj) {
-        if (obj == null) {
+    public void saveAccount(Account obj){
+        if (obj == null){
             throw new IllegalArgumentException("Tried to save an instance of Account which was null. Cannot do that!");
         }
         account_record.save(mDB, obj);
     }
-
-    public Account findAccount(java.lang.Long id) {
-        if (id == null) {
+    public Account findAccount(java.lang.Long id){
+        if (id == null){
             throw new IllegalArgumentException("why would you want to load a account record with a null key?");
         }
         return account_record.load(mDB, id);
     }
-
-    public void destroyAccount(Account obj) {
-        if (obj == null) {
+    public void destroyAccount(Account obj){
+        if (obj == null){
             throw new IllegalArgumentException("why would you want to delete a account record with a null obj?");
         }
         account_record.delete(mDB, obj.getId());
     }
-
-    public AccountRecordBuilder queryAccounts() {
+    public AccountRecordBuilder queryAccounts(){
         return new AccountRecordBuilder(mDB);
     }
-
-    public void saveEvent(Event obj) {
-        if (obj == null) {
+    public void saveEvent(Event obj){
+        if (obj == null){
             throw new IllegalArgumentException("Tried to save an instance of Event which was null. Cannot do that!");
         }
         event_record.save(mDB, obj);
     }
-
-    public Event findEvent(java.lang.Long id) {
-        if (id == null) {
+    public Event findEvent(java.lang.Long id){
+        if (id == null){
             throw new IllegalArgumentException("why would you want to load a event record with a null key?");
         }
         return event_record.load(mDB, id);
     }
-
-    public void destroyEvent(Event obj) {
-        if (obj == null) {
+    public void destroyEvent(Event obj){
+        if (obj == null){
             throw new IllegalArgumentException("why would you want to delete a event record with a null obj?");
         }
         event_record.delete(mDB, obj.getId());
     }
-
-    public EventRecordBuilder queryEvents() {
+    public EventRecordBuilder queryEvents(){
         return new EventRecordBuilder(mDB);
     }
-
-    public void saveKeyword(Keyword obj) {
-        if (obj == null) {
+    public void saveKeyword(Keyword obj){
+        if (obj == null){
             throw new IllegalArgumentException("Tried to save an instance of Keyword which was null. Cannot do that!");
         }
         keyword_record.save(mDB, obj);
     }
-
-    public Keyword findKeyword(java.lang.Long id) {
-        if (id == null) {
+    public Keyword findKeyword(java.lang.Long id){
+        if (id == null){
             throw new IllegalArgumentException("why would you want to load a keyword record with a null key?");
         }
         return keyword_record.load(mDB, id);
     }
-
-    public void destroyKeyword(Keyword obj) {
-        if (obj == null) {
+    public void destroyKeyword(Keyword obj){
+        if (obj == null){
             throw new IllegalArgumentException("why would you want to delete a keyword record with a null obj?");
         }
         keyword_record.delete(mDB, obj.getId());
     }
-
-    public KeywordRecordBuilder queryKeywords() {
+    public KeywordRecordBuilder queryKeywords(){
         return new KeywordRecordBuilder(mDB);
     }
-
-    public void clearCache() {
+    public void clearCache(){
         account_record.clearCache();
         event_record.clearCache();
         keyword_record.clearCache();
     }
-
-    public AccountRecord getAccountRecord() {
+    public AccountRecord getAccountRecord(){
         return account_record;
     }
-
-    public EventRecord getEventRecord() {
+    public EventRecord getEventRecord(){
         return event_record;
     }
-
-    public KeywordRecord getKeywordRecord() {
+    public KeywordRecord getKeywordRecord(){
         return keyword_record;
     }
-
-    public android.database.Cursor queryRaw(String query, String... args) {
+    public android.database.Cursor queryRaw(String query, String ... args){
         return mDB.rawQuery(query, args);
     }
 }

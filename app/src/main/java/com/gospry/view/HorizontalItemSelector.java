@@ -11,7 +11,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 
 import java.util.ArrayList;
 import java.util.List;

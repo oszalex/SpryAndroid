@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 import com.gospry.view.HorizontalItemSelector;
 
 

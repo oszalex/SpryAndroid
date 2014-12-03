@@ -18,27 +18,25 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import at.pasra.record.RecordBuilder;
+import android.database.sqlite.SQLiteDatabase;
+import com.gospry.generate.Keyword;
 
-public class KeywordRecordBuilder extends RecordBuilder<Keyword> {
-    public KeywordRecordBuilder(SQLiteDatabase db) {
-        super("keywords", new String[]{"text", "event_id", "_id"}, db);
+public class KeywordRecordBuilder extends RecordBuilder<Keyword>{
+    public KeywordRecordBuilder(SQLiteDatabase db){
+        super("keywords", new String[] { "text", "event_id", "_id" }, db);
     }
-
     @Override
-    public java.util.List<Keyword> all(android.database.Cursor c) {
+    public java.util.List<Keyword> all(android.database.Cursor c){
         java.util.List<Keyword> list = new java.util.ArrayList<Keyword>();
-        while (c.moveToNext()) {
+        while (c.moveToNext()){
             list.add(Keyword.fromCursor(c));
         }
         return list;
     }
-
     @Override
-    public Keyword first(android.database.Cursor c) {
-        if (c.moveToFirst()) {
+    public Keyword first(android.database.Cursor c){
+        if (c.moveToFirst()){
             Keyword record = Keyword.fromCursor(c);
             c.close();
             return record;

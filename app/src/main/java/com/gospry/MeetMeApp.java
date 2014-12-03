@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.widget.ListView;
 
 import com.gospry.generate.Account;
 import com.gospry.generate.LocalSession;
@@ -15,6 +16,8 @@ import com.gospry.suggestion.Suggestion;
 import com.gospry.suggestion.SuggestionContact;
 import com.gospry.suggestion.SuggestionTypes;
 import com.gospry.util.C;
+import com.shamanland.fab.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 import com.gospry.suggestion.Suggestion;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.gospry.suggestion;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 
 public enum SuggestionTypes {
     PERSON(R.color.green),

@@ -1,5 +1,6 @@
 package com.gospry;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 import com.gospry.generate.Event;
 import com.gospry.generate.Keyword;
 import com.gospry.generate.LocalSession;
@@ -87,6 +88,7 @@ public class EventDetailActivity extends Activity {
         private final TextView desc;
         private final TagListView keywords;
 
+        @SuppressLint("WrongViewCast")
         public ViewHolder(View view) {
             this.view = view;
             this.desc = (TextView) view.findViewById(R.id.desc);

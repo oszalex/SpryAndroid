@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 import com.gospry.MeetMeApp;
 import com.gospry.generate.Event;
 import com.gospry.generate.Keyword;

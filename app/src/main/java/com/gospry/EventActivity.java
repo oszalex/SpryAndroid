@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 import com.gospry.adapter.EventAdapter;
 import com.gospry.generate.Event;
 import com.gospry.generate.LocalSession;
@@ -18,6 +19,8 @@ import com.gospry.remote.state.GetEventsState;
 import com.gospry.remote.state.PostInvitationState;
 import com.gospry.touch.SwipeDismissListViewTouchListener;
 import com.gospry.util.C;
+import com.shamanland.fab.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 
 public class EventActivity extends ListActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final static String TAG = EventActivity.class.toString();
@@ -90,6 +93,11 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         listener.setmSwipeRefreshLayout(swipeRefreshLayout);
         getListView().setOnTouchListener(listener);
         getListView().setOnScrollListener(listener.makeScrollListener());
+
+
+        FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
+        ListView listView = (ListView) findViewById(android.R.id.list);
+        listView.setOnTouchListener(new ShowHideOnScroll(fab));
     }
 
     @Override

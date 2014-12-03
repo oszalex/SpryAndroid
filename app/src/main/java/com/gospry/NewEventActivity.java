@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.getbro.meetmeandroid.R;
+import com.gospry.R;
 import com.gospry.generate.Event;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;

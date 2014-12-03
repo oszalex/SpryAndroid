@@ -18,56 +18,50 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
+import android.database.Cursor;
+import android.content.ContentValues;
 import at.pasra.record.Migrator;
 
-public class RecordMigrator implements Migrator {
+public class RecordMigrator implements Migrator{
     public static final long MIGRATION_LEVEL = 20141113125812L;
-
+    
     private final SQLiteDatabase db;
-
-    public RecordMigrator(SQLiteDatabase db) {
+    public RecordMigrator(SQLiteDatabase db){
         this.db = db;
         this.tryCreateVersioningTable();
     }
-
-    private void tryCreateVersioningTable() {
+    private void tryCreateVersioningTable(){
         db.execSQL("create table if not exists android_record_configs (_id integer primary key, key text unique not null, value text);");
     }
-
-    public long getCurrentMigrationLevel() {
+    public long getCurrentMigrationLevel(){
         Cursor c = db.rawQuery(
-                "select key, value from android_record_configs where key = ? order by value desc limit 1;",
-                new String[]{"version"});
-        if (c.moveToNext()) {
+                    "select key, value from android_record_configs where key = ? order by value desc limit 1;",
+                    new String[] { "version" } );
+        if (c.moveToNext()){
             long version = Long.parseLong(c.getString(1));
             c.close();
             return version;
         }
         return 0;
     }
-
-    public long getLatestMigrationLevel() {
+    public long getLatestMigrationLevel(){
         return MIGRATION_LEVEL;
     }
-
     @Override
-    public void migrate() {
+    public void migrate(){
         migrate(getCurrentMigrationLevel(), MIGRATION_LEVEL);
     }
-
     @Override
-    public void migrate(long currentVersion, long targetVersion) {
+    public void migrate(long currentVersion, long targetVersion){
         db.execSQL("insert or replace into android_record_configs (key,value) values ('generator_version','0.1.4')");
-        if (currentVersion < targetVersion && currentVersion < 20141113125812L) {
+        if (currentVersion < targetVersion && currentVersion < 20141113125812L){
             db.execSQL("create table accounts (number text , secret text , _id integer primary key);");
             db.execSQL("create table events (user text , start_time integer , remote_id integer , description text , duration integer , max_attending integer , min_attending integer , price long , is_public integer , accept_state text , _id integer primary key);");
             db.execSQL("create table keywords (text text , event_id integer , _id integer primary key);");
             currentVersion = 20141113125812L;
         }
 
-        db.execSQL("insert or replace into android_record_configs (key,value) values (?,?)", new Object[]{"version", new Long(currentVersion)});
+        db.execSQL("insert or replace into android_record_configs (key,value) values (?,?)", new Object[] { "version", new Long(currentVersion) });
     }
 }
