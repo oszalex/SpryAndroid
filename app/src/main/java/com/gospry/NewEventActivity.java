@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.gospry.R;
 import com.gospry.generate.Event;
 import com.gospry.remote.RemoteCallback;
@@ -47,6 +48,7 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
         }
     };
     //TODO: Das muss angepasst werden, damit die Reihenfolge etc stimmt,  vl nur return button enablen?
+    // you can do this more easily in the SuggestionEngine. there you simply sort the tags (i put example there)
     private TagListView.OnTagClickListener selectedClickListener = new TagListView.OnTagClickListener() {
         @Override
         public void onTagClick(TagListView.Tag tag) {
@@ -125,6 +127,7 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
         }
         MeetMeApp app = (MeetMeApp) getApplication();
         //TODO: This Request must return the remote id of the event so that the user can be invited
+        // when you have it on the server side see the comment in onRequestOk
         long remoteeventid = 1L;
         RemoteState state = new PostEventState(app.getCtx(), suggestions, newevent);
         state.setCallback(new RemoteCallback() {
@@ -132,6 +135,9 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             public void onRequestOk(RemoteResponse response) {
                 setResult(Activity.RESULT_OK);
                 finish();
+
+                //JsonObject obj = response.getJsonObject();
+                //Integer eventId = obj.get("event_id").getAsInt();
             }
 
             @Override
@@ -140,6 +146,8 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             }
         });
         //TODO:Fix this on serverside and test here
+        // looks good, you might want to do it in a bulk job not one request for each invite
+        // but one request containing a list of invites
         for (TagListView.Tag tag : tags) {
             if (tag.getObject().getType() == SuggestionTypes.PERSON) {
                 SuggestionContact invite = (SuggestionContact) tag.getObject();

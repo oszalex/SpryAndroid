@@ -32,6 +32,7 @@ public class SuggestionContact extends Suggestion {
         Phonenumber.PhoneNumber phonenumber = new Phonenumber.PhoneNumber();
         try {
             //TODO: Get the Right Locale for Austria/Germany, atm austria is hardcoded
+            // see comment in MeetMeApp -> TelephonyManager gives country iso code!
             Locale current = MeetMeApp.getLocale();
             //phonenumber = phoneUtil.parse(number, current.getCountry());
             phonenumber = phoneUtil.parse(number, "AT");

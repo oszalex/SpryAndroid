@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.telephony.TelephonyManager;
 import android.widget.ListView;
 
 import com.gospry.generate.Account;
@@ -51,6 +52,10 @@ public class MeetMeApp extends Application {
         new RecordMigrator(db).migrate();
         session = new LocalSession(db);
         //TODO: Locale static? Locale Problem with Austria(is only DE isntead of de_at), therefore national numbers cannot be converted
+        // you can use the following to get the correct locale:
+        //TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        //String countryCode = tm.getSimCountryIso(); -> should return at
+
         String locale = getResources().getConfiguration().locale.getCountry();
         String[] test = Locale.getISOCountries();
         ctx = new AppCtx(this);
