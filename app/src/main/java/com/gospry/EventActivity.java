@@ -38,7 +38,7 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         app = (MeetMeApp) getApplication();
         session = app.getSession();
 
-        setTitle(null);
+        setTitle(R.string.title_eventactivity);
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
