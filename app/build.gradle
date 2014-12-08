@@ -49,7 +49,7 @@ dependencies {
     compile 'org.apache.commons:commons-csv:1.0'
     compile 'com.neovisionaries:nv-i18n:1.14'
     compile 'com.googlecode.libphonenumber:libphonenumber:7.0.1'
-    //compile 'com.android.support:support-v4:21.0.1'
+    compile 'com.android.support:support-v4:21.0.+'
     //compile 'com.android.support:appcompat-v7:21.0.0'
     //compile 'com.melnykov:floatingactionbutton:1.0.9'
     compile 'com.shamanland:fab:0.0.6'
