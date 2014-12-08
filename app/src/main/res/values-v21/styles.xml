@@ -8,8 +8,20 @@
         <!-- Customize your theme here. -->
 
         <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:statusBarColor">@color/menuBarTopBorder</item>
+
+
+        <!-- StatusBarColor -->
+        <item name="android:statusBarColor">@color/wm_dark_green</item>
+
+
+        <!-- remove shadow from actionbar -->
         <item name="android:windowContentOverlay">@null</item>
+
+
+        <!-- Hintergrundfarbe vom Hauptfenster (da wo die events aufgelistet werden) -->
+        <item name="android:windowBackground">@color/wm_light_green</item>
+
+
     </style>
 
     <!-- ActionBar styles -->
@@ -18,6 +30,7 @@
        <!-- <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
         <item name="displayOptions">showHome|homeAsUp|showTitle</item> -->
         <item name="android:icon">@android:color/transparent</item> <!-- This does the magic! -->
+        <item name="android:titleTextStyle">@style/MyTheme.MyActionBar.TitleTextStyle</item>
        <!-- <item name="android:icon">@drawable/spry</item> -->
     </style>
 

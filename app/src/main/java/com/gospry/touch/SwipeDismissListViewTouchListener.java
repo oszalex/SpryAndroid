@@ -368,7 +368,9 @@ public class SwipeDismissListViewTouchListener extends ShowHideOnScroll implemen
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        mParentView.setBackgroundColor(getColor(0, 1));
+                        //FIX: Hat teilweise zu Abstürzen geführt, weil
+                        //mParentView null war
+                        if(mParentView != null) mParentView.setBackgroundColor(getColor(0, 1));
                     }
                 });
     }
