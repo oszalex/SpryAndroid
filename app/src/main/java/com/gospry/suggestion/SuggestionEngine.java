@@ -20,26 +20,34 @@ import java.util.Map;
 public class SuggestionEngine {
     private static SuggestionEngine instance;
     private Map<SuggestionTypes, List<Suggestion>> defaultSuggestions = new HashMap<>();
+    //TODO: workaround...use a lib or sth
+    private String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     public SuggestionEngine() {
         //TODO: other Date class?
         DateTime now = new DateTime();
-        long current_time = now.getSecondOfDay();
-        long current_date = now.getMillis() / 1000 - current_time;
+        long current_time = now.getSecondOfDay() * 1000;
+        long current_date = now.getMillis() - current_time;
 
         //TODO:Ohne List gehts nicht?!
         List<Suggestion> dates = new LinkedList<Suggestion>();
         dates.add(new SuggestionDate("today", SuggestionTypes.DATE, current_date));
-        dates.add(new SuggestionDate("tomorrow", SuggestionTypes.DATE, current_date + 86400));
-        dates.add(new SuggestionDate("in 2 days", SuggestionTypes.DATE, current_date + 172800));
+        dates.add(new SuggestionDate("tomorrow", SuggestionTypes.DATE, current_date + 86400000));
+        dates.add(new SuggestionDate("in 2 days", SuggestionTypes.DATE, current_date + 172800000));
+        for (int i = 0; i < 6; i++) {
+            //TODO: fix right days
+            String desc = days[i];
+            long timestamp;
+            dates.add(new SuggestionDate(desc, SuggestionTypes.DATE, current_date + 172800000));
+        }
         defaultSuggestions.put(SuggestionTypes.DATE, dates);
 
         //TODO: Uhrzeiten automatisch hinzufügen je nach aktueller Uhrzeit und Datum
         List<Suggestion> times = new LinkedList<Suggestion>();
         times.add(new SuggestionTime("now", SuggestionTypes.TIME, current_time));
-        times.add(new SuggestionTime("in 30min", SuggestionTypes.TIME, current_time + 1800));
-        times.add(new SuggestionTime("in 1h", SuggestionTypes.TIME, current_time + 3600));
-        times.add(new SuggestionTime("in 2h", SuggestionTypes.TIME, current_time + 7200));
+        times.add(new SuggestionTime("in 30min", SuggestionTypes.TIME, current_time + 1800000));
+        times.add(new SuggestionTime("in 1h", SuggestionTypes.TIME, current_time + 3600000));
+        times.add(new SuggestionTime("in 2h", SuggestionTypes.TIME, current_time + 7200000));
         defaultSuggestions.put(SuggestionTypes.TIME, times);
 
         //TODO: Was wird angezeigt? was wird intern verwendet?

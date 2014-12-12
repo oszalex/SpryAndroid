@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-import com.gospry.R;
 import com.gospry.generate.Event;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
@@ -21,6 +20,7 @@ import com.gospry.suggestion.SuggestionContact;
 import com.gospry.suggestion.SuggestionEngine;
 import com.gospry.suggestion.SuggestionTypes;
 import com.gospry.util.C;
+import com.gospry.util.Response;
 import com.gospry.view.TagListView;
 
 import java.util.LinkedList;
@@ -92,6 +92,9 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             public List<Suggestion> loadInBackground() {
                 Bundle bundle = new Bundle();
                 bundle.putInt(C.SUGGESTIONTYPE, suggestionorder);
+                //TODO: wenn date=today dann in30min etc anzeigen sonst nicht
+                //TODO: bei date = now keine zeiten anzeigen
+                //TODO: customDates/Tags, wie werden gespeichert
                 suggestionorder++;
                 return SuggestionEngine.getInstance().provideSuggestions((MeetMeApp) getApplication(), bundle);
             }
@@ -128,30 +131,35 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
         MeetMeApp app = (MeetMeApp) getApplication();
         //TODO: This Request must return the remote id of the event so that the user can be invited
         // when you have it on the server side see the comment in onRequestOk
-        long remoteeventid = 1L;
+        // long remoteeventid = 1L;
         RemoteState state = new PostEventState(app.getCtx(), suggestions, newevent);
+        final Response outresponse = new Response();
         state.setCallback(new RemoteCallback() {
             @Override
             public void onRequestOk(RemoteResponse response) {
                 setResult(Activity.RESULT_OK);
+                Toast.makeText(NewEventActivity.this, "Event created: " + response.getString(), Toast.LENGTH_LONG).show();
+                outresponse.setResponse(response.getJsonObject());
                 finish();
-
-                //JsonObject obj = response.getJsonObject();
-                //Integer eventId = obj.get("event_id").getAsInt();
+                //TODO: get eventid out of here or put invitation code here
+                JsonObject obj = response.getJsonObject();
+                Integer eventId = obj.get("event_id").getAsInt();
             }
-
             @Override
             public void onRequestFailed(RemoteResponse response) {
                 Toast.makeText(NewEventActivity.this, "Could not create event: " + response.getString(), Toast.LENGTH_LONG).show();
             }
         });
+        app.getCtx().invoke(state);
+        long remoteeventid = 13L;
+
         //TODO:Fix this on serverside and test here
         // looks good, you might want to do it in a bulk job not one request for each invite
         // but one request containing a list of invites
         for (TagListView.Tag tag : tags) {
             if (tag.getObject().getType() == SuggestionTypes.PERSON) {
                 SuggestionContact invite = (SuggestionContact) tag.getObject();
-                state = new PostInviteUserState(app.getCtx(), invite.getPhonenumber(), remoteeventid);
+                RemoteState state2 = new PostInviteUserState(app.getCtx(), remoteeventid, invite.getPhonenumber());
                 state.setCallback(new RemoteCallback() {
                     @Override
                     public void onRequestOk(RemoteResponse response) {
@@ -162,13 +170,13 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
                     @Override
                     public void onRequestFailed(RemoteResponse response) {
                         Toast.makeText(NewEventActivity.this, "Could not invite User: " + response.getString(), Toast.LENGTH_LONG).show();
-
                         finish();
                     }
                 });
+                app.getCtx().invoke(state2);
             }
         }
-        app.getCtx().invoke(state);
+
     }
 
 }

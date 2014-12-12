@@ -2,6 +2,7 @@ package com.gospry.remote.state;
 
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.gospry.AppCtx;
 import com.gospry.remote.HttpMethod;
 import com.gospry.remote.RemoteRequest;
@@ -25,11 +26,13 @@ public class PostInviteUserState extends RemoteState {
     @Override
     public RemoteRequest prepare() {
         RemoteRequest request = new RemoteRequest(HttpMethod.POST, "/invitation/" + Long.toString(eventid) + "/" + Long.toString(userid), this);
-/*
+
         JsonObject object = new JsonObject();
-        object.addProperty("status", event.getAcceptState());
+        //  object.addProperty("status", event.getAcceptState());
+        object.addProperty("status", "");
+
         request.setBody(object.toString());
-*/
+
         return request;
     }
 
