@@ -6,9 +6,9 @@ import android.content.AsyncTaskLoader;
 import android.content.Loader;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.gospry.generate.Event;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
@@ -31,11 +31,10 @@ import java.util.List;
  */
 public class NewEventActivity extends Activity implements LoaderManager.LoaderCallbacks<List<Suggestion>> {
 
+    final Response outresponse = new Response();
     TagListView selectedTags;
     TagListView suggestionTags;
-
     int suggestionorder;
-    Event newevent;
     private TagListView.OnTagClickListener suggestionClickListener = new TagListView.OnTagClickListener() {
         @Override
         public void onTagClick(TagListView.Tag tag) {
@@ -44,9 +43,16 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             Bundle bundle = new Bundle();
             bundle.putParcelable(C.EXTRA_LAST_ADDED, tag.getObject());
             newevent.set(tag.getObject());
+            //Automatically create Event after Location/Date/Time and tag is Set
+            if (suggestionorder == 5) {
+                createEvent(null);
+                Button neweventbutton = (Button) findViewById(R.id.neweventbutton);
+                neweventbutton.setVisibility(View.VISIBLE);
+            }
             getLoaderManager().restartLoader(0, bundle, NewEventActivity.this);
         }
     };
+    Event newevent;
     //TODO: Das muss angepasst werden, damit die Reihenfolge etc stimmt,  vl nur return button enablen?
     // you can do this more easily in the SuggestionEngine. there you simply sort the tags (i put example there)
     private TagListView.OnTagClickListener selectedClickListener = new TagListView.OnTagClickListener() {
@@ -56,8 +62,6 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             selectedTags.removeTag(tag);
             Bundle bundle = new Bundle();
             bundle.putParcelable(C.EXTRA_LAST_REMOVED, tag.getObject());
-            //TODO: Automatically create Event after 5 clicks? or let user decide?
-            //   if(suggestionorder < 5) createEvent(View view);
             getLoaderManager().restartLoader(0, bundle, NewEventActivity.this);
         }
     };
@@ -74,6 +78,9 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
 
         suggestionTags.setListener(suggestionClickListener);
         selectedTags.setListener(selectedClickListener);
+
+        Button neweventbutton = (Button) findViewById(R.id.neweventbutton);
+        neweventbutton.setVisibility(View.INVISIBLE);
 
         suggestionorder = 1;
         newevent = new Event();
@@ -121,7 +128,7 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
 
     public void createEvent(View view) {
         List<TagListView.Tag> tags = selectedTags.getTags();
-        //TODO: Tags werden in im json geaddet, der rest schon vorher in eventstruktur abgelegt
+        //TODO: Tags werden im json geaddet, der rest schon vorher in eventstruktur abgelegt
         List<Suggestion> suggestions = new LinkedList<>();
         for (TagListView.Tag tag : tags) {
             if (tag.getObject().getType() == SuggestionTypes.TAG) {
@@ -129,38 +136,40 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
             }
         }
         MeetMeApp app = (MeetMeApp) getApplication();
-        //TODO: This Request must return the remote id of the event so that the user can be invited
-        // when you have it on the server side see the comment in onRequestOk
-        // long remoteeventid = 1L;
         RemoteState state = new PostEventState(app.getCtx(), suggestions, newevent);
-        final Response outresponse = new Response();
+        RemoteResponse x;
         state.setCallback(new RemoteCallback() {
             @Override
             public void onRequestOk(RemoteResponse response) {
                 setResult(Activity.RESULT_OK);
-                Toast.makeText(NewEventActivity.this, "Event created: " + response.getString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(NewEventActivity.this, "Event created: " + response.getString() + "Activity: " + this.toString(), Toast.LENGTH_LONG).show();
+                //gets response out of here
                 outresponse.setResponse(response.getJsonObject());
-                finish();
-                //TODO: get eventid out of here or put invitation code here
-                JsonObject obj = response.getJsonObject();
-                Integer eventId = obj.get("event_id").getAsInt();
             }
+
             @Override
             public void onRequestFailed(RemoteResponse response) {
                 Toast.makeText(NewEventActivity.this, "Could not create event: " + response.getString(), Toast.LENGTH_LONG).show();
             }
         });
         app.getCtx().invoke(state);
-        long remoteeventid = 13L;
 
-        //TODO:Fix this on serverside and test here
+
+    }
+
+    public void inviteFriends(View view) {
+        // long remoteeventid = 13L;
+        List<TagListView.Tag> tags = selectedTags.getTags();
+        MeetMeApp app = (MeetMeApp) getApplication();
         // looks good, you might want to do it in a bulk job not one request for each invite
         // but one request containing a list of invites
+        long remoteeventid = outresponse.getResponse().get("id").getAsInt();
+        System.out.println("EventID: " + Long.toString(remoteeventid));
         for (TagListView.Tag tag : tags) {
             if (tag.getObject().getType() == SuggestionTypes.PERSON) {
                 SuggestionContact invite = (SuggestionContact) tag.getObject();
-                RemoteState state2 = new PostInviteUserState(app.getCtx(), remoteeventid, invite.getPhonenumber());
-                state.setCallback(new RemoteCallback() {
+                final RemoteState state2 = new PostInviteUserState(app.getCtx(), remoteeventid, invite.getPhonenumber());
+                state2.setCallback(new RemoteCallback() {
                     @Override
                     public void onRequestOk(RemoteResponse response) {
                         setResult(Activity.RESULT_OK);
@@ -176,7 +185,7 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
                 app.getCtx().invoke(state2);
             }
         }
-
     }
+
 
 }

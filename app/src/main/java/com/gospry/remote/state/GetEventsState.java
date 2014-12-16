@@ -48,11 +48,12 @@ public class GetEventsState extends RemoteState {
                 app.getSession().saveKeyword(keyword);
             }
         }
-        for (int i = 0; i < 40; i++) {
+       /* for (int i = 0; i < 40; i++) {
             Event event = new Event();
             event.setDescription("index " + i);
             app.getSession().saveEvent(event);
         }
+        */
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.gospry.generate.Account;
 import com.gospry.remote.MySSLSocketFactory;
 import com.gospry.remote.RemoteRequest;
 import com.gospry.remote.RemoteState;
+import com.gospry.util.C;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpVersion;
@@ -44,7 +45,7 @@ public class AppCtx {
         ClientConnectionManager conMgr = new SingleClientConnManager(params, schReg);
 
         client = new DefaultHttpClient(conMgr, params);
-        host = new HttpHost("api.gospry.com", 443, "https");
+        host = new HttpHost(C.SERVER_ADDRESS, C.SERVER_PORT, "https");
     }
 
     public boolean isAuthenticated() {

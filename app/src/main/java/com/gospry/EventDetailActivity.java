@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.gospry.R;
 import com.gospry.generate.Event;
 import com.gospry.generate.Keyword;
 import com.gospry.generate.LocalSession;
@@ -86,17 +85,24 @@ public class EventDetailActivity extends Activity {
 
         private final View view;
         private final TextView desc;
+        private final TextView when;
+        private final TextView where;
         private final TagListView keywords;
+
 
         @SuppressLint("WrongViewCast")
         public ViewHolder(View view) {
             this.view = view;
             this.desc = (TextView) view.findViewById(R.id.desc);
             this.keywords = (TagListView) view.findViewById(R.id.keywords);
+            this.when = (TextView) view.findViewById(R.id.when);
+            this.where = (TextView) view.findViewById(R.id.where);
         }
 
         public void update(Event event, LocalSession session) {
             desc.setText(event.getDescription());
+            where.setText(event.getLocation());
+            when.setText(event.getStartTime().toString());
             List<Keyword> kws = event.loadKeywords(session).all();
             for (Keyword word : kws) {
                 keywords.addTag(new TagListView.Tag(new Suggestion(word.getText(), SuggestionTypes.of(word.getText()))));

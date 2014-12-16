@@ -1,44 +1,45 @@
 <RelativeLayout
-    tools:context="com.gospry.NewEventActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="15dp"
-    android:orientation="vertical">
+    tools:context="com.gospry.NewEventActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
         android:gravity="center"
-        android:textAppearance="?android:textAppearanceMedium"
         android:text="Go a head and select your tags"
+        android:textAppearance="?android:textAppearanceMedium"
         />
 
     <com.gospry.view.TagListView
         android:id="@+id/selected_list_view"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textView"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="10dp">
 
     </com.gospry.view.TagListView>
 
     <com.gospry.view.TagListView
         android:id="@+id/proposed_list_view"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/selected_list_view"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="10dp">
 
     </com.gospry.view.TagListView>
 
     <Button
+        android:id="@+id/neweventbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:onClick="createEvent"
+        android:onClick="inviteFriends"
         android:text="done" />
 
 </RelativeLayout>

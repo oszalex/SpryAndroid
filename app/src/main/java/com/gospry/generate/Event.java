@@ -20,6 +20,7 @@ package com.gospry.generate;
 import com.gospry.suggestion.Suggestion;
 import com.gospry.suggestion.SuggestionDate;
 import com.gospry.suggestion.SuggestionLocation;
+import com.gospry.suggestion.SuggestionTag;
 import com.gospry.suggestion.SuggestionTime;
 
 public class Event extends AbstractEvent {
@@ -44,26 +45,26 @@ public class Event extends AbstractEvent {
     public void set(Suggestion suggest) {   //TODO: CAST is not so nice
         switch (suggest.getType()) {
             case PERSON:
-                return;
+                break;
             case TIME:
                 SuggestionTime time = (SuggestionTime) suggest;
                 this.setStartTime(time.getStarttime());
-                return;
+                break;
 
             case DATE:
                 SuggestionDate date = (SuggestionDate) suggest;
                 this.setStartTime(date.getStartdate());
-                return;
-
+                break;
             case PLACE:
                 SuggestionLocation location = (SuggestionLocation) suggest;
                 this.setLocation(location.getLocation());
-                return;
-           /* case TAG: SuggestionTag tag = (SuggestionTag) suggest;
-                this.setTag(tag.getTag()); return;
-                */
+                break;
+            case TAG:
+                SuggestionTag tag = (SuggestionTag) suggest;
+                this.setDescription(tag.getTag());
+                break;
             default:
-                return;
+                break;
         }
     }
 

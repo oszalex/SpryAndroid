@@ -117,7 +117,7 @@ public class SuggestionEngine {
             case C.NEWEVENT_LOCATION_RANK:
                 return SuggestionTypes.PLACE;
             case C.NEWEVENT_TAG_RANK:
-                return SuggestionTypes.PERSON;
+                return SuggestionTypes.TAG;
             case C.NEWEVENT_FRIENDS_RANK:
                 return SuggestionTypes.PERSON;
             default:

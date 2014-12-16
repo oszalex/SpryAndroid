@@ -5,6 +5,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.gospry.AppCtx;
+import com.gospry.util.C;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -29,7 +30,7 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
 
     public RemoteRequest(HttpMethod method, String route, RemoteState state) {
         this.method = method;
-        this.route = "/v2" + route;
+        this.route = "/" + C.SERVER_VERSION + route;
         this.context = state.context;
         this.state = state;
     }
