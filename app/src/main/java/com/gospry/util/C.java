@@ -26,7 +26,7 @@ public class C {
 
     public static final String SUGGESTIONTYPE = "suggestiontype";
 
-    public static final String SERVER_VERSION = "v2";
+    public static final String SERVER_VERSION = "v3";
     public static final String SERVER_ADDRESS = "api.gospry.com";
     public static final int SERVER_PORT = 443;
 

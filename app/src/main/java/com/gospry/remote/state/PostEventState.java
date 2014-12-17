@@ -42,7 +42,7 @@ public class PostEventState extends RemoteState {
         object.addProperty("start_time", event.getStartTime());
         object.addProperty("location", event.getLocation());
         object.addProperty("min_attending", 0);
-        object.addProperty("isPublic", true);
+        object.addProperty("isPublic", false);
         object.addProperty("price", 0);
         object.addProperty("description", "desc...");
         object.addProperty("duration", 180);
