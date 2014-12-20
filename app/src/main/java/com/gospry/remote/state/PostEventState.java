@@ -9,6 +9,7 @@ import com.gospry.remote.HttpMethod;
 import com.gospry.remote.RemoteRequest;
 import com.gospry.remote.RemoteState;
 import com.gospry.suggestion.Suggestion;
+import com.gospry.suggestion.SuggestionTypes;
 
 import java.util.List;
 
@@ -41,21 +42,20 @@ public class PostEventState extends RemoteState {
         //  "keywords":["LULU","kw2"]}
         object.addProperty("start_time", event.getStartTime());
         object.addProperty("location", event.getLocation());
-        object.addProperty("min_attending", 0);
-        object.addProperty("isPublic", false);
-        object.addProperty("price", 0);
-        object.addProperty("description", "desc...");
-        object.addProperty("duration", 180);
+        object.addProperty("min_attending", event.getMinAttending());
+        object.addProperty("isPublic", event.getIsPublic());
+        object.addProperty("price", event.getPrice());
+        object.addProperty("description", event.getDescription());
+        object.addProperty("duration", event.getDuration());
         JsonArray keyWords = new JsonArray();
         int count = 0;
         for (Suggestion sel : selectionList) {
             keyWords.add(new JsonPrimitive(sel.getValue()));
-           /* if (sel.getType() == SuggestionTypes.PERSON) {
-                count++;
+            if (sel.getType() == SuggestionTypes.TAG) {
+                keyWords.add(new JsonPrimitive(sel.getValue()));
             }
-            */
         }
-        object.addProperty("max_attending", count);
+        object.addProperty("max_attending", event.getMaxAttending());
         object.add("keywords", keyWords);
         request.setBody(object.toString());
         return request;

@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gospry" >
+    package="com.gospry">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <permission
+        android:name="com.example.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
     <application
         android:name="com.gospry.MeetMeApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity android:name="com.gospry.EventActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name="com.gospry.EventActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,20 +28,34 @@
             android:name="com.gospry.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppThemeNoActionBar"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity
             android:name="com.gospry.EventDetailActivity"
             android:label="@string/title_activity_event_detail"
-            android:parentActivityName="com.gospry.EventActivity" >
+            android:parentActivityName="com.gospry.EventActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.getbro.meetmeandroid.EventActivity" />
         </activity>
         <activity
             android:name="com.gospry.NewEventActivity"
-            android:label="@string/title_activity_new_event" >
-        </activity>
+            android:label="@string/title_activity_new_event"></activity>
+        <activity
+            android:name="com.gospry.DemoActivity"
+            android:label="@string/title_activity_new_event"></activity>
+
+        <receiver
+            android:name=".GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.gospry" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GcmIntentService" />
+        <service android:name=".GcmIntentService" />
     </application>
 
 </manifest>

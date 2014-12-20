@@ -18,11 +18,9 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
-import com.gospry.generate.Event;
+public class EventConverter {
 
-public class EventConverter{
-    
-    public static void serialize(Event entity){
+    public static void serialize(Event entity) {
     }
-    
+
 }

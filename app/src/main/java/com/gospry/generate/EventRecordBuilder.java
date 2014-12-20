@@ -18,25 +18,27 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
-import at.pasra.record.RecordBuilder;
 import android.database.sqlite.SQLiteDatabase;
-import com.gospry.generate.Event;
 
-public class EventRecordBuilder extends RecordBuilder<Event>{
-    public EventRecordBuilder(SQLiteDatabase db){
-        super("events", new String[] { "user", "start_time", "remote_id", "description", "duration", "max_attending", "min_attending", "price", "is_public", "accept_state", "_id" }, db);
+import at.pasra.record.RecordBuilder;
+
+public class EventRecordBuilder extends RecordBuilder<Event> {
+    public EventRecordBuilder(SQLiteDatabase db) {
+        super("events", new String[]{"user", "start_time", "remote_id", "description", "duration", "max_attending", "min_attending", "price", "is_public", "accept_state", "_id"}, db);
     }
+
     @Override
-    public java.util.List<Event> all(android.database.Cursor c){
+    public java.util.List<Event> all(android.database.Cursor c) {
         java.util.List<Event> list = new java.util.ArrayList<Event>();
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             list.add(Event.fromCursor(c));
         }
         return list;
     }
+
     @Override
-    public Event first(android.database.Cursor c){
-        if (c.moveToFirst()){
+    public Event first(android.database.Cursor c) {
+        if (c.moveToFirst()) {
             Event record = Event.fromCursor(c);
             c.close();
             return record;

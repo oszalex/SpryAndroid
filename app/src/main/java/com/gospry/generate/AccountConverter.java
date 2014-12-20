@@ -18,11 +18,9 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
-import com.gospry.generate.Account;
+public class AccountConverter {
 
-public class AccountConverter{
-    
-    public static void serialize(Account entity){
+    public static void serialize(Account entity) {
     }
-    
+
 }

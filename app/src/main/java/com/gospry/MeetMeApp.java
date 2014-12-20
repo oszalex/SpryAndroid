@@ -29,6 +29,8 @@ public class MeetMeApp extends Application {
 
     private static Locale locale;
     private static List<Suggestion> favcontacts;
+    private static String PROPERTY_REG_ID = "REGID";
+    private static String PROPERTY_APP_VERSION = "1";
     private AppCtx ctx;
     private SQLiteDatabase db;
     private LocalSession session;
@@ -44,7 +46,6 @@ public class MeetMeApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         db = openOrCreateDatabase("name", MODE_PRIVATE, null);
         new RecordMigrator(db).migrate();
         session = new LocalSession(db);
@@ -60,6 +61,7 @@ public class MeetMeApp extends Application {
         //TODO:workaround momentan, in zukunft eigene kontaktedatenbank
         favcontacts = getContacts();
     }
+
 
     public
     @NonNull
@@ -110,4 +112,6 @@ public class MeetMeApp extends Application {
         contacts.close();
         return listContacts;
     }
+
+
 }

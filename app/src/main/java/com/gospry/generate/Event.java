@@ -30,6 +30,8 @@ public class Event extends AbstractEvent {
 
     public Event() {
         super(null);
+        //TODO: Maximal 500leute einladbar?!
+        mMaxAttending = 500;
     }
 
     public String getLocation() {

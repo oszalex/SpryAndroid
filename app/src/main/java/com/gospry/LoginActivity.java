@@ -2,7 +2,11 @@ package com.gospry;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,8 +19,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.gospry.BuildConfig;
-import com.gospry.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
 import com.gospry.remote.state.PostAuthState;
@@ -33,32 +37,71 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 
 
 public class LoginActivity extends Activity {
 
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private EditText phoneText;
     private View loginFormView;
     private Spinner countrySpinner;
     private TextView countryCodeLabel;
-
     private Map<String, String> iso2Prefix = new HashMap<String, String>();
     private ArrayList<String> countryList;
     private ArrayList<String> countryListAlpha2;
-
     private String prefix;
     private String phoneNumber;
     private ProgressDialog progressDialog;
+    private RemoteCallback authCallback = new RemoteCallback() {
+        @Override
+        public void onRequestOk(RemoteResponse response) {
+            showProgress(false);
+            finish();
+        }
+
+        @Override
+        public void onRequestFailed(RemoteResponse response) {
+            showProgress(false);
+        }
+    };
+    private RemoteCallback registerCallback = new RemoteCallback() {
+        @Override
+        public void onRequestOk(RemoteResponse response) {
+
+            String token = "1234"; // get this from the contacts
+            // remove the following
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+
+
+            MeetMeApp app = (MeetMeApp) getApplication();
+            PostAuthState auth = new PostAuthState(getPhoneNumber(), token, app.getCtx());
+            auth.setCallback(authCallback);
+            app.getCtx().invoke(auth);
+        }
+
+        @Override
+        public void onRequestFailed(RemoteResponse response) {
+            showProgress(false);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
-
+        //TODO: Register with google
+        Intent it = new Intent(this, DemoActivity.class);
+        startActivity(it);
         loginFormView = findViewById(R.id.login_form);
 
         phoneText = (EditText) findViewById(R.id.phoneNumber);
@@ -75,7 +118,8 @@ public class LoginActivity extends Activity {
         });
 
         if (BuildConfig.DEBUG) {
-            phoneText.setText("664" + Integer.toString(1000 + new Random().nextInt(1000)));
+           // phoneText.setText("664" + Integer.toString(1000 + new Random().nextInt(1000)));
+            phoneText.setText("6802118976");
         }
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -107,8 +151,28 @@ public class LoginActivity extends Activity {
 
             }
         });
+        //TODO: get country code from sim
+        selectCountry(CountryCode.AT.getAlpha2(), true);
 
-        selectCountry(CountryCode.getByLocale(Locale.getDefault()).getAlpha2(), true);
+        if (checkPlayServices()) {
+            //TODO:
+            // If this check succeeds, proceed with normal processing.
+            // Otherwise, prompt user to get valid Play Services APK.
+        }
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("ABC", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     private void selectCountry(String code, boolean setSpinner) {
@@ -162,50 +226,14 @@ public class LoginActivity extends Activity {
     public void attemptLogin() {
 
         MeetMeApp app = (MeetMeApp) getApplication();
-
-        PostRegisterState register = new PostRegisterState(getPhoneNumber(), app.getCtx());
+        SharedPreferences prefs = getSharedPreferences(DemoActivity.class.getSimpleName(),
+                Context.MODE_PRIVATE);
+        Log.i("Property Reg ID during register", prefs.getString(DemoActivity.PROPERTY_REG_ID, ""));
+        PostRegisterState register = new PostRegisterState(getPhoneNumber(), app.getCtx(), prefs.getString(DemoActivity.PROPERTY_REG_ID, ""));
         register.setCallback(registerCallback);
         app.getCtx().invoke(register);
-
         showProgress(true);
     }
-
-    private RemoteCallback registerCallback = new RemoteCallback() {
-        @Override
-        public void onRequestOk(RemoteResponse response) {
-
-            String token = "1234"; // get this from the contacts
-            // remove the following
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
-
-
-            MeetMeApp app = (MeetMeApp) getApplication();
-            PostAuthState auth = new PostAuthState(getPhoneNumber(), token, app.getCtx());
-            auth.setCallback(authCallback);
-            app.getCtx().invoke(auth);
-        }
-
-        @Override
-        public void onRequestFailed(RemoteResponse response) {
-            showProgress(false);
-        }
-    };
-
-    private RemoteCallback authCallback = new RemoteCallback() {
-        @Override
-        public void onRequestOk(RemoteResponse response) {
-            showProgress(false);
-            finish();
-        }
-
-        @Override
-        public void onRequestFailed(RemoteResponse response) {
-            showProgress(false);
-        }
-    };
 
     public void showProgress(final boolean show) {
         if (show) {
