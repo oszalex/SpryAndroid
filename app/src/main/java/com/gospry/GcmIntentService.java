@@ -19,14 +19,23 @@ package com.gospry;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.gospry.generate.Event;
+import com.gospry.remote.RemoteCallback;
+import com.gospry.remote.RemoteResponse;
+import com.gospry.remote.state.GetEventsState;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -60,9 +69,9 @@ public class GcmIntentService extends IntentService {
              * not interested in, or that you don't recognize.
              */
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                // sendNotification("Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " + extras.toString());
+                //  sendNotification("Deleted messages on server: " + extras.toString());
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 // This loop represents the service doing some work.
@@ -76,7 +85,7 @@ public class GcmIntentService extends IntentService {
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
-                sendNotification("Received: " + extras.toString());
+                sendNotification(extras);
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -87,22 +96,54 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg) {
+    private void sendNotification(Bundle msg) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, EventActivity.class), 0);
+        MeetMeApp app = (MeetMeApp) getApplication();
+        GetEventsState state = new GetEventsState(app.getCtx());
+        state.setCallback(new RemoteCallback() {
+            @Override
+            public void onRequestOk(RemoteResponse response) {
+            }
 
+            @Override
+            public void onRequestFailed(RemoteResponse response) {
+            }
+        });
+        app.getCtx().invoke(state);
+        Event event = app.getSession().findEvent(Long.parseLong((String) msg.get("eventID")));
+        String contactName = "Unknown";
+        ContentResolver cr = this.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(event.getUser()));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.spry)
-                        .setContentTitle("GCM Notification")
+                        .setContentTitle(contactName)
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
-                        .setContentText(msg);
-
+                                .bigText(event.getDescription()))
+                        .setContentText(event.getDescription())
+                        .setAutoCancel(true);
+        Intent resultIntent = new Intent(this, EventActivity.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        mBuilder.setSound(alarmSound);
         mBuilder.setContentIntent(contentIntent);
+        //   long[] pattern = {500,500,500,500,500,500,500,500,500};
+        //    builder.setVibrate(pattern);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }

@@ -22,6 +22,7 @@ import com.gospry.suggestion.SuggestionTypes;
 import com.gospry.util.C;
 import com.gospry.util.Response;
 import com.gospry.view.TagListView;
+import com.shamanland.fab.FloatingActionButton;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +49,14 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
                 createEvent(null);
                 Button neweventbutton = (Button) findViewById(R.id.neweventbutton);
                 neweventbutton.setVisibility(View.VISIBLE);
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabnewevent);
+                neweventbutton.setVisibility(View.VISIBLE);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO: OPEN Contact Manager...and add suggestions/friends, Fix button
+                    }
+                });
             }
             getLoaderManager().restartLoader(0, bundle, NewEventActivity.this);
         }
@@ -81,7 +90,8 @@ public class NewEventActivity extends Activity implements LoaderManager.LoaderCa
 
         Button neweventbutton = (Button) findViewById(R.id.neweventbutton);
         neweventbutton.setVisibility(View.INVISIBLE);
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabnewevent);
+        fab.setVisibility(View.INVISIBLE);
         suggestionorder = 1;
         newevent = new Event();
         getLoaderManager().initLoader(0, null, this);

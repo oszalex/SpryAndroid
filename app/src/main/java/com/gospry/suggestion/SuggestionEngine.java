@@ -8,7 +8,6 @@ import com.gospry.util.C;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +58,8 @@ public class SuggestionEngine {
 
         List<Suggestion> friends = new LinkedList<Suggestion>();
         friends.add(new SuggestionContact("Adi", SuggestionTypes.PERSON, 436802118978L));
+        friends.add(new SuggestionContact("Test", SuggestionTypes.PERSON, 436802118971L));
+        friends.add(new SuggestionContact("Alex", SuggestionTypes.PERSON, 436802118976L));
         friends.add(new SuggestionContact("Chris", SuggestionTypes.PERSON, 436991234567L));
         friends.add(new SuggestionContact("Benni", SuggestionTypes.PERSON, 4368123445L));
         friends.add(new SuggestionContact("Rich", SuggestionTypes.PERSON, 43664123456789L));
@@ -104,7 +105,7 @@ public class SuggestionEngine {
         }
       */
         suggestions.addAll(defaultSuggestions.get(getType(args.getInt(C.SUGGESTIONTYPE))));
-        Collections.shuffle(suggestions);
+        //   Collections.shuffle(suggestions);
         return suggestions;
     }
 
