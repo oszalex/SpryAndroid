@@ -17,41 +17,39 @@
  */
 package com.gospry.generate;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import com.gospry.generate.Keyword;
 
-public class KeywordRecord {
+public class KeywordRecord{
     private final java.util.Map<Long, Keyword> primaryKeyCache = new java.util.HashMap<Long, Keyword>();
-
-    public void clearCache() {
+    public void clearCache(){
         primaryKeyCache.clear();
     }
-
-    public void save(SQLiteDatabase db, AbstractKeyword record) {
-        if (record.getId() == null) {
+    public void save(SQLiteDatabase db, AbstractKeyword record){
+        if (record.getId() == null){
             insert(db, record);
-        } else {
+        }
+        else{
             update(db, record);
         }
     }
-
-    public void insert(SQLiteDatabase db, AbstractKeyword record) {
+    public void insert(SQLiteDatabase db, AbstractKeyword record){
         ContentValues values = new ContentValues(2);
         values.put("text", record.getText());
         values.put("event_id", record.getEventId());
         long id = db.insert("keywords", null, values);
         record.setId(id);
-        primaryKeyCache.put(id, (Keyword) record);
+        primaryKeyCache.put(id, (Keyword)record);
     }
-
-    public Keyword load(SQLiteDatabase db, long id) {
+    public Keyword load(SQLiteDatabase db, long id){
         Keyword cached = primaryKeyCache.get(id);
-        if (cached != null) {
+        if (cached != null){
             return cached;
         }
-        Cursor c = db.rawQuery("select text, event_id, _id from keywords where _id = ?;", new String[]{Long.toString(id)});
-        if (c.moveToFirst()) {
+        Cursor c = db.rawQuery("select text, event_id, _id from keywords where _id = ?;", new String[] { Long.toString(id) });
+        if (c.moveToFirst()){
             Keyword record = new Keyword();
             record.setText(c.getString(c.getColumnIndex("text")));
             record.setEventId(c.getLong(c.getColumnIndex("event_id")));
@@ -61,17 +59,15 @@ public class KeywordRecord {
         }
         return null;
     }
-
-    public void delete(SQLiteDatabase db, long id) {
-        db.execSQL("delete from keywords where  _id = ?;", new String[]{Long.toString(id)});
+    public void delete(SQLiteDatabase db, long id){
+        db.execSQL("delete from keywords where  _id = ?;", new String[] { Long.toString(id) });
         primaryKeyCache.remove(id);
     }
-
-    public void update(SQLiteDatabase db, AbstractKeyword record) {
+    public void update(SQLiteDatabase db, AbstractKeyword record){
         ContentValues values = new ContentValues(2);
         values.put("text", record.getText());
         values.put("event_id", record.getEventId());
         long id = record.getId();
-        db.update("keywords", values, "_id = ?", new String[]{Long.toString(id)});
+        db.update("keywords", values, "_id = ?", new String[] { Long.toString(id) });
     }
 }

@@ -17,26 +17,25 @@
  */
 package com.gospry.generate;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import com.gospry.generate.Event;
 
-public class EventRecord {
+public class EventRecord{
     private final java.util.Map<Long, Event> primaryKeyCache = new java.util.HashMap<Long, Event>();
-
-    public void clearCache() {
+    public void clearCache(){
         primaryKeyCache.clear();
     }
-
-    public void save(SQLiteDatabase db, AbstractEvent record) {
-        if (record.getId() == null) {
+    public void save(SQLiteDatabase db, AbstractEvent record){
+        if (record.getId() == null){
             insert(db, record);
-        } else {
+        }
+        else{
             update(db, record);
         }
     }
-
-    public void insert(SQLiteDatabase db, AbstractEvent record) {
+    public void insert(SQLiteDatabase db, AbstractEvent record){
         ContentValues values = new ContentValues(10);
         values.put("user", record.getUser());
         values.put("start_time", record.getStartTime());
@@ -50,16 +49,15 @@ public class EventRecord {
         values.put("accept_state", record.getAcceptState());
         long id = db.insert("events", null, values);
         record.setId(id);
-        primaryKeyCache.put(id, (Event) record);
+        primaryKeyCache.put(id, (Event)record);
     }
-
-    public Event load(SQLiteDatabase db, long id) {
+    public Event load(SQLiteDatabase db, long id){
         Event cached = primaryKeyCache.get(id);
-        if (cached != null) {
+        if (cached != null){
             return cached;
         }
-        Cursor c = db.rawQuery("select user, start_time, remote_id, description, duration, max_attending, min_attending, price, is_public, accept_state, _id from events where _id = ?;", new String[]{Long.toString(id)});
-        if (c.moveToFirst()) {
+        Cursor c = db.rawQuery("select user, start_time, remote_id, description, duration, max_attending, min_attending, price, is_public, accept_state, _id from events where _id = ?;", new String[] { Long.toString(id) });
+        if (c.moveToFirst()){
             Event record = new Event();
             record.setUser(c.getString(c.getColumnIndex("user")));
             record.setStartTime(c.getLong(c.getColumnIndex("start_time")));
@@ -77,13 +75,11 @@ public class EventRecord {
         }
         return null;
     }
-
-    public void delete(SQLiteDatabase db, long id) {
-        db.execSQL("delete from events where  _id = ?;", new String[]{Long.toString(id)});
+    public void delete(SQLiteDatabase db, long id){
+        db.execSQL("delete from events where  _id = ?;", new String[] { Long.toString(id) });
         primaryKeyCache.remove(id);
     }
-
-    public void update(SQLiteDatabase db, AbstractEvent record) {
+    public void update(SQLiteDatabase db, AbstractEvent record){
         ContentValues values = new ContentValues(10);
         values.put("user", record.getUser());
         values.put("start_time", record.getStartTime());
@@ -96,6 +92,6 @@ public class EventRecord {
         values.put("is_public", record.getIsPublic());
         values.put("accept_state", record.getAcceptState());
         long id = record.getId();
-        db.update("events", values, "_id = ?", new String[]{Long.toString(id)});
+        db.update("events", values, "_id = ?", new String[] { Long.toString(id) });
     }
 }

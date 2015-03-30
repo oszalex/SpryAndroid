@@ -18,9 +18,11 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
+import com.gospry.generate.Event;
+import com.gospry.generate.Keyword;
 import at.pasra.record.RecordBuilder;
 
-public class AbstractEvent {
+public class AbstractEvent{
     protected java.lang.String mUser;
     protected java.lang.Long mStartTime;
     protected java.lang.Long mRemoteId;
@@ -32,8 +34,8 @@ public class AbstractEvent {
     protected java.lang.Boolean mIsPublic;
     protected java.lang.String mAcceptState;
     protected java.lang.Long mId;
-
-    public AbstractEvent(java.lang.Long id) {
+    
+    public AbstractEvent(java.lang.Long id){
         this.mId = id;
         this.mUser = "";
         this.mStartTime = new Long(0L);
@@ -46,8 +48,33 @@ public class AbstractEvent {
         this.mIsPublic = new Boolean(false);
         this.mAcceptState = "";
     }
-
-    public static Event fromCursor(android.database.Cursor cursor) {
+    
+    public java.lang.String getUser() { return mUser; }
+    public void setUser(java.lang.String value) { mUser = value; }
+    public java.lang.Long getStartTime() { return mStartTime; }
+    public void setStartTime(java.lang.Long value) { mStartTime = value; }
+    public java.lang.Long getRemoteId() { return mRemoteId; }
+    public void setRemoteId(java.lang.Long value) { mRemoteId = value; }
+    public java.lang.String getDescription() { return mDescription; }
+    public void setDescription(java.lang.String value) { mDescription = value; }
+    public java.lang.Integer getDuration() { return mDuration; }
+    public void setDuration(java.lang.Integer value) { mDuration = value; }
+    public java.lang.Integer getMaxAttending() { return mMaxAttending; }
+    public void setMaxAttending(java.lang.Integer value) { mMaxAttending = value; }
+    public java.lang.Integer getMinAttending() { return mMinAttending; }
+    public void setMinAttending(java.lang.Integer value) { mMinAttending = value; }
+    public java.lang.Double getPrice() { return mPrice; }
+    public void setPrice(java.lang.Double value) { mPrice = value; }
+    public java.lang.Boolean getIsPublic() { return mIsPublic; }
+    public void setIsPublic(java.lang.Boolean value) { mIsPublic = value; }
+    public java.lang.String getAcceptState() { return mAcceptState; }
+    public void setAcceptState(java.lang.String value) { mAcceptState = value; }
+    public java.lang.Long getId() { return mId; }
+    public void setId(java.lang.Long value) { mId = value; }
+    public RecordBuilder<Keyword> loadKeywords(LocalSession session){
+        return session.queryKeywords().where("event_id = ?", Long.toString(mId) );
+    }
+    public static Event fromCursor(android.database.Cursor cursor){
         Event record = new Event();
         record.setUser(cursor.getString(cursor.getColumnIndex("user")));
         record.setStartTime(cursor.getLong(cursor.getColumnIndex("start_time")));
@@ -61,97 +88,5 @@ public class AbstractEvent {
         record.setAcceptState(cursor.getString(cursor.getColumnIndex("accept_state")));
         record.setId(cursor.getLong(cursor.getColumnIndex("_id")));
         return record;
-    }
-
-    public java.lang.String getUser() {
-        return mUser;
-    }
-
-    public void setUser(java.lang.String value) {
-        mUser = value;
-    }
-
-    public java.lang.Long getStartTime() {
-        return mStartTime;
-    }
-
-    public void setStartTime(java.lang.Long value) {
-        mStartTime = value;
-    }
-
-    public java.lang.Long getRemoteId() {
-        return mRemoteId;
-    }
-
-    public void setRemoteId(java.lang.Long value) {
-        mRemoteId = value;
-    }
-
-    public java.lang.String getDescription() {
-        return mDescription;
-    }
-
-    public void setDescription(java.lang.String value) {
-        mDescription = value;
-    }
-
-    public java.lang.Integer getDuration() {
-        return mDuration;
-    }
-
-    public void setDuration(java.lang.Integer value) {
-        mDuration = value;
-    }
-
-    public java.lang.Integer getMaxAttending() {
-        return mMaxAttending;
-    }
-
-    public void setMaxAttending(java.lang.Integer value) {
-        mMaxAttending = value;
-    }
-
-    public java.lang.Integer getMinAttending() {
-        return mMinAttending;
-    }
-
-    public void setMinAttending(java.lang.Integer value) {
-        mMinAttending = value;
-    }
-
-    public java.lang.Double getPrice() {
-        return mPrice;
-    }
-
-    public void setPrice(java.lang.Double value) {
-        mPrice = value;
-    }
-
-    public java.lang.Boolean getIsPublic() {
-        return mIsPublic;
-    }
-
-    public void setIsPublic(java.lang.Boolean value) {
-        mIsPublic = value;
-    }
-
-    public java.lang.String getAcceptState() {
-        return mAcceptState;
-    }
-
-    public void setAcceptState(java.lang.String value) {
-        mAcceptState = value;
-    }
-
-    public java.lang.Long getId() {
-        return mId;
-    }
-
-    public void setId(java.lang.Long value) {
-        mId = value;
-    }
-
-    public RecordBuilder<Keyword> loadKeywords(LocalSession session) {
-        return session.queryKeywords().where("event_id = ?", Long.toString(mId));
     }
 }

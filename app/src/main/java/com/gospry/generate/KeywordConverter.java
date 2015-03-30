@@ -18,9 +18,11 @@
 // This file is generated. If you want to save you some time: !!!DO NOT MODIFY!!!
 package com.gospry.generate;
 
-public class KeywordConverter {
+import com.gospry.generate.Keyword;
 
-    public static void serialize(Keyword entity) {
+public class KeywordConverter{
+    
+    public static void serialize(Keyword entity){
     }
-
+    
 }
