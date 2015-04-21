@@ -15,6 +15,7 @@ import com.gospry.R;
 import com.gospry.adapter.EventAdapter;
 import com.gospry.generate.Event;
 import com.gospry.generate.LocalSession;
+import com.gospry.old.NewEventIdeaActivity;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
 import com.gospry.remote.state.GetEventsState;
@@ -63,7 +64,8 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(EventActivity.this, NewEventActivity.class);
+             //  Intent it = new Intent(EventActivity.this, NewEventActivity.class);
+               Intent it = new Intent(EventActivity.this, NewEventActivityWindowed.class);
                 startActivityForResult(it, C.REQ_NEW_EVENT);
             }
         });
