@@ -51,6 +51,18 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         swipeRefreshLayout.setOnRefreshListener(this);
 
         checkAuth();
+        /**
+         * setup Test Button
+         */
+        FloatingActionButton testbutton = (FloatingActionButton) this.findViewById(R.id.testbutton);
+
+        testbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(EventActivity.this, TestActivity.class);
+                startActivityForResult(it, C.REQ_NEW_EVENT);
+            }
+        });
 
         /**
          * setup FAB Button to add events

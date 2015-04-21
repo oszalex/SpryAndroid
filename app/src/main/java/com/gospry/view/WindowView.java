@@ -1,6 +1,7 @@
 package com.gospry.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,38 +25,28 @@ import java.util.List;
  * A linear layout that wraps around it's children if there is not enough space!
  */
 
-public class TagListView extends LinearLayout {
+public class WindowView extends LinearLayout {
 
-    private OnTagClickListener listener;
-    private OnClickListener childClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Tag tag = (Tag) v.getTag();
-            if (listener != null) {
-                listener.onTagClick(tag);
-            }
-        }
-    };
-    private List<Tag> tagList = new ArrayList<>();
+
+
+    private List<Window> windowList = new ArrayList<>();
     private List<View> convertViewList = new LinkedList<>();
 
-    public TagListView(Context context) {
+    public WindowView(Context context) {
         super(context);
     }
 
-    public TagListView(Context context, AttributeSet attrs) {
+    public WindowView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TagListView(Context context, AttributeSet attrs, int defStyle) {
+    public WindowView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public void setListener(OnTagClickListener listener) {
-        this.listener = listener;
-    }
 
-    public void addTag(Tag tag) {
+
+    public void addWindow(Window tag) {
         int pos = tagList.size();
         tagList.add(tag);
         View view = null;
@@ -66,7 +57,7 @@ public class TagListView extends LinearLayout {
         view.setOnClickListener(childClickListener);
         view.setTag(tag);
 
-        LinearLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         float dpi = getResources().getDisplayMetrics().density;
         lp.bottomMargin = lp.topMargin = lp.leftMargin = lp.rightMargin = (int) (5 * dpi);
 
@@ -105,8 +96,8 @@ public class TagListView extends LinearLayout {
         tagList.clear();
     }
 
-    public List<Tag> getTags() {
-        return tagList;
+    public List<Window> getWindows() {
+        return windowList;
     }
 
     @Override
@@ -123,7 +114,7 @@ public class TagListView extends LinearLayout {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
 
-            LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+            LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
             int R = L + lp.leftMargin + child.getMeasuredWidth();
             int B = T + lp.topMargin + child.getMeasuredHeight();
@@ -164,7 +155,7 @@ public class TagListView extends LinearLayout {
             View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
 
-            LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+            LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
             final int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             final int childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
@@ -203,49 +194,66 @@ public class TagListView extends LinearLayout {
         return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     }
 
-    public static interface OnTagClickListener {
-        public void onTagClick(Tag tag);
-    }
 
-    public static class Tag {
-        private Suggestion object;
-        private boolean activated;
 
-        public Tag(Suggestion object) {
-            this.object = object;
+    public static class Window {
+        private List<Suggestion> suggested;
+        private List<Suggestion> selected;
+        private boolean isSelected;
+        private String name;
+        private Color color;
+        //TODO add icon?
+        private OnTagClickListener listener;
+
+        public Window(List<Suggestion> suggested, String name, Color color) {
+            this.suggested = suggested;
+            this.name = name;
+            this.color = color;
         }
 
-        public Suggestion getObject() {
-            return object;
+        public List<Suggestion>  getSuggestions() {
+            return suggested;
+        }
+        public List<Suggestion>  getSelected() {
+            return selected;
         }
 
         public String getText() {
-            String prefix = "";
-            //FIXME: Prefixes auskommentiert, brauch ma die?
-            /*if (object.getType() == SuggestionTypes.PLACE) {
-                prefix = "@";
-            } else if (object.getType() == SuggestionTypes.DATETIME) {
-                prefix = "%";
-            } else if (object.getType() == SuggestionTypes.TAG) {
-                prefix = "#";
-            }*/
-            return prefix + object.getValue();
+            return name;
         }
 
-        public int getColor() {
-            if (isActivated()) {
-            //    return R.color.gray;
+        public Color getColor() {
+            return color;
+        }
+
+        public void select(Suggestion selectedItem) {
+            suggested.remove(selectedItem);
+            selected.add(selectedItem);
+        }
+
+        public void deselect(Suggestion deselectedItem) {
+            suggested.add(deselectedItem);
+            selected.remove(deselectedItem);
+        }
+
+        public boolean isSelected(){
+            return !selected.isEmpty();
+        }
+
+        public static interface OnTagClickListener {
+            public void onTagClick(Window tag);
+        }
+        public void setListener(OnTagClickListener listener) {
+            this.listener = listener;
+        }
+        private OnClickListener childClickListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TagListView.Tag tag = (Tag) v.getTag();
+                if (listener != null) {
+                    listener.onTagClick(tag);
+                }
             }
-            return object.getType().getColorRes();
-        }
-
-        public boolean isActivated() {
-            return activated;
-        }
-
-        public void setActivated(boolean activated) {
-            this.activated = activated;
-        }
-
+        };
     }
 }

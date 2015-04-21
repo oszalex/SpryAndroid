@@ -5,7 +5,7 @@ import com.gospry.R;
 public enum SuggestionTypes {
     PERSON(R.color.green),
     TIME(R.color.darkorange),
-    DATE(R.color.bittersweet_dark_red),
+    DATE(R.color.blue),
     PLACE(R.color.blue),
     TAG(R.color.purple);
 
