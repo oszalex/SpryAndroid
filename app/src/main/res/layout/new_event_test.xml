@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--TODO: Set the height of this right to fix scrollview isssue but still not scrolling-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/windowborder">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewHeadline"
+                android:text="Date:"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.gospry.view.TagListView
+                android:id="@+id/selected_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp">
+            </com.gospry.view.TagListView>
+        </LinearLayout>
+        <com.gospry.view.TagListView
+            android:id="@+id/proposed_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewHeadline"
+            android:layout_marginTop="2dp"
+            android:background="@color/white">
+        </com.gospry.view.TagListView>
+    </LinearLayout>

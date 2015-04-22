@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:padding="15dp"
     tools:context="com.gospry.NewEventActivity">
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -15,14 +14,17 @@
         android:text="Go a head and select your tags"
         android:textAppearance="?android:textAppearanceMedium"
         />
-
-
-
         <com.gospry.view.WindowViewList
             android:id="@+id/windowViewList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
+    <com.gospry.view.WindowViewList
+        android:id="@+id/selwindowViewList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible"/>
 
 
 </LinearLayout>

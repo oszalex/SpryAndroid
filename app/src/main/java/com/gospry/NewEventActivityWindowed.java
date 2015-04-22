@@ -48,6 +48,7 @@ public class NewEventActivityWindowed extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event_windowed);
         WindowViewList windowViewList = (WindowViewList) findViewById(R.id.windowViewList);
+        WindowViewList selwindowViewList = (WindowViewList) findViewById(R.id.selwindowViewList);
         windowViewList.init();
     }
 }
