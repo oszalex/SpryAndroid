@@ -89,6 +89,8 @@ public class NewEventActivityWindowed extends Activity  {
                 Toast.makeText(NewEventActivityWindowed.this, "Event created: " + response.getString() + "Activity: " + this.toString(), Toast.LENGTH_LONG).show();
                 //gets response out of here
                 outresponse.setResponse(response.getJsonObject());
+
+                finish();
             }
 
             @Override

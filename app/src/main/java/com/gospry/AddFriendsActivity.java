@@ -96,6 +96,7 @@ public class AddFriendsActivity extends Activity {
         Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
         startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,6 +133,8 @@ public class AddFriendsActivity extends Activity {
         //TODO:  Toast.makeText(this, "No friends added Error here", Toast.LENGTH_LONG).show();
         List<TagListView.Tag> tags = sel_friendTags.getTags();
         MeetMeApp app = (MeetMeApp) getApplication();
+        //TODO: If more than 2 Friends the user might want  to create a group
+        //TODO: Add Group Tags
         // looks good, you might want to do it in a bulk job not one request for each invite
         // but one request containing a list of invites
         long remoteeventid = this.remoteEventId;
