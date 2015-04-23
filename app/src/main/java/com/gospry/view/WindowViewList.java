@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gospry.R;
+import com.gospry.generate.Event;
 import com.gospry.suggestion.Suggestion;
 
 import java.util.ArrayList;
@@ -23,12 +24,14 @@ public class WindowViewList extends LinearLayout {
     private List<WindowView> windowViewList = new ArrayList<>();
     private List<View> convertViewList = new LinkedList<>();
     private Context context;
+    protected Event event;
 
 
-    public void init()
+    public void init(Event newevent)
     {
+        this.event= newevent;
         for(int i=1;i<5;i++){
-            WindowView date = new WindowView(context,i);
+            WindowView date = new WindowView(context,i,this);
             //windowViewList.add(date);
             addView(date);
         }
@@ -37,6 +40,9 @@ public class WindowViewList extends LinearLayout {
     public WindowViewList(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context=context;
+    }
+    public void setEventDetail(TagListView.Tag detail){
+        event.set(detail.getObject());
     }
 
 }

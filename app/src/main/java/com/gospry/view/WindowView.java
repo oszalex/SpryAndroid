@@ -25,13 +25,13 @@ public class WindowView extends LinearLayout {
     private TextView textViewHeadline;
     private TagListView tags,sel_tags;
     private int type;
+    private WindowViewList parent;
 
-
-    public WindowView(Context context, int type) {
+    public WindowView(Context context, int type,WindowViewList parent) {
         super(context);
         this.type= type;
         this.context = context;
-
+        this.parent = parent;
 
         LayoutInflater inflater;
         inflater = (LayoutInflater) context
@@ -58,10 +58,10 @@ public class WindowView extends LinearLayout {
             tag.setActivated(true);
             sel_tags.addTag(tag);
             //suggestionTags.removeTag(tag);
-            tags.removeAllViews();
             Bundle bundle = new Bundle();
             bundle.putParcelable(C.EXTRA_LAST_ADDED, tag.getObject());
-            //getLoaderManager().restartLoader(0, bundle, TestActivity.this);
+            WindowView.this.parent.event.set(tag.getObject());
+            tags.removeAllViews();
         }
     };
     private TagListView.OnTagClickListener selectedClickListener = new TagListView.OnTagClickListener() {
@@ -71,7 +71,7 @@ public class WindowView extends LinearLayout {
             sel_tags.removeTag(tag);
             Bundle bundle = new Bundle();
             //TODO: Get the right Number here from the Tag that has been deleted
-            bundle.putInt(C.SUGGESTIONTYPE, 1);
+            bundle.putInt(C.SUGGESTIONTYPE, WindowView.this.type);
             List<Suggestion> list =  SuggestionEngine.getInstance().provideSuggestions((MeetMeApp) context.getApplicationContext(), bundle);
             for (Suggestion suggestion : list) {
                 tags.addTag(new TagListView.Tag(suggestion));

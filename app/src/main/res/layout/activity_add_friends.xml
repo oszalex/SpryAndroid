@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context="com.gospry.NewEventActivity">
+
+    <TextView
+        android:id="@+id/textv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Added Friends:"
+        android:textAppearance="?android:textAppearanceMedium"
+        />
+
+    <com.gospry.view.TagListView
+        android:id="@+id/sel_friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textv"
+        android:layout_marginTop="10dp">
+
+    </com.gospry.view.TagListView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/sel_friend_list"
+        android:text="Which friends do you want to add?"
+        android:textAppearance="?android:textAppearanceMedium"
+        />
+
+    <com.gospry.view.TagListView
+        android:id="@+id/friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp">
+
+    </com.gospry.view.TagListView>
+
+    <Button
+        android:id="@+id/addfriendsbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="inviteFriends"
+        android:text="Invite Friends" />
+
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/fabaddfriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_add_white_24dp"
+        app:floatingActionButtonColor="@color/fab_primary" />
+
+</RelativeLayout>

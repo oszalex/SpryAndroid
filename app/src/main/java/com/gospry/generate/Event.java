@@ -42,8 +42,7 @@ public class Event extends AbstractEvent {
         Location = location;
     }
 
-    // je nachdem welcher Tag ausgewählt wurde wird im Event die entsprechende Variable gesetzt
-    // Personen werden extra eingeladen
+
     public void set(Suggestion suggest) {   //TODO: CAST is not so nice
         switch (suggest.getType()) {
             case PERSON:
@@ -75,6 +74,9 @@ public class Event extends AbstractEvent {
         if (mStartTime == 0L) mStartTime = value;
         else mStartTime += value;
     }
-
+    public boolean isAllSet(){
+        //TODO: Check ob alle Daten gesetzt sind um ein neues Event zu erstellen
+        return true;
+    }
 
 }

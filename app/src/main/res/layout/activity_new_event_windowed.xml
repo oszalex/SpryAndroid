@@ -25,6 +25,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="invisible"/>
+    <Button
+        android:id="@+id/neweventbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="addEvent"
+        android:text="done" />
 
 
 </LinearLayout>
