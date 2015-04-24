@@ -96,6 +96,7 @@ public class NewEventActivityWindowed extends Activity  {
             @Override
             public void onRequestFailed(RemoteResponse response) {
                 Toast.makeText(NewEventActivityWindowed.this, "Could not create event: " + response.getString(), Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         app.getCtx().invoke(state);

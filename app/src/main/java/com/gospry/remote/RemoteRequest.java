@@ -7,12 +7,15 @@ import android.util.Log;
 import com.gospry.AppCtx;
 import com.gospry.util.C;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -48,7 +51,7 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
         if (state.useAuth) {
             httpRequest.setHeader("Authorization", "Basic " + basicAuthBase64(context.getApplication().getBasicAuth()));
         }
-
+        //TODO: Fix in BAckend the header Problem
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("Accept", "application/json");
 
@@ -66,6 +69,12 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
             final HttpHost host = context.getHost();
             final HttpClient client = context.getClient();
             Log.d("HTTP", "request: " + httpRequest.getRequestLine().toString());
+            //TODO: rausnehmen
+            if (httpRequest instanceof HttpEntityEnclosingRequest) { //test if request is a POST
+                HttpEntity entity = ((HttpEntityEnclosingRequest) httpRequest).getEntity();
+                String body = EntityUtils.toString(entity); //here you have the POST body
+            }
+            Log.d("HTTP", "requestbody: " + body);
             HttpResponse httpResponse = client.execute(host, httpRequest);
             Log.d("HTTP", "response: " + httpResponse.getStatusLine().toString());
 

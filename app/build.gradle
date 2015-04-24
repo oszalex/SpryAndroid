@@ -54,6 +54,7 @@ dependencies {
     //compile 'com.melnykov:floatingactionbutton:1.0.9'
     compile 'com.shamanland:fab:0.0.6'
     compile "com.google.android.gms:play-services:3.1.+"
+    compile "com.ogaclejapan.arclayout:library:1.0.0@aar"
 }
 
 droid_record {
