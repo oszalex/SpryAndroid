@@ -69,12 +69,13 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
             final HttpHost host = context.getHost();
             final HttpClient client = context.getClient();
             Log.d("HTTP", "request: " + httpRequest.getRequestLine().toString());
-            //TODO: rausnehmen
-            if (httpRequest instanceof HttpEntityEnclosingRequest) { //test if request is a POST
+            // rausgenommen just debug
+        /*    if (httpRequest instanceof HttpEntityEnclosingRequest) { //test if request is a POST
                 HttpEntity entity = ((HttpEntityEnclosingRequest) httpRequest).getEntity();
                 String body = EntityUtils.toString(entity); //here you have the POST body
             }
             Log.d("HTTP", "requestbody: " + body);
+          */
             HttpResponse httpResponse = client.execute(host, httpRequest);
             Log.d("HTTP", "response: " + httpResponse.getStatusLine().toString());
 
