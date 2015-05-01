@@ -9,13 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.gospry.R;
 import com.gospry.adapter.EventAdapter;
 import com.gospry.generate.Event;
 import com.gospry.generate.LocalSession;
-import com.gospry.old.NewEventIdeaActivity;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
 import com.gospry.remote.state.GetEventsState;
@@ -23,7 +20,6 @@ import com.gospry.remote.state.PostInvitationState;
 import com.gospry.touch.SwipeDismissListViewTouchListener;
 import com.gospry.util.C;
 import com.shamanland.fab.FloatingActionButton;
-import com.shamanland.fab.ShowHideOnScroll;
 
 public class EventActivity extends ListActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final static String TAG = EventActivity.class.toString();
@@ -114,14 +110,13 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
         getListView().setOnTouchListener(listener);
         getListView().setOnScrollListener(listener.makeScrollListener());
 
-        reloadAdapter();
-
+        onRefresh();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        reloadAdapter();
+        onRefresh();
     }
 
     private boolean checkAuth() {

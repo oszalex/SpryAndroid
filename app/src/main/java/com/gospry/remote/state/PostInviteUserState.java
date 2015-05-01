@@ -29,7 +29,7 @@ public class PostInviteUserState extends RemoteState {
 
         JsonObject object = new JsonObject();
         //  object.addProperty("status", event.getAcceptState());
-        object.addProperty("status", "");
+        object.addProperty("status", "INVITED");
 
         request.setBody(object.toString());
 

@@ -1,26 +1,21 @@
 package com.gospry;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.gospry.generate.Event;
 import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
 import com.gospry.remote.RemoteState;
-import com.gospry.remote.state.PostEventState;
 import com.gospry.remote.state.PostInviteUserState;
 import com.gospry.suggestion.Suggestion;
 import com.gospry.suggestion.SuggestionContact;
@@ -31,7 +26,6 @@ import com.gospry.util.Response;
 import com.gospry.view.TagListView;
 import com.shamanland.fab.FloatingActionButton;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,39 +33,11 @@ import java.util.List;
  */
 public class AddFriendsActivity extends Activity {
 
-    final Response outresponse = new Response();
+    final static Response outresponse = new Response();
+    private static final int CONTACT_PICKER_RESULT = 1001;
     private TagListView friendTags;
     private TagListView sel_friendTags;
     private long remoteEventId;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_friends);
-        //TODO: get real remoteventID
-        remoteEventId = getIntent().getLongExtra("RemoteEventId",2);
-        if(remoteEventId == 2) //TODO: remoteevent id error here
-        friendTags = (TagListView) findViewById(R.id.friend_list);
-        sel_friendTags = (TagListView) findViewById(R.id.sel_friend_list);
-
-        Button addfriendbutton = (Button) findViewById(R.id.addfriendsbutton);
-        addfriendbutton.setVisibility(View.VISIBLE);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabaddfriends);
-        fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doLaunchContactPicker(v);
-            }
-        });
-        friendTags.setListener(suggestionClickListener);
-        sel_friendTags.setListener(selectedClickListener);
-        savedInstanceState = new Bundle();
-        savedInstanceState.putInt(C.SUGGESTIONTYPE, 5);
-        List<Suggestion> friendlist = SuggestionEngine.getInstance().provideSuggestions((MeetMeApp) getApplication(), savedInstanceState);
-        for (Suggestion suggestion : friendlist) {
-            friendTags.addTag(new TagListView.Tag(suggestion));
-        }
-    }
     private TagListView.OnTagClickListener suggestionClickListener = new TagListView.OnTagClickListener() {
         @Override
         public void onTagClick(TagListView.Tag tag) {
@@ -91,7 +57,54 @@ public class AddFriendsActivity extends Activity {
         }
     };
 
-    private static final int CONTACT_PICKER_RESULT = 1001;
+    public void setResponse(RemoteResponse response) {
+        outresponse.setResponse(response.getJsonObject());
+        remoteEventId = outresponse.getResponse().get("id").getAsLong();
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View myFragmentView = inflater.inflate(R.layout.activity_add_friends, container, false);
+
+
+        return myFragmentView;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_friends);
+        //TODO: get real remoteventID
+        remoteEventId = getIntent().getLongExtra("RemoteEventId", 2);
+        if (remoteEventId == 2) //TODO: remoteevent id error here
+            getLayoutInflater().inflate(R.layout.activity_add_friends, null);
+        friendTags = (TagListView) findViewById(R.id.friend_list);
+        sel_friendTags = (TagListView) findViewById(R.id.sel_friend_list);
+
+        Button addfriendbutton = (Button) findViewById(R.id.addfriendsbutton);
+        addfriendbutton.setVisibility(View.VISIBLE);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabaddfriends);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doLaunchContactPicker(v);
+            }
+        });
+
+        friendTags.setListener(suggestionClickListener);
+        sel_friendTags.setListener(selectedClickListener);
+        savedInstanceState = new Bundle();
+        savedInstanceState.putInt(C.SUGGESTIONTYPE, 5);
+        List<Suggestion> friendlist = SuggestionEngine.getInstance().provideSuggestions((MeetMeApp) getApplication(), savedInstanceState);
+        for (Suggestion suggestion : friendlist) {
+            friendTags.addTag(new TagListView.Tag(suggestion));
+        }
+
+
+    }
+
     public void doLaunchContactPicker(View view) {
         Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -106,7 +119,7 @@ public class AddFriendsActivity extends Activity {
                     // handle contact results
                     Uri contactData = data.getData();
                     //Cursor c = managedQuery(contactData, null, null, null, null);
-                    Cursor contacts =  this.getContentResolver().query(contactData, null, null, null, null);
+                    Cursor contacts = this.getContentResolver().query(contactData, null, null, null, null);
                     int nameFieldColumnIndex = contacts.getColumnIndexOrThrow(ContactsContract.PhoneLookup.DISPLAY_NAME);
                     int numberFieldColumnIndex = contacts.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER);
 
@@ -122,6 +135,7 @@ public class AddFriendsActivity extends Activity {
             Log.w("debug", "Warning: activity result not ok");
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -1,20 +1,9 @@
 package com.gospry;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.Application;
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.ScaleAnimation;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.gospry.generate.Event;
@@ -22,50 +11,50 @@ import com.gospry.remote.RemoteCallback;
 import com.gospry.remote.RemoteResponse;
 import com.gospry.remote.RemoteState;
 import com.gospry.remote.state.PostEventState;
-import com.gospry.remote.state.PostInviteUserState;
 import com.gospry.suggestion.Suggestion;
-import com.gospry.suggestion.SuggestionContact;
-import com.gospry.suggestion.SuggestionEngine;
 import com.gospry.suggestion.SuggestionTypes;
-import com.gospry.util.C;
 import com.gospry.util.Response;
 import com.gospry.view.TagListView;
-import com.gospry.view.WindowView;
 import com.gospry.view.WindowViewList;
-import com.shamanland.fab.FloatingActionButton;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by cs on 21.04.2015.
  */
 
-public class NewEventActivityWindowed extends Activity  {
+public class NewEventActivityWindowed extends Activity {
 
+    final Response outresponse = new Response();
     View mView;
     Event newevent;
-    final Response outresponse = new Response();
+    Object lock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event_windowed);
         WindowViewList windowViewList = (WindowViewList) findViewById(R.id.windowViewList);
         WindowViewList selwindowViewList = (WindowViewList) findViewById(R.id.selwindowViewList);
-        newevent=new Event();
+        newevent = new Event();
         windowViewList.init(newevent);
 
 
     }
-    Object lock;
+
     public void addEvent(View view) {
         createEvent(view);
-        Intent intent = new Intent(this, AddFriendsActivity.class);
-        //TODO: Add the remoteid to the intent
-      //  intent.putExtra("RemoteEventId", outresponse.getResponse().get("id").getAsLong());
-       // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    }
+
+    private void startNext() {
+        Intent intent = new Intent();
+        intent.setClass(NewEventActivityWindowed.this, AddFriendsActivity.class);
+        intent.putExtra("RemoteEventId", outresponse.getResponse().get("id").getAsLong());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        MeetMeApp app = (MeetMeApp) getApplication();
+        app.startActivity(intent);
+        finish();
     }
 
     public void createEvent(View view) {
@@ -89,7 +78,7 @@ public class NewEventActivityWindowed extends Activity  {
                 Toast.makeText(NewEventActivityWindowed.this, "Event created: " + response.getString() + "Activity: " + this.toString(), Toast.LENGTH_LONG).show();
                 //gets response out of here
                 outresponse.setResponse(response.getJsonObject());
-
+                startNext();
                 finish();
             }
 
@@ -100,7 +89,6 @@ public class NewEventActivityWindowed extends Activity  {
             }
         });
         app.getCtx().invoke(state);
-
 
     }
 

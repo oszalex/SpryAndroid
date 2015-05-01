@@ -1,5 +1,7 @@
 package com.gospry.remote;
 
+import android.util.Log;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,6 +35,8 @@ public class RemoteResponse {
                 }
 
                 bytes = output.toByteArray();
+                //TODO: this is a hotfix?!?
+                Log.d("HTTP", "response: " + httpResponse.getStatusLine().toString() + " " + getJson());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

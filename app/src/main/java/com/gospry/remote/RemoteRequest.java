@@ -5,7 +5,6 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.gospry.AppCtx;
-import com.gospry.util.C;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -33,8 +32,8 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
 
     public RemoteRequest(HttpMethod method, String route, RemoteState state) {
         this.method = method;
-       // this.route = "/" + C.SERVER_VERSION + route;
-        this.route =  route ;
+        // this.route = "/" + C.SERVER_VERSION + route;
+        this.route = route;
         this.context = state.context;
         this.state = state;
     }
@@ -70,15 +69,15 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
             final HttpClient client = context.getClient();
             Log.d("HTTP", "request: " + httpRequest.getRequestLine().toString());
             // rausgenommen just debug
-        /*    if (httpRequest instanceof HttpEntityEnclosingRequest) { //test if request is a POST
-                HttpEntity entity = ((HttpEntityEnclosingRequest) httpRequest).getEntity();
+            HttpEntity entity = null;
+            if (httpRequest instanceof HttpEntityEnclosingRequest && ((HttpEntityEnclosingRequest) httpRequest).getEntity() != null) { //test if request is a POST
+                entity = ((HttpEntityEnclosingRequest) httpRequest).getEntity();
                 String body = EntityUtils.toString(entity); //here you have the POST body
             }
             Log.d("HTTP", "requestbody: " + body);
-          */
-            HttpResponse httpResponse = client.execute(host, httpRequest);
-            Log.d("HTTP", "response: " + httpResponse.getStatusLine().toString());
 
+            HttpResponse httpResponse = client.execute(host, httpRequest);
+            ;
             return new RemoteResponse(httpResponse);
         } catch (IOException e) {
             e.printStackTrace();

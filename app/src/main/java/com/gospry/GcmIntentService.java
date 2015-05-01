@@ -22,12 +22,10 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -79,7 +77,7 @@ public class GcmIntentService extends IntentService {
                     Log.i(TAG, "Working... " + (i + 1)
                             + "/5 @ " + SystemClock.elapsedRealtime());
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                     }
                 }
@@ -97,16 +95,13 @@ public class GcmIntentService extends IntentService {
     // This is just one simple example of what you might choose to do with
     // a GCM message.
     private void sendNotification(Bundle msg) {
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, EventActivity.class), 0);
         MeetMeApp app = (MeetMeApp) getApplication();
         GetEventsState state = new GetEventsState(app.getCtx());
+        final Long eventID = Long.parseLong((String) msg.get("eventID"));
         state.setCallback(new RemoteCallback() {
             @Override
             public void onRequestOk(RemoteResponse response) {
+                afterEventsReloaded(eventID);
             }
 
             @Override
@@ -114,10 +109,20 @@ public class GcmIntentService extends IntentService {
             }
         });
         app.getCtx().invoke(state);
-        Event event = app.getSession().findEvent(Long.parseLong((String) msg.get("eventID")));
+    }
+
+    private void afterEventsReloaded(long eventID) {
+        mNotificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, EventActivity.class), 0);
+        MeetMeApp app = (MeetMeApp) getApplication();
+        //TODO:ask Rich how to get by remoteeventID
+        Event event = app.getSession().findEvent(eventID);
         String contactName = "Unknown";
         ContentResolver cr = this.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(event.getUser()));
+        //TODO: Wenn event!=null  dann wieder einkommentieren
+     /*   Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(event.getUser()));
         Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor.moveToFirst()) {
             contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
@@ -129,6 +134,15 @@ public class GcmIntentService extends IntentService {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(event.getDescription()))
                         .setContentText(event.getDescription())
+                        .setAutoCancel(true);
+            */
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.spry)
+                        .setContentTitle(contactName)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("You have a new Invite"))
+                        .setContentText("Someone invited You")
                         .setAutoCancel(true);
         Intent resultIntent = new Intent(this, EventActivity.class);
         PendingIntent resultPendingIntent =
