@@ -75,7 +75,6 @@ public class AddFriendsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friends);
-        //TODO: get real remoteventID
         remoteEventId = getIntent().getLongExtra("RemoteEventId", 2);
         if (remoteEventId == 2) //TODO: remoteevent id error here
             getLayoutInflater().inflate(R.layout.activity_add_friends, null);

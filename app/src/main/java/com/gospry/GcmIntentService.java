@@ -22,10 +22,12 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -117,26 +119,26 @@ public class GcmIntentService extends IntentService {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, EventActivity.class), 0);
         MeetMeApp app = (MeetMeApp) getApplication();
-        //TODO:ask Rich how to get by remoteeventID
-        Event event = app.getSession().findEvent(eventID);
+        Event event = app.getSession().queryEvents().where("remote_id = " + eventID).first();
         String contactName = "Unknown";
         ContentResolver cr = this.getContentResolver();
-        //TODO: Wenn event!=null  dann wieder einkommentieren
-     /*   Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(event.getUser()));
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(event.getUser()));
         Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor.moveToFirst()) {
             contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        } else {
+            contactName = event.getUser();
         }
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.spry)
+                        .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle(contactName)
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(event.getDescription()))
                         .setContentText(event.getDescription())
                         .setAutoCancel(true);
-            */
-        NotificationCompat.Builder mBuilder =
+
+        /*NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.spry)
                         .setContentTitle(contactName)
@@ -144,6 +146,7 @@ public class GcmIntentService extends IntentService {
                                 .bigText("You have a new Invite"))
                         .setContentText("Someone invited You")
                         .setAutoCancel(true);
+                        */
         Intent resultIntent = new Intent(this, EventActivity.class);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(

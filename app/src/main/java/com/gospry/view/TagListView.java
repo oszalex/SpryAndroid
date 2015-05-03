@@ -210,9 +210,16 @@ public class TagListView extends LinearLayout {
     public static class Tag {
         private Suggestion object;
         private boolean activated;
+        private int color;
 
         public Tag(Suggestion object) {
             this.object = object;
+            this.color = object.getType().getColorRes();
+        }
+
+        public Tag(Suggestion object, int color) {
+            this.object = object;
+            this.color = color;
         }
 
         public Suggestion getObject() {
@@ -233,10 +240,11 @@ public class TagListView extends LinearLayout {
         }
 
         public int getColor() {
-            if (isActivated()) {
-                return R.color.gray;
-            }
-            return object.getType().getColorRes();
+            return color;
+        }
+
+        public void setColor(int color) {
+            this.color = color;
         }
 
         public boolean isActivated() {

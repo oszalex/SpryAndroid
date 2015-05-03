@@ -54,14 +54,23 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
          */
 
         FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
+        FloatingActionButton fab2 = (FloatingActionButton) this.findViewById(R.id.fab2);
         ListView listView = (ListView) findViewById(android.R.id.list);
         //listView.setOnTouchListener(new ShowHideOnScroll(fab));
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //  Intent it = new Intent(EventActivity.this, NewEventActivity.class);
-               Intent it = new Intent(EventActivity.this, NewEventActivityWindowed.class);
+                //  Intent it = new Intent(EventActivity.this, NewEventActivity.class);
+                Intent it = new Intent(EventActivity.this, NewEventActivityWindowed.class);
+                startActivityForResult(it, C.REQ_NEW_EVENT);
+            }
+        });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  Intent it = new Intent(EventActivity.this, NewEventActivity.class);
+                Intent it = new Intent(EventActivity.this, NewEventActivityBubbled.class);
                 startActivityForResult(it, C.REQ_NEW_EVENT);
             }
         });
@@ -103,6 +112,7 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
                 Event event = (Event) adapter.getItem(index);
                 Intent it = new Intent(EventActivity.this, EventDetailActivity.class);
                 it.putExtra(C.EXTRA_EVENT_ID, event.getId());
+                it.putExtra(C.EXTRA_REMOTE_EVENT_ID, event.getRemoteId());
                 startActivity(it);
             }
         }, fab);

@@ -14,5 +14,6 @@
     <string name="signin_please_wait">Sign up...</string>
     <string name="title_activity_event_detail">Upcoming</string>
     <string name="title_eventactivity">Upcoming</string>
+    <string name="make_moderator">Make User a Moderator</string>
 
 </resources>

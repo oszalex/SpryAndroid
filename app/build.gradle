@@ -53,8 +53,11 @@ dependencies {
     //compile 'com.android.support:appcompat-v7:21.0.0'
     //compile 'com.melnykov:floatingactionbutton:1.0.9'
     compile 'com.shamanland:fab:0.0.6'
-    compile "com.google.android.gms:play-services:3.1.+"
+    compile "com.google.android.gms:play-services:7.3.0"
     compile "com.ogaclejapan.arclayout:library:1.0.0@aar"
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'org.osmdroid:osmdroid-android:4.2'
+    compile 'org.slf4j:slf4j-simple:1.6.1'
 }
 
 droid_record {

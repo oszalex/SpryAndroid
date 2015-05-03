@@ -1,10 +1,12 @@
 package com.gospry;
 
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
@@ -43,6 +45,19 @@ public class MeetMeApp extends Application {
         return locale;
     }
 
+    public static String getContactName(String number, Context context) {
+        String contactName;
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        } else {
+            contactName = number;
+        }
+        return contactName;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,7 +76,6 @@ public class MeetMeApp extends Application {
         //TODO:workaround momentan, in zukunft eigene kontaktedatenbank
         favcontacts = getContacts();
     }
-
 
     public
     @NonNull

@@ -4,6 +4,11 @@ buildscript {
     repositories {
         jcenter()
     }
+    repositories {
+        maven {
+            url "http://dl.bintray.com/florent37/maven"
+        }
+    }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0-rc4'
         classpath 'at.pasra.record:generator:0.1.4'
