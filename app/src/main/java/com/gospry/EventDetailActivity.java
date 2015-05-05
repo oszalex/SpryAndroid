@@ -226,9 +226,29 @@ public class EventDetailActivity extends Activity implements
         mapView.setBuiltInZoomControls(true);
         // setContentView(mapView); //displaying the MapView
         mapView.getController().setZoom(22); //set initial zoom-level, depends on your need
-        mapView.getController().setCenter(new GeoPoint(location.getLatitude(), location.getLongitude())); //This point is in Enschede, Netherlands. You should select a point in your map or get it from user's location.
+        GeoPoint myLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+        mapView.getController().setCenter(myLocation); //This point is in Enschede, Netherlands. You should select a point in your map or get it from user's location.
         mapView.setUseDataConnection(true); //keeps the mapView from loading online tiles using network connection.
-        //TODO: MAP not centered
+        //TODO: Onclick open google maps maybe? Display a marker where user is at
+      /*  SimpleLocationOverlay mMyLocationOverlay = new SimpleLocationOverlay(this);
+        Bitmap bitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        mMyLocationOverlay.setLocation(myLocation);
+        mMyLocationOverlay.draw(canvas,mapView,false);
+        mapView.addView(mMyLocationOverlay.);
+
+        List<OverlayItem> overlayItemArray = new ArrayList<OverlayItem>();
+
+        DefaultResourceProxyImpl defaultResourceProxyImpl
+                = new DefaultResourceProxyImpl(this);
+        ItemizedIconOverlay<OverlayItem> myItemizedIconOverlay
+                = new ItemizedIconOverlay<OverlayItem>(overlayItemArray, null, defaultResourceProxyImpl);
+        mapView.getOverlays().add(myItemizedIconOverlay);
+        overlayItemArray.clear();
+
+        OverlayItem newMyLocationItem = new OverlayItem(
+                "My Location", "My Location", myLocation);
+        overlayItemArray.add(newMyLocationItem);*/
     }
 
     @Override

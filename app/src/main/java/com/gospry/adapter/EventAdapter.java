@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.gospry.R;
 import com.gospry.MeetMeApp;
+import com.gospry.R;
 import com.gospry.generate.Event;
 import com.gospry.generate.Keyword;
 import com.gospry.util.C;
@@ -30,29 +30,6 @@ public class EventAdapter extends CursorAdapter {
     public EventAdapter(MeetMeApp app, Cursor c, boolean autoRequery) {
         super(app, c, autoRequery);
         this.app = app;
-    }
-
-    //http://stackoverflow.com/questions/3079365/android-retrieve-contact-name-from-phone-number
-    public static String getContactName(Context context, String phoneNumber) {
-        if (phoneNumber == null) return phoneNumber;
-        if (phoneNumber.isEmpty()) return phoneNumber;
-
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        String contactName = null;
-        if (cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-        }
-
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-
-        return contactName;
     }
 
     public static String getRelativeTimeSpan(Date time) {
@@ -77,6 +54,30 @@ public class EventAdapter extends CursorAdapter {
             return (diff / min) + "m";
 
         return "just now";
+    }
+
+    //http://stackoverflow.com/questions/3079365/android-retrieve-contact-name-from-phone-number
+    public String getContactName(String phoneNumber) {
+        if (phoneNumber.equals(app.getAccount().getNumber())) return "ME";
+        if (phoneNumber == null) return phoneNumber;
+        if (phoneNumber.isEmpty()) return phoneNumber;
+
+        ContentResolver cr = app.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        String contactName = null;
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        if (contactName == null) return phoneNumber;
+        return contactName;
     }
 
     @Override
@@ -117,7 +118,7 @@ public class EventAdapter extends CursorAdapter {
             state.setText(null);
         }
         String creatorID = event.getUser();
-        String creatorname = getContactName(context, creatorID);
+        String creatorname = getContactName(creatorID);
         creator.setText("by " + creatorname);
         desc.setText(event.getDescription());
         time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));

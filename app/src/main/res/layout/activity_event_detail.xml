@@ -73,52 +73,10 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/map_container"
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
-
-        <org.osmdroid.views.MapView
-            android:id="@+id/mapview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
-
-    <com.gospry.view.TagListView
-        android:id="@+id/keywords"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </com.gospry.view.TagListView>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text" />
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="275dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="The event returned from /happening/1 is the same as from /happening..." />
-
-
-    <com.gospry.view.TagListView
-        android:id="@+id/addedfriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-    </com.gospry.view.TagListView>
+        android:layout_height="250dp" />
 
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/addfriends"
@@ -128,8 +86,47 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="100dp"
+        android:layout_marginRight="20dp"
         android:src="@drawable/ic_add_white_24dp"
         android:visibility="gone"
         app:floatingActionButtonColor="@color/fab_primary" />
+
+    <com.gospry.view.TagListView
+        android:id="@+id/addedfriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <com.gospry.view.TagListView
+            android:id="@+id/keywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.gospry.view.TagListView>
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="275dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="The event returned from /happening/1 is the same as from /happening..." />
+
+
+    </com.gospry.view.TagListView>
+
+
 </LinearLayout>
