@@ -17,26 +17,27 @@
  */
 package com.gospry.generate;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
-import com.gospry.generate.Event;
+import android.database.sqlite.SQLiteDatabase;
 
-public class EventRecord{
+public class EventRecord {
     private final java.util.Map<Long, Event> primaryKeyCache = new java.util.HashMap<Long, Event>();
-    public void clearCache(){
+
+    public void clearCache() {
         primaryKeyCache.clear();
     }
-    public void save(SQLiteDatabase db, AbstractEvent record){
-        if (record.getId() == null){
+
+    public void save(SQLiteDatabase db, AbstractEvent record) {
+        if (record.getId() == null) {
             insert(db, record);
-        }
-        else{
+        } else {
             update(db, record);
         }
     }
-    public void insert(SQLiteDatabase db, AbstractEvent record){
-        ContentValues values = new ContentValues(10);
+
+    public void insert(SQLiteDatabase db, AbstractEvent record) {
+        ContentValues values = new ContentValues(12);
         values.put("user", record.getUser());
         values.put("start_time", record.getStartTime());
         values.put("remote_id", record.getRemoteId());
@@ -47,17 +48,20 @@ public class EventRecord{
         values.put("price", Double.doubleToLongBits(record.getPrice()));
         values.put("is_public", record.getIsPublic());
         values.put("accept_state", record.getAcceptState());
+        values.put("location", record.getLocation());
+        values.put("invitationstatus", record.getInvitationstatus());
         long id = db.insert("events", null, values);
         record.setId(id);
-        primaryKeyCache.put(id, (Event)record);
+        primaryKeyCache.put(id, (Event) record);
     }
-    public Event load(SQLiteDatabase db, long id){
+
+    public Event load(SQLiteDatabase db, long id) {
         Event cached = primaryKeyCache.get(id);
-        if (cached != null){
+        if (cached != null) {
             return cached;
         }
-        Cursor c = db.rawQuery("select user, start_time, remote_id, description, duration, max_attending, min_attending, price, is_public, accept_state, _id from events where _id = ?;", new String[] { Long.toString(id) });
-        if (c.moveToFirst()){
+        Cursor c = db.rawQuery("select user, start_time, remote_id, description, duration, max_attending, min_attending, price, is_public, accept_state, _id, location, invitationstatus from events where _id = ?;", new String[]{Long.toString(id)});
+        if (c.moveToFirst()) {
             Event record = new Event();
             record.setUser(c.getString(c.getColumnIndex("user")));
             record.setStartTime(c.getLong(c.getColumnIndex("start_time")));
@@ -70,17 +74,21 @@ public class EventRecord{
             record.setIsPublic((c.getInt(c.getColumnIndex("is_public")) != 0));
             record.setAcceptState(c.getString(c.getColumnIndex("accept_state")));
             record.setId(c.getLong(c.getColumnIndex("_id")));
+            record.setLocation(c.getString(c.getColumnIndex("location")));
+            record.setInvitationstatus(c.getString(c.getColumnIndex("invitationstatus")));
             primaryKeyCache.put(id, record);
             return record;
         }
         return null;
     }
-    public void delete(SQLiteDatabase db, long id){
-        db.execSQL("delete from events where  _id = ?;", new String[] { Long.toString(id) });
+
+    public void delete(SQLiteDatabase db, long id) {
+        db.execSQL("delete from events where  _id = ?;", new String[]{Long.toString(id)});
         primaryKeyCache.remove(id);
     }
-    public void update(SQLiteDatabase db, AbstractEvent record){
-        ContentValues values = new ContentValues(10);
+
+    public void update(SQLiteDatabase db, AbstractEvent record) {
+        ContentValues values = new ContentValues(12);
         values.put("user", record.getUser());
         values.put("start_time", record.getStartTime());
         values.put("remote_id", record.getRemoteId());
@@ -91,7 +99,9 @@ public class EventRecord{
         values.put("price", Double.doubleToLongBits(record.getPrice()));
         values.put("is_public", record.getIsPublic());
         values.put("accept_state", record.getAcceptState());
+        values.put("location", record.getLocation());
+        values.put("invitationstatus", record.getInvitationstatus());
         long id = record.getId();
-        db.update("events", values, "_id = ?", new String[] { Long.toString(id) });
+        db.update("events", values, "_id = ?", new String[]{Long.toString(id)});
     }
 }

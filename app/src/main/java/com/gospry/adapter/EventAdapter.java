@@ -92,7 +92,6 @@ public class EventAdapter extends CursorAdapter {
         TextView time = (TextView) view.findViewById(R.id.time);
         TextView desc = (TextView) view.findViewById(R.id.desc);
         TextView keywords = (TextView) view.findViewById(R.id.keywords);
-
         TextView state = (TextView) view.findViewById(R.id.state);
 
         Event event = Event.fromCursor(cursor);
@@ -103,15 +102,15 @@ public class EventAdapter extends CursorAdapter {
             builder.append(keyword.getText());
             builder.append(" ");
         }
-        keywords.setText(builder.toString());
+        //keywords.setText(builder.toString());
 
-        if (C.EVENT_STATE_ATTENDIN.equals(event.getAcceptState())) {
+        if (C.EVENT_STATE_ATTENDIN.equals(event.getInvitationstatus())) {
             state.setTextColor(Color.GREEN);
             state.setText("ATTENDING");
-        } else if (C.EVENT_STATE_NOT_ATTENDING.equals(event.getAcceptState())) {
+        } else if (C.EVENT_STATE_NOT_ATTENDING.equals(event.getInvitationstatus())) {
             state.setTextColor(Color.RED);
             state.setText("i'm out");
-        } else if (C.EVENT_STATE_MAYBE.equals(event.getAcceptState())) {
+        } else if (C.EVENT_STATE_MAYBE.equals(event.getInvitationstatus())) {
             state.setTextColor(0xfffa5000);
             state.setText("MAYBE");
         } else {
@@ -120,6 +119,8 @@ public class EventAdapter extends CursorAdapter {
         String creatorID = event.getUser();
         String creatorname = getContactName(creatorID);
         creator.setText("by " + creatorname);
+
+        keywords.setText(event.getLocation());
         desc.setText(event.getDescription());
         time.setText(getRelativeTimeSpan(new Date(event.getStartTime())));
     }

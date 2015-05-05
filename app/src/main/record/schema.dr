@@ -18,6 +18,8 @@ create_table event{
   is_public { type 'boolean', default 'new Boolean(false)'}
   accept_state { type 'string', default '""'}
   _id { type 'long', default 'new Long(0L)'}
+  location { type 'string', default '""'}
+  invitationstatus { type 'string', default '""'}
 }
 create_table keyword{
   text { type 'string', default '""'}

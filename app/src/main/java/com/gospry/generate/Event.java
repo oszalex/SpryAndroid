@@ -34,15 +34,6 @@ public class Event extends AbstractEvent {
         mMaxAttending = 500;
     }
 
-    public String getLocation() {
-        return Location;
-    }
-
-    public void setLocation(String location) {
-        Location = location;
-    }
-
-
     public void set(Suggestion suggest) {   //TODO: CAST is not so nice
         switch (suggest.getType()) {
             case PERSON:
@@ -74,7 +65,8 @@ public class Event extends AbstractEvent {
         if (mStartTime == 0L) mStartTime = value;
         else mStartTime += value;
     }
-    public boolean isAllSet(){
+
+    public boolean isAllSet() {
         //TODO: Check ob alle Daten gesetzt sind um ein neues Event zu erstellen
         return true;
     }

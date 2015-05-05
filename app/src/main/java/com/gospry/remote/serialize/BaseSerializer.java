@@ -64,7 +64,9 @@ public abstract class BaseSerializer<T> {
 
         Field field = getField(target.getClass(), objKey);
         Class<?> clazz = field.getType();
-        if (clazz == Date.class) {
+        if (target.getClass() == null) {
+            throw new SerializeException("unkown type");
+        } else if (clazz == Date.class) {
             throw new SerializeException("unkown type");
         } else if (clazz == Integer.class) {
             return object.getAsJsonPrimitive(key).getAsInt();

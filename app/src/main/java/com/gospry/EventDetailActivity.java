@@ -60,6 +60,7 @@ public class EventDetailActivity extends Activity implements
                 .addApi(LocationServices.API)
                 .build();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +142,7 @@ public class EventDetailActivity extends Activity implements
         });
         state2.start();
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -276,6 +278,7 @@ public class EventDetailActivity extends Activity implements
         private final TextView desc;
         private final TextView when;
         private final TextView where;
+        private final TextView invitationStatus;
         private final TagListView keywords;
 
 
@@ -286,6 +289,7 @@ public class EventDetailActivity extends Activity implements
             this.keywords = (TagListView) view.findViewById(R.id.keywords);
             this.when = (TextView) view.findViewById(R.id.when);
             this.where = (TextView) view.findViewById(R.id.where);
+            this.invitationStatus = (TextView) view.findViewById(R.id.state);
         }
 
         public void update(Event event, LocalSession session) {
