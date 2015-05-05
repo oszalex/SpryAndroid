@@ -1,0 +1,11 @@
+// create_table {
+//   name 'lion'
+//   fields {
+//     cage 'long'
+//   }
+// }
+add_column {
+  table 'event'
+  column 'location'
+  type 'string'
+}
