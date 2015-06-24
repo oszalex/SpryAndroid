@@ -28,8 +28,9 @@ public class C {
     public static final String SUGGESTIONTYPE = "suggestiontype";
 
     public static final String SERVER_VERSION = "v4";
-    public static final String SERVER_ADDRESS = "192.168.0.13";
-    //public static final String SERVER_ADDRESS = "api.gospry.com";
+    ;
+    public static final String SERVER_ADDRESS = "84.114.33.167";
+    // public static final String SERVER_ADDRESS = "api.gospry.com";
     // public static final String SERVER_VERSION = "";
     public static final int SERVER_PORT = 8443;
 

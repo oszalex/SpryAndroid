@@ -52,12 +52,10 @@ public class RecordMigrator implements Migrator {
     public long getLatestMigrationLevel() {
         return MIGRATION_LEVEL;
     }
-
     @Override
     public void migrate() {
         migrate(getCurrentMigrationLevel(), MIGRATION_LEVEL);
     }
-
     @Override
     public void migrate(long currentVersion, long targetVersion) {
         db.execSQL("insert or replace into android_record_configs (key,value) values ('generator_version','0.1.4')");

@@ -66,11 +66,12 @@ public class EventActivity extends ListActivity implements SwipeRefreshLayout.On
                 startActivityForResult(it, C.REQ_NEW_EVENT);
             }
         });
+
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  Intent it = new Intent(EventActivity.this, NewEventActivity.class);
-                Intent it = new Intent(EventActivity.this, NewEventActivityBubbled.class);
+                Intent it = new Intent(EventActivity.this, CreateLocationActivity.class);
                 startActivityForResult(it, C.REQ_NEW_EVENT);
             }
         });

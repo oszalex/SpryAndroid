@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.gospry.AppCtx;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
@@ -50,14 +51,11 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
         if (state.useAuth) {
             httpRequest.setHeader("Authorization", "Basic " + basicAuthBase64(context.getApplication().getBasicAuth()));
         }
-        //TODO: Fix in BAckend the header Problem
-        httpRequest.setHeader("Content-Type", "application/json");
-        httpRequest.setHeader("Accept", "application/json");
-
         if (body != null) {
             HttpEntityEnclosingRequestBase req = (HttpEntityEnclosingRequestBase) httpRequest;
             try {
-                StringEntity entity = new StringEntity(body);
+                //TODO: Reminder: Charset wichtig!! sonst gibts fehler im backend bei Umlaut - Fehler stundenlang gesucht
+                StringEntity entity = new StringEntity(body, "UTF-8");
                 req.setEntity(entity);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -70,13 +68,20 @@ public class RemoteRequest extends AsyncTask<Void, Void, RemoteResponse> {
             Log.d("HTTP", "request: " + httpRequest.getRequestLine().toString());
             // rausgenommen just debug
             HttpEntity entity = null;
+
             if (httpRequest instanceof HttpEntityEnclosingRequest && ((HttpEntityEnclosingRequest) httpRequest).getEntity() != null) { //test if request is a POST
                 entity = ((HttpEntityEnclosingRequest) httpRequest).getEntity();
                 String body = EntityUtils.toString(entity); //here you have the POST body
             }
             Log.d("HTTP", "requestbody: " + body);
+            //TODO: Fix in BAckend the header Problem
+            httpRequest.setHeader("Content-Type", "application/json");
+            httpRequest.setHeader("Accept", "*/*");
+            Header[] test = httpRequest.getAllHeaders();
+            //    httpRequest.setHeader("User-Agent", "curl/7.35.0");
+            HttpResponse httpResponse;
+            httpResponse = client.execute(host, httpRequest);
 
-            HttpResponse httpResponse = client.execute(host, httpRequest);
             ;
             return new RemoteResponse(httpResponse);
         } catch (IOException e) {

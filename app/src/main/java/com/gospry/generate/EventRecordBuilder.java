@@ -26,7 +26,6 @@ public class EventRecordBuilder extends RecordBuilder<Event> {
     public EventRecordBuilder(SQLiteDatabase db) {
         super("events", new String[]{"user", "start_time", "remote_id", "description", "duration", "max_attending", "min_attending", "price", "is_public", "accept_state", "_id", "location", "invitationstatus"}, db);
     }
-
     @Override
     public java.util.List<Event> all(android.database.Cursor c) {
         java.util.List<Event> list = new java.util.ArrayList<Event>();
@@ -35,7 +34,6 @@ public class EventRecordBuilder extends RecordBuilder<Event> {
         }
         return list;
     }
-
     @Override
     public Event first(android.database.Cursor c) {
         if (c.moveToFirst()) {

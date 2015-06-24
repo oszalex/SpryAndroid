@@ -51,9 +51,9 @@ public class SuggestionEngine {
 
         //TODO: Was wird angezeigt? was wird intern verwendet?
         List<Suggestion> locations = new LinkedList<Suggestion>();
-        locations.add(new SuggestionLocation("school", SuggestionTypes.PLACE, "Schule?"));
-        locations.add(new SuggestionLocation("Volksgarten", SuggestionTypes.PLACE, "Volksgarten"));
-        locations.add(new SuggestionLocation("Westbahnhof", SuggestionTypes.PLACE, "U3 Westbahnhof"));
+        locations.add(new SuggestionLocation("school", SuggestionTypes.PLACE, "1"));
+        locations.add(new SuggestionLocation("Volksgarten", SuggestionTypes.PLACE, "1"));
+        locations.add(new SuggestionLocation("Westbahnhof", SuggestionTypes.PLACE, "2"));
         defaultSuggestions.put(SuggestionTypes.PLACE, locations);
 
         List<Suggestion> friends = new LinkedList<Suggestion>();

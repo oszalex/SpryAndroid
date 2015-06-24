@@ -30,6 +30,7 @@ public class PostEventState extends RemoteState {
     @Override
     public RemoteRequest prepare() {
         RemoteRequest request = new RemoteRequest(HttpMethod.POST, "/happening/", this);
+
         JsonObject object = new JsonObject();
         // {"start_time":"1415827547072",
         //  "description":"1234",

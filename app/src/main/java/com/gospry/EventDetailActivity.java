@@ -221,7 +221,9 @@ public class EventDetailActivity extends Activity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.i("Location", "Location services connected.");
+        LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        //if( location == null) location
         Log.i("Location", location.getLatitude() + " " + location.getLongitude());
         final MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setClickable(false);
